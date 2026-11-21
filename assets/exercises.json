@@ -1,0 +1,2018 @@
+[
+  {
+    "id": "bench-press",
+    "name": "Bench Press",
+    "primaryMuscle": "Chest",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "incline-bench-press",
+    "name": "Incline Bench Press",
+    "primaryMuscle": "Chest",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "decline-bench-press",
+    "name": "Decline Bench Press",
+    "primaryMuscle": "Chest",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "dumbbell-bench-press",
+    "name": "Dumbbell Bench Press",
+    "primaryMuscle": "Chest",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "incline-dumbbell-press",
+    "name": "Incline Dumbbell Press",
+    "primaryMuscle": "Chest",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "decline-dumbbell-press",
+    "name": "Decline Dumbbell Press",
+    "primaryMuscle": "Chest",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "dumbbell-fly",
+    "name": "Dumbbell Fly",
+    "primaryMuscle": "Chest",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "incline-dumbbell-fly",
+    "name": "Incline Dumbbell Fly",
+    "primaryMuscle": "Chest",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "cable-fly",
+    "name": "Cable Fly",
+    "primaryMuscle": "Chest",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "low-cable-crossover",
+    "name": "Low Cable Crossover",
+    "primaryMuscle": "Chest",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "high-cable-crossover",
+    "name": "High Cable Crossover",
+    "primaryMuscle": "Chest",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "chest-press",
+    "name": "Chest Press",
+    "primaryMuscle": "Chest",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "pec-deck",
+    "name": "Pec Deck",
+    "primaryMuscle": "Chest",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "push-up",
+    "name": "Push Up",
+    "primaryMuscle": "Chest",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "wide-push-up",
+    "name": "Wide Push Up",
+    "primaryMuscle": "Chest",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "decline-push-up",
+    "name": "Decline Push Up",
+    "primaryMuscle": "Chest",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "chest-dip",
+    "name": "Chest Dip",
+    "primaryMuscle": "Chest",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "smith-machine-bench-press",
+    "name": "Smith Machine Bench Press",
+    "primaryMuscle": "Chest",
+    "equipment": "Smith Machine",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "resistance-band-chest-press",
+    "name": "Resistance Band Chest Press",
+    "primaryMuscle": "Chest",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "svend-press",
+    "name": "Svend Press",
+    "primaryMuscle": "Chest",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "landmine-chest-press",
+    "name": "Landmine Chest Press",
+    "primaryMuscle": "Chest",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "barbell-floor-press",
+    "name": "Barbell Floor Press",
+    "primaryMuscle": "Chest",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "pull-up",
+    "name": "Pull Up",
+    "primaryMuscle": "Back",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "chin-up",
+    "name": "Chin Up",
+    "primaryMuscle": "Back",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "neutral-grip-pull-up",
+    "name": "Neutral Grip Pull Up",
+    "primaryMuscle": "Back",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "assisted-pull-up",
+    "name": "Assisted Pull Up",
+    "primaryMuscle": "Back",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "lat-pulldown",
+    "name": "Lat Pulldown",
+    "primaryMuscle": "Back",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "wide-grip-lat-pulldown",
+    "name": "Wide Grip Lat Pulldown",
+    "primaryMuscle": "Back",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "close-grip-lat-pulldown",
+    "name": "Close Grip Lat Pulldown",
+    "primaryMuscle": "Back",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "seated-cable-row",
+    "name": "Seated Cable Row",
+    "primaryMuscle": "Back",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "single-arm-cable-row",
+    "name": "Single Arm Cable Row",
+    "primaryMuscle": "Back",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "barbell-row",
+    "name": "Barbell Row",
+    "primaryMuscle": "Back",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "pendlay-row",
+    "name": "Pendlay Row",
+    "primaryMuscle": "Back",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "t-bar-row",
+    "name": "T-Bar Row",
+    "primaryMuscle": "Back",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "one-arm-dumbbell-row",
+    "name": "One Arm Dumbbell Row",
+    "primaryMuscle": "Back",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "chest-supported-dumbbell-row",
+    "name": "Chest Supported Dumbbell Row",
+    "primaryMuscle": "Back",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "machine-high-row",
+    "name": "Machine High Row",
+    "primaryMuscle": "Back",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "machine-low-row",
+    "name": "Machine Low Row",
+    "primaryMuscle": "Back",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "inverted-row",
+    "name": "Inverted Row",
+    "primaryMuscle": "Back",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "straight-arm-pulldown",
+    "name": "Straight Arm Pulldown",
+    "primaryMuscle": "Back",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "cable-pullover",
+    "name": "Cable Pullover",
+    "primaryMuscle": "Back",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "meadows-row",
+    "name": "Meadows Row",
+    "primaryMuscle": "Back",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "renegade-row",
+    "name": "Renegade Row",
+    "primaryMuscle": "Back",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "resistance-band-row",
+    "name": "Resistance Band Row",
+    "primaryMuscle": "Back",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "kneeling-lat-pulldown",
+    "name": "Kneeling Lat Pulldown",
+    "primaryMuscle": "Back",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "dumbbell-pullover",
+    "name": "Dumbbell Pullover",
+    "primaryMuscle": "Back",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "overhead-press",
+    "name": "Overhead Press",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "seated-barbell-shoulder-press",
+    "name": "Seated Barbell Shoulder Press",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "dumbbell-shoulder-press",
+    "name": "Dumbbell Shoulder Press",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "arnold-press",
+    "name": "Arnold Press",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "machine-shoulder-press",
+    "name": "Machine Shoulder Press",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "smith-machine-shoulder-press",
+    "name": "Smith Machine Shoulder Press",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Smith Machine",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "dumbbell-lateral-raise",
+    "name": "Dumbbell Lateral Raise",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "cable-lateral-raise",
+    "name": "Cable Lateral Raise",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "machine-lateral-raise",
+    "name": "Machine Lateral Raise",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "front-raise",
+    "name": "Front Raise",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "cable-front-raise",
+    "name": "Cable Front Raise",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "rear-delt-fly",
+    "name": "Rear Delt Fly",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "reverse-pec-deck",
+    "name": "Reverse Pec Deck",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "face-pull",
+    "name": "Face Pull",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "upright-row",
+    "name": "Upright Row",
+    "primaryMuscle": "Shoulders",
+    "equipment": "EZ Bar",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "landmine-press",
+    "name": "Landmine Press",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "pike-push-up",
+    "name": "Pike Push Up",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "handstand-push-up",
+    "name": "Handstand Push Up",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "resistance-band-lateral-raise",
+    "name": "Resistance Band Lateral Raise",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "y-raise",
+    "name": "Y Raise",
+    "primaryMuscle": "Shoulders",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "biceps-curl",
+    "name": "Biceps Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "alternating-dumbbell-curl",
+    "name": "Alternating Dumbbell Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "hammer-curl",
+    "name": "Hammer Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "incline-dumbbell-curl",
+    "name": "Incline Dumbbell Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "concentration-curl",
+    "name": "Concentration Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "zottman-curl",
+    "name": "Zottman Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "barbell-curl",
+    "name": "Barbell Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "ez-bar-curl",
+    "name": "EZ Bar Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "EZ Bar",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "preacher-curl",
+    "name": "Preacher Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "EZ Bar",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "machine-preacher-curl",
+    "name": "Machine Preacher Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "cable-curl",
+    "name": "Cable Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "bayesian-cable-curl",
+    "name": "Bayesian Cable Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "high-cable-curl",
+    "name": "High Cable Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "spider-curl",
+    "name": "Spider Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "resistance-band-curl",
+    "name": "Resistance Band Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "drag-curl",
+    "name": "Drag Curl",
+    "primaryMuscle": "Biceps",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "triceps-pushdown",
+    "name": "Triceps Pushdown",
+    "primaryMuscle": "Triceps",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "rope-pushdown",
+    "name": "Rope Pushdown",
+    "primaryMuscle": "Triceps",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "reverse-grip-pushdown",
+    "name": "Reverse Grip Pushdown",
+    "primaryMuscle": "Triceps",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "overhead-cable-extension",
+    "name": "Overhead Cable Extension",
+    "primaryMuscle": "Triceps",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "single-arm-cable-extension",
+    "name": "Single Arm Cable Extension",
+    "primaryMuscle": "Triceps",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "skull-crusher",
+    "name": "Skull Crusher",
+    "primaryMuscle": "Triceps",
+    "equipment": "EZ Bar",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "dumbbell-skull-crusher",
+    "name": "Dumbbell Skull Crusher",
+    "primaryMuscle": "Triceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "dumbbell-overhead-extension",
+    "name": "Dumbbell Overhead Extension",
+    "primaryMuscle": "Triceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "close-grip-bench-press",
+    "name": "Close Grip Bench Press",
+    "primaryMuscle": "Triceps",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "jm-press",
+    "name": "JM Press",
+    "primaryMuscle": "Triceps",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "bench-dip",
+    "name": "Bench Dip",
+    "primaryMuscle": "Triceps",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "parallel-bar-dip",
+    "name": "Parallel Bar Dip",
+    "primaryMuscle": "Triceps",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "diamond-push-up",
+    "name": "Diamond Push Up",
+    "primaryMuscle": "Triceps",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "triceps-kickback",
+    "name": "Triceps Kickback",
+    "primaryMuscle": "Triceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "machine-triceps-extension",
+    "name": "Machine Triceps Extension",
+    "primaryMuscle": "Triceps",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "resistance-band-pushdown",
+    "name": "Resistance Band Pushdown",
+    "primaryMuscle": "Triceps",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "tate-press",
+    "name": "Tate Press",
+    "primaryMuscle": "Triceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "cross-body-cable-extension",
+    "name": "Cross Body Cable Extension",
+    "primaryMuscle": "Triceps",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/bench_press.png"
+  },
+  {
+    "id": "barbell-wrist-curl",
+    "name": "Barbell Wrist Curl",
+    "primaryMuscle": "Forearms",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "reverse-barbell-wrist-curl",
+    "name": "Reverse Barbell Wrist Curl",
+    "primaryMuscle": "Forearms",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "dumbbell-wrist-curl",
+    "name": "Dumbbell Wrist Curl",
+    "primaryMuscle": "Forearms",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "reverse-dumbbell-wrist-curl",
+    "name": "Reverse Dumbbell Wrist Curl",
+    "primaryMuscle": "Forearms",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "behind-back-wrist-curl",
+    "name": "Behind Back Wrist Curl",
+    "primaryMuscle": "Forearms",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "reverse-curl",
+    "name": "Reverse Curl",
+    "primaryMuscle": "Forearms",
+    "equipment": "EZ Bar",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "cable-wrist-curl",
+    "name": "Cable Wrist Curl",
+    "primaryMuscle": "Forearms",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "wrist-roller",
+    "name": "Wrist Roller",
+    "primaryMuscle": "Forearms",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "farmer-carry",
+    "name": "Farmer Carry",
+    "primaryMuscle": "Forearms",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "plate-pinch",
+    "name": "Plate Pinch",
+    "primaryMuscle": "Forearms",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "dead-hang",
+    "name": "Dead Hang",
+    "primaryMuscle": "Forearms",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "towel-pull-up",
+    "name": "Towel Pull Up",
+    "primaryMuscle": "Forearms",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "back-squat",
+    "name": "Back Squat",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "front-squat",
+    "name": "Front Squat",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "high-bar-squat",
+    "name": "High Bar Squat",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "goblet-squat",
+    "name": "Goblet Squat",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Kettlebell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "hack-squat",
+    "name": "Hack Squat",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "pendulum-squat",
+    "name": "Pendulum Squat",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "smith-machine-squat",
+    "name": "Smith Machine Squat",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Smith Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "leg-press",
+    "name": "Leg Press",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "single-leg-press",
+    "name": "Single Leg Press",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "leg-extension",
+    "name": "Leg Extension",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "bulgarian-split-squat",
+    "name": "Bulgarian Split Squat",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "walking-lunge",
+    "name": "Walking Lunge",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "reverse-lunge",
+    "name": "Reverse Lunge",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "forward-lunge",
+    "name": "Forward Lunge",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "step-up",
+    "name": "Step Up",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "sissy-squat",
+    "name": "Sissy Squat",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "wall-sit",
+    "name": "Wall Sit",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "spanish-squat",
+    "name": "Spanish Squat",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "cyclist-squat",
+    "name": "Cyclist Squat",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "box-squat",
+    "name": "Box Squat",
+    "primaryMuscle": "Quadriceps",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "romanian-deadlift",
+    "name": "Romanian Deadlift",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "dumbbell-romanian-deadlift",
+    "name": "Dumbbell Romanian Deadlift",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "stiff-leg-deadlift",
+    "name": "Stiff Leg Deadlift",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "single-leg-romanian-deadlift",
+    "name": "Single Leg Romanian Deadlift",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "seated-leg-curl",
+    "name": "Seated Leg Curl",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "lying-leg-curl",
+    "name": "Lying Leg Curl",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "standing-leg-curl",
+    "name": "Standing Leg Curl",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "nordic-hamstring-curl",
+    "name": "Nordic Hamstring Curl",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "glute-ham-raise",
+    "name": "Glute Ham Raise",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "good-morning",
+    "name": "Good Morning",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "cable-pull-through",
+    "name": "Cable Pull Through",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "kettlebell-swing",
+    "name": "Kettlebell Swing",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Kettlebell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "sliding-leg-curl",
+    "name": "Sliding Leg Curl",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "resistance-band-leg-curl",
+    "name": "Resistance Band Leg Curl",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "razor-curl",
+    "name": "Razor Curl",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "snatch-grip-romanian-deadlift",
+    "name": "Snatch Grip Romanian Deadlift",
+    "primaryMuscle": "Hamstrings",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "barbell-hip-thrust",
+    "name": "Barbell Hip Thrust",
+    "primaryMuscle": "Glutes",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "dumbbell-hip-thrust",
+    "name": "Dumbbell Hip Thrust",
+    "primaryMuscle": "Glutes",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "smith-machine-hip-thrust",
+    "name": "Smith Machine Hip Thrust",
+    "primaryMuscle": "Glutes",
+    "equipment": "Smith Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "glute-bridge",
+    "name": "Glute Bridge",
+    "primaryMuscle": "Glutes",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "single-leg-glute-bridge",
+    "name": "Single Leg Glute Bridge",
+    "primaryMuscle": "Glutes",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "cable-glute-kickback",
+    "name": "Cable Glute Kickback",
+    "primaryMuscle": "Glutes",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "machine-glute-kickback",
+    "name": "Machine Glute Kickback",
+    "primaryMuscle": "Glutes",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "frog-pump",
+    "name": "Frog Pump",
+    "primaryMuscle": "Glutes",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "sumo-deadlift",
+    "name": "Sumo Deadlift",
+    "primaryMuscle": "Glutes",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "sumo-squat",
+    "name": "Sumo Squat",
+    "primaryMuscle": "Glutes",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "curtsy-lunge",
+    "name": "Curtsy Lunge",
+    "primaryMuscle": "Glutes",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "deficit-reverse-lunge",
+    "name": "Deficit Reverse Lunge",
+    "primaryMuscle": "Glutes",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "banded-lateral-walk",
+    "name": "Banded Lateral Walk",
+    "primaryMuscle": "Glutes",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "banded-clamshell",
+    "name": "Banded Clamshell",
+    "primaryMuscle": "Glutes",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "cable-hip-abduction",
+    "name": "Cable Hip Abduction",
+    "primaryMuscle": "Glutes",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "reverse-hyperextension",
+    "name": "Reverse Hyperextension",
+    "primaryMuscle": "Glutes",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "step-down",
+    "name": "Step Down",
+    "primaryMuscle": "Glutes",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "kneeling-squat",
+    "name": "Kneeling Squat",
+    "primaryMuscle": "Glutes",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "standing-calf-raise",
+    "name": "Standing Calf Raise",
+    "primaryMuscle": "Calves",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "seated-calf-raise",
+    "name": "Seated Calf Raise",
+    "primaryMuscle": "Calves",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "leg-press-calf-raise",
+    "name": "Leg Press Calf Raise",
+    "primaryMuscle": "Calves",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "donkey-calf-raise",
+    "name": "Donkey Calf Raise",
+    "primaryMuscle": "Calves",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "single-leg-calf-raise",
+    "name": "Single Leg Calf Raise",
+    "primaryMuscle": "Calves",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "dumbbell-calf-raise",
+    "name": "Dumbbell Calf Raise",
+    "primaryMuscle": "Calves",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "smith-machine-calf-raise",
+    "name": "Smith Machine Calf Raise",
+    "primaryMuscle": "Calves",
+    "equipment": "Smith Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "barbell-calf-raise",
+    "name": "Barbell Calf Raise",
+    "primaryMuscle": "Calves",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "tibialis-raise",
+    "name": "Tibialis Raise",
+    "primaryMuscle": "Calves",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "machine-tibialis-raise",
+    "name": "Machine Tibialis Raise",
+    "primaryMuscle": "Calves",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "jump-rope-calf-bounce",
+    "name": "Jump Rope Calf Bounce",
+    "primaryMuscle": "Calves",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "farmer-walk-on-toes",
+    "name": "Farmer Walk on Toes",
+    "primaryMuscle": "Calves",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "crunch",
+    "name": "Crunch",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "sit-up",
+    "name": "Sit Up",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "decline-sit-up",
+    "name": "Decline Sit Up",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "cable-crunch",
+    "name": "Cable Crunch",
+    "primaryMuscle": "Abs",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "machine-crunch",
+    "name": "Machine Crunch",
+    "primaryMuscle": "Abs",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "hanging-knee-raise",
+    "name": "Hanging Knee Raise",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "hanging-leg-raise",
+    "name": "Hanging Leg Raise",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "captain-chair-knee-raise",
+    "name": "Captain Chair Knee Raise",
+    "primaryMuscle": "Abs",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "reverse-crunch",
+    "name": "Reverse Crunch",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "ab-wheel-rollout",
+    "name": "Ab Wheel Rollout",
+    "primaryMuscle": "Abs",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "plank",
+    "name": "Plank",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "rkc-plank",
+    "name": "RKC Plank",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "dead-bug",
+    "name": "Dead Bug",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "hollow-body-hold",
+    "name": "Hollow Body Hold",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "v-up",
+    "name": "V Up",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "toe-touch",
+    "name": "Toe Touch",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "jackknife-sit-up",
+    "name": "Jackknife Sit Up",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "swiss-ball-crunch",
+    "name": "Swiss Ball Crunch",
+    "primaryMuscle": "Abs",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "resistance-band-crunch",
+    "name": "Resistance Band Crunch",
+    "primaryMuscle": "Abs",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "dragon-flag",
+    "name": "Dragon Flag",
+    "primaryMuscle": "Abs",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "russian-twist",
+    "name": "Russian Twist",
+    "primaryMuscle": "Obliques",
+    "equipment": "Medicine Ball",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "cable-wood-chop",
+    "name": "Cable Wood Chop",
+    "primaryMuscle": "Obliques",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "high-to-low-wood-chop",
+    "name": "High to Low Wood Chop",
+    "primaryMuscle": "Obliques",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "low-to-high-wood-chop",
+    "name": "Low to High Wood Chop",
+    "primaryMuscle": "Obliques",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "side-plank",
+    "name": "Side Plank",
+    "primaryMuscle": "Obliques",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "side-plank-hip-dip",
+    "name": "Side Plank Hip Dip",
+    "primaryMuscle": "Obliques",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "bicycle-crunch",
+    "name": "Bicycle Crunch",
+    "primaryMuscle": "Obliques",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "heel-touch",
+    "name": "Heel Touch",
+    "primaryMuscle": "Obliques",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "dumbbell-side-bend",
+    "name": "Dumbbell Side Bend",
+    "primaryMuscle": "Obliques",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "suitcase-carry",
+    "name": "Suitcase Carry",
+    "primaryMuscle": "Obliques",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "pallof-press",
+    "name": "Pallof Press",
+    "primaryMuscle": "Obliques",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "landmine-rotation",
+    "name": "Landmine Rotation",
+    "primaryMuscle": "Obliques",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "hanging-windshield-wiper",
+    "name": "Hanging Windshield Wiper",
+    "primaryMuscle": "Obliques",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "oblique-crunch",
+    "name": "Oblique Crunch",
+    "primaryMuscle": "Obliques",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "barbell-shrug",
+    "name": "Barbell Shrug",
+    "primaryMuscle": "Traps",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "dumbbell-shrug",
+    "name": "Dumbbell Shrug",
+    "primaryMuscle": "Traps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "smith-machine-shrug",
+    "name": "Smith Machine Shrug",
+    "primaryMuscle": "Traps",
+    "equipment": "Smith Machine",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "cable-shrug",
+    "name": "Cable Shrug",
+    "primaryMuscle": "Traps",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "trap-bar-shrug",
+    "name": "Trap Bar Shrug",
+    "primaryMuscle": "Traps",
+    "equipment": "Trap Bar",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "incline-dumbbell-shrug",
+    "name": "Incline Dumbbell Shrug",
+    "primaryMuscle": "Traps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "behind-back-barbell-shrug",
+    "name": "Behind Back Barbell Shrug",
+    "primaryMuscle": "Traps",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "farmer-walk",
+    "name": "Farmer Walk",
+    "primaryMuscle": "Traps",
+    "equipment": "Trap Bar",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "overhead-carry",
+    "name": "Overhead Carry",
+    "primaryMuscle": "Traps",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "scapular-pull-up",
+    "name": "Scapular Pull Up",
+    "primaryMuscle": "Traps",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "deadlift",
+    "name": "Deadlift",
+    "primaryMuscle": "Lower Back",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "rack-pull",
+    "name": "Rack Pull",
+    "primaryMuscle": "Lower Back",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "back-extension",
+    "name": "Back Extension",
+    "primaryMuscle": "Lower Back",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "weighted-back-extension",
+    "name": "Weighted Back Extension",
+    "primaryMuscle": "Lower Back",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "superman",
+    "name": "Superman",
+    "primaryMuscle": "Lower Back",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "bird-dog",
+    "name": "Bird Dog",
+    "primaryMuscle": "Lower Back",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "jefferson-curl",
+    "name": "Jefferson Curl",
+    "primaryMuscle": "Lower Back",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "seated-good-morning",
+    "name": "Seated Good Morning",
+    "primaryMuscle": "Lower Back",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "cable-good-morning",
+    "name": "Cable Good Morning",
+    "primaryMuscle": "Lower Back",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "45-degree-hyperextension",
+    "name": "45 Degree Hyperextension",
+    "primaryMuscle": "Lower Back",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "barbell-clean",
+    "name": "Barbell Clean",
+    "primaryMuscle": "Full Body",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "power-clean",
+    "name": "Power Clean",
+    "primaryMuscle": "Full Body",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "clean-and-jerk",
+    "name": "Clean and Jerk",
+    "primaryMuscle": "Full Body",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "barbell-snatch",
+    "name": "Barbell Snatch",
+    "primaryMuscle": "Full Body",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "dumbbell-thruster",
+    "name": "Dumbbell Thruster",
+    "primaryMuscle": "Full Body",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "barbell-thruster",
+    "name": "Barbell Thruster",
+    "primaryMuscle": "Full Body",
+    "equipment": "Barbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "kettlebell-clean-and-press",
+    "name": "Kettlebell Clean and Press",
+    "primaryMuscle": "Full Body",
+    "equipment": "Kettlebell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "turkish-get-up",
+    "name": "Turkish Get Up",
+    "primaryMuscle": "Full Body",
+    "equipment": "Kettlebell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "burpee",
+    "name": "Burpee",
+    "primaryMuscle": "Full Body",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "man-maker",
+    "name": "Man Maker",
+    "primaryMuscle": "Full Body",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "bear-crawl",
+    "name": "Bear Crawl",
+    "primaryMuscle": "Full Body",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "sled-push",
+    "name": "Sled Push",
+    "primaryMuscle": "Full Body",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "sled-pull",
+    "name": "Sled Pull",
+    "primaryMuscle": "Full Body",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "battle-rope-slam",
+    "name": "Battle Rope Slam",
+    "primaryMuscle": "Full Body",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "sandbag-clean",
+    "name": "Sandbag Clean",
+    "primaryMuscle": "Full Body",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "devil-press",
+    "name": "Devil Press",
+    "primaryMuscle": "Full Body",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "treadmill-run",
+    "name": "Treadmill Run",
+    "primaryMuscle": "Cardio",
+    "equipment": "Cardio Machine",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "treadmill-walk",
+    "name": "Treadmill Walk",
+    "primaryMuscle": "Cardio",
+    "equipment": "Cardio Machine",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "incline-treadmill-walk",
+    "name": "Incline Treadmill Walk",
+    "primaryMuscle": "Cardio",
+    "equipment": "Cardio Machine",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "stationary-bike",
+    "name": "Stationary Bike",
+    "primaryMuscle": "Cardio",
+    "equipment": "Cardio Machine",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "air-bike",
+    "name": "Air Bike",
+    "primaryMuscle": "Cardio",
+    "equipment": "Cardio Machine",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "rowing-machine",
+    "name": "Rowing Machine",
+    "primaryMuscle": "Cardio",
+    "equipment": "Cardio Machine",
+    "imageUrl": "asset:assets/images/pullup.png"
+  },
+  {
+    "id": "elliptical",
+    "name": "Elliptical",
+    "primaryMuscle": "Cardio",
+    "equipment": "Cardio Machine",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "stair-climber",
+    "name": "Stair Climber",
+    "primaryMuscle": "Cardio",
+    "equipment": "Cardio Machine",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "ski-erg",
+    "name": "Ski Erg",
+    "primaryMuscle": "Cardio",
+    "equipment": "Cardio Machine",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "jump-rope",
+    "name": "Jump Rope",
+    "primaryMuscle": "Cardio",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "jumping-jack",
+    "name": "Jumping Jack",
+    "primaryMuscle": "Cardio",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "mountain-climber",
+    "name": "Mountain Climber",
+    "primaryMuscle": "Cardio",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "high-knees",
+    "name": "High Knees",
+    "primaryMuscle": "Cardio",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "box-jump",
+    "name": "Box Jump",
+    "primaryMuscle": "Cardio",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "shuttle-run",
+    "name": "Shuttle Run",
+    "primaryMuscle": "Cardio",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "swimming",
+    "name": "Swimming",
+    "primaryMuscle": "Cardio",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "hip-adduction-machine",
+    "name": "Hip Adduction Machine",
+    "primaryMuscle": "Adductors",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "cable-hip-adduction",
+    "name": "Cable Hip Adduction",
+    "primaryMuscle": "Adductors",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "side-lying-hip-adduction",
+    "name": "Side Lying Hip Adduction",
+    "primaryMuscle": "Adductors",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "copenhagen-plank",
+    "name": "Copenhagen Plank",
+    "primaryMuscle": "Adductors",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "sumo-goblet-squat",
+    "name": "Sumo Goblet Squat",
+    "primaryMuscle": "Adductors",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "lateral-lunge",
+    "name": "Lateral Lunge",
+    "primaryMuscle": "Adductors",
+    "equipment": "Dumbbell",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "resistance-band-hip-adduction",
+    "name": "Resistance Band Hip Adduction",
+    "primaryMuscle": "Adductors",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "sliding-cossack-squat",
+    "name": "Sliding Cossack Squat",
+    "primaryMuscle": "Adductors",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "hip-abduction-machine",
+    "name": "Hip Abduction Machine",
+    "primaryMuscle": "Abductors",
+    "equipment": "Machine",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "standing-cable-hip-abduction",
+    "name": "Standing Cable Hip Abduction",
+    "primaryMuscle": "Abductors",
+    "equipment": "Cable",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "side-lying-leg-raise",
+    "name": "Side Lying Leg Raise",
+    "primaryMuscle": "Abductors",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "fire-hydrant",
+    "name": "Fire Hydrant",
+    "primaryMuscle": "Abductors",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "monster-walk",
+    "name": "Monster Walk",
+    "primaryMuscle": "Abductors",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "lateral-band-walk",
+    "name": "Lateral Band Walk",
+    "primaryMuscle": "Abductors",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "standing-band-abduction",
+    "name": "Standing Band Abduction",
+    "primaryMuscle": "Abductors",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "seated-band-abduction",
+    "name": "Seated Band Abduction",
+    "primaryMuscle": "Abductors",
+    "equipment": "Resistance Band",
+    "imageUrl": "asset:assets/images/squat.png"
+  },
+  {
+    "id": "neck-flexion",
+    "name": "Neck Flexion",
+    "primaryMuscle": "Neck",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "neck-extension",
+    "name": "Neck Extension",
+    "primaryMuscle": "Neck",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "lateral-neck-flexion",
+    "name": "Lateral Neck Flexion",
+    "primaryMuscle": "Neck",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "neck-rotation",
+    "name": "Neck Rotation",
+    "primaryMuscle": "Neck",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "harness-neck-extension",
+    "name": "Harness Neck Extension",
+    "primaryMuscle": "Neck",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "plate-neck-flexion",
+    "name": "Plate Neck Flexion",
+    "primaryMuscle": "Neck",
+    "equipment": "Other",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "isometric-neck-hold",
+    "name": "Isometric Neck Hold",
+    "primaryMuscle": "Neck",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  },
+  {
+    "id": "neck-bridge",
+    "name": "Neck Bridge",
+    "primaryMuscle": "Neck",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/generic.png"
+  }
+]
