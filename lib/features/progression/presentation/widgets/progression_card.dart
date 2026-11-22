@@ -128,7 +128,7 @@ class ProgressionCard extends StatelessWidget {
                     ),
                     child: Row(
                       children: <Widget>[
-                        const Icon(
+                        Icon(
                           Icons.military_tech_outlined,
                           size: 20,
                           color: AppColors.textSecondary,
@@ -152,7 +152,7 @@ class ProgressionCard extends StatelessWidget {
                               ?.copyWith(color: AppColors.textPrimary),
                         ),
                         const SizedBox(width: AppSpacing.space4),
-                        const Icon(
+                        Icon(
                           Icons.chevron_right_rounded,
                           size: 20,
                           color: AppColors.textSecondary,
@@ -191,7 +191,7 @@ class _LevelPill extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const Icon(Icons.star_rounded, size: 18, color: AppColors.primary),
+            Icon(Icons.star_rounded, size: 18, color: AppColors.primary),
             const SizedBox(width: AppSpacing.space8),
             Text(
               'LEVEL $level',
@@ -268,7 +268,7 @@ class _SkillPointRow extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          const Icon(
+          Icon(
             Icons.auto_awesome_outlined,
             size: 18,
             color: AppColors.textSecondary,

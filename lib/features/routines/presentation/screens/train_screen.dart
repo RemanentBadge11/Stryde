@@ -106,11 +106,11 @@ class _FreeTrainingCard extends StatelessWidget {
           Container(
             width: 52,
             height: 52,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: AppColors.primary,
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.play_arrow_rounded,
               color: AppColors.onPrimary,
               size: 30,
@@ -133,7 +133,7 @@ class _FreeTrainingCard extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.arrow_forward_rounded, color: AppColors.textPrimary),
+          Icon(Icons.arrow_forward_rounded, color: AppColors.textPrimary),
         ],
       ),
     );
@@ -245,7 +245,7 @@ class _RoutineCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppSpacing.space12),
-          const Icon(Icons.arrow_forward_rounded, color: AppColors.textPrimary),
+          Icon(Icons.arrow_forward_rounded, color: AppColors.textPrimary),
         ],
       ),
     );

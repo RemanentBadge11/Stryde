@@ -69,7 +69,7 @@ class _CycleCountdownState extends State<CycleCountdown> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        const Icon(
+        Icon(
           Icons.timer_outlined,
           size: 13,
           color: AppColors.textSecondary,

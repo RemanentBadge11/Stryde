@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stryde/features/auth/presentation/providers/auth_provider.dart';
+import 'package:stryde/features/home/data/completed_quests_repository.dart';
 import 'package:stryde/features/home/domain/entities/daily_goal.dart';
 import 'package:stryde/features/home/domain/services/daily_goal_matcher.dart';
 import 'package:stryde/features/progression/domain/entities/xp_transaction.dart';
@@ -16,8 +20,87 @@ class DailyGoalsNotifier extends Notifier<DailyGoalState> {
   static const int goalXp = 25;
   static const Duration cycle = Duration(hours: 24);
 
+  String? _activeUserId;
+  final Map<String, DateTime> _completedAt = <String, DateTime>{};
+
+  CompletedQuestsRepository? get _repository =>
+      ref.read(completedQuestsRepositoryProvider);
+
   @override
-  DailyGoalState build() => _build(ref.read(workoutHistoryProvider));
+  DailyGoalState build() {
+    _completedAt.clear();
+    final user = ref.read(currentUserProvider);
+    _activeUserId = user?.id;
+    if (user != null && _repository != null) {
+      unawaited(_hydrate(user.id));
+    }
+    ref.listen(currentUserProvider, (_, user) {
+      final userId = user?.id;
+      if (userId == _activeUserId) return;
+      _activeUserId = userId;
+      _completedAt.clear();
+      state = _build(ref.read(workoutHistoryProvider));
+      if (userId != null && _repository != null) {
+        unawaited(_hydrate(userId));
+      }
+    });
+
+    final initial = _build(ref.read(workoutHistoryProvider));
+    ref.listen(workoutHistoryLoadingProvider, (wasLoading, isLoading) {
+      if (wasLoading != true || isLoading) return;
+      final history = ref.read(workoutHistoryProvider);
+      if (history.isNotEmpty &&
+          state.goals.every((goal) => !goal.hasSetTarget)) {
+        state = _build(history);
+      }
+    });
+    return initial;
+  }
+
+  Future<void> _hydrate(String userId) async {
+    final repo = _repository;
+    if (repo == null) return;
+    final records = await repo.fetch(userId);
+    if (_activeUserId != userId) return;
+
+    for (final record in records) {
+      if (record.questType == 'goal') {
+        final existing = _completedAt[record.questId];
+        if (existing == null || record.completedAt.isAfter(existing)) {
+          _completedAt[record.questId] = record.completedAt;
+        }
+      }
+    }
+
+    _applyActiveCompletions();
+  }
+
+  void _applyActiveCompletions([DateTime? at]) {
+    final now = at ?? DateTime.now();
+    var changed = false;
+    final updated = <DailyGoal>[
+      for (final goal in state.goals) ...[
+        () {
+          final isCompleted = _isCompletedWithin(goal.id, now);
+          if (isCompleted != goal.isCompleted) changed = true;
+          return goal.copyWith(isCompleted: isCompleted);
+        }(),
+      ],
+    ];
+    if (changed) {
+      state = DailyGoalState(
+        goals: updated,
+        endsAt: state.endsAt,
+      );
+    }
+  }
+
+  bool _isCompletedWithin(String id, DateTime now) {
+    final completedAt = _completedAt[id];
+    if (completedAt == null) return false;
+    final elapsed = now.difference(completedAt);
+    return !elapsed.isNegative && elapsed < cycle;
+  }
 
   DailyGoalState _build(List<CompletedWorkout> history) {
     final now = DateTime.now();
@@ -44,6 +127,7 @@ class DailyGoalsNotifier extends Notifier<DailyGoalState> {
             exerciseId: exercise.exerciseId,
             targetWeight: targetWeight,
             targetReps: targetReps,
+            isCompleted: _isCompletedWithin(id, now),
           ),
         );
       }
@@ -52,7 +136,11 @@ class DailyGoalsNotifier extends Notifier<DailyGoalState> {
 
     for (final fallback in _fallbackGoals) {
       if (goals.length == maxGoals) break;
-      if (usedIds.add(fallback.id)) goals.add(fallback);
+      if (usedIds.add(fallback.id)) {
+        goals.add(
+          fallback.copyWith(isCompleted: _isCompletedWithin(fallback.id, now)),
+        );
+      }
     }
 
     return DailyGoalState(
@@ -67,6 +155,8 @@ class DailyGoalsNotifier extends Notifier<DailyGoalState> {
     if (index == -1 || state.goals[index].isCompleted) return false;
 
     final goal = state.goals[index];
+    final now = DateTime.now();
+    _completedAt[id] = now;
     state = DailyGoalState(
       goals: <DailyGoal>[
         for (var i = 0; i < state.goals.length; i++)
@@ -77,6 +167,20 @@ class DailyGoalsNotifier extends Notifier<DailyGoalState> {
       ],
       endsAt: state.endsAt,
     );
+
+    final userId = _activeUserId;
+    final repo = _repository;
+    if (userId != null && repo != null) {
+      unawaited(
+        repo.insert(
+          userId: userId,
+          questId: id,
+          questType: 'goal',
+          completedAt: now,
+        ),
+      );
+    }
+
     ref.read(userProgressionProvider.notifier).addXp(goal.xp);
     ref
         .read(xpTransactionsProvider.notifier)
@@ -111,7 +215,7 @@ class DailyGoalsNotifier extends Notifier<DailyGoalState> {
     state = _build(ref.read(workoutHistoryProvider));
   }
 
-  /// Replaces the initial fallback-only list once an in-memory workout exists.
+  /// Replaces the initial fallback-only list once workout history exists.
   /// Existing targeted goals are left untouched for the rest of their cycle.
   void generateFromHistoryIfNeeded() {
     if (state.goals.any((goal) => goal.hasSetTarget)) return;
@@ -135,8 +239,11 @@ class DailyGoalsNotifier extends Notifier<DailyGoalState> {
   }
 
   void refreshIfNeeded() {
-    if (!DateTime.now().isBefore(state.endsAt)) {
+    final now = DateTime.now();
+    if (!now.isBefore(state.endsAt)) {
       state = _build(ref.read(workoutHistoryProvider));
+    } else {
+      _applyActiveCompletions(now);
     }
   }
 

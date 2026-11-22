@@ -54,7 +54,7 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('LEVEL 1'), findsOneWidget);
-    expect(find.text('New Blood'), findsOneWidget);
+    expect(find.text('Fresher'), findsOneWidget);
     expect(find.text('0 / 500 XP', findRichText: true), findsOneWidget);
     expect(find.text('Habits'), findsOneWidget);
     expect(find.text('Weekly Quests'), findsOneWidget);
@@ -316,9 +316,9 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('The climb'), findsOneWidget);
     expect(find.text('All Ranks'), findsOneWidget);
-    expect(find.text('New Blood'), findsWidgets);
-    expect(find.text('Prodigy'), findsOneWidget);
-    expect(find.text('Hunter'), findsOneWidget);
+    expect(find.text('Fresher'), findsWidgets);
+    expect(find.text('Rising Star'), findsOneWidget);
+    expect(find.text('Locked In'), findsOneWidget);
     expect(find.text('More Coming Soon'), findsOneWidget);
     expect(find.text('CURRENT'), findsOneWidget);
   });
@@ -375,6 +375,10 @@ void main() {
     expect(find.text('Workout Complete'), findsOneWidget);
     await tester.tap(find.text('Back Home'));
     await tester.pumpAndSettle();
+    if (find.text('NEW PR!').evaluate().isNotEmpty) {
+      await tester.tap(find.text('NEW PR!'));
+      await tester.pumpAndSettle();
+    }
 
     expect(find.text('100 / 500 XP', findRichText: true), findsOneWidget);
 
@@ -431,6 +435,10 @@ void main() {
     expect(find.textContaining('Session saved with 0 XP'), findsOneWidget);
     await tester.tap(find.text('Back Home'));
     await tester.pumpAndSettle();
+    if (find.text('NEW PR!').evaluate().isNotEmpty) {
+      await tester.tap(find.text('NEW PR!'));
+      await tester.pumpAndSettle();
+    }
     expect(find.text('0 / 500 XP', findRichText: true), findsOneWidget);
 
     await tester.tap(find.text('Stats'));

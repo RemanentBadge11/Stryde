@@ -15,7 +15,7 @@ void main() {
     expect(progression.currentLevel, 1);
     expect(progression.currentXp, 0);
     expect(progression.skillPoints, 0);
-    expect(progression.rankTitle, 'New Blood');
+    expect(progression.rankTitle, 'Fresher');
     expect(progression.xpToNextLevel, 500);
   });
 
@@ -47,7 +47,7 @@ void main() {
     final progression = container.read(userProgressionProvider);
     expect(progression.currentLevel, 6);
     expect(progression.currentXp, 0);
-    expect(progression.rankTitle, 'Prodigy');
+    expect(progression.rankTitle, 'Rising Star');
     expect(progression.skillPoints, 8);
   });
 

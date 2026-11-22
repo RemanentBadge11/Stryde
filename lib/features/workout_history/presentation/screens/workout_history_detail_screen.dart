@@ -4,6 +4,7 @@ import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
 import 'package:stryde/core/widgets/app_surface_card.dart';
 import 'package:stryde/core/widgets/empty_state_card.dart';
+import 'package:stryde/core/widgets/loading_state_card.dart';
 import 'package:stryde/features/workout_history/domain/entities/completed_workout.dart';
 import 'package:stryde/features/workout_history/presentation/providers/workout_history_provider.dart';
 import 'package:stryde/features/workout_history/presentation/workout_formatters.dart';
@@ -16,6 +17,7 @@ class WorkoutHistoryDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final history = ref.watch(workoutHistoryProvider);
+    final isLoading = ref.watch(workoutHistoryLoadingProvider);
     CompletedWorkout? workout;
     for (final item in history) {
       if (item.id == workoutId) {
@@ -31,16 +33,24 @@ class WorkoutHistoryDetailScreen extends ConsumerWidget {
         surfaceTintColor: Colors.transparent,
         title: const Text('Workout Details'),
       ),
-      body: workout == null
-          ? const Padding(
-              padding: EdgeInsets.all(AppSpacing.space24),
-              child: EmptyStateCard(
-                icon: Icons.search_off_rounded,
-                title: 'Workout unavailable',
-                message: 'This in-memory session is no longer available.',
-              ),
-            )
-          : _WorkoutDetails(workout: workout),
+      body: SafeArea(
+        top: false,
+        child: isLoading
+            ? const Padding(
+                padding: EdgeInsets.all(AppSpacing.space24),
+                child: LoadingStateCard(),
+              )
+            : workout == null
+            ? const Padding(
+                padding: EdgeInsets.all(AppSpacing.space24),
+                child: EmptyStateCard(
+                  icon: Icons.search_off_rounded,
+                  title: 'Workout unavailable',
+                  message: 'This workout is no longer available.',
+                ),
+              )
+            : _WorkoutDetails(workout: workout),
+      ),
     );
   }
 }
@@ -182,14 +192,7 @@ class _CompletedExerciseCard extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      '${_formatWeight(set.weightKg)} kg',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      '${set.reps} reps',
+                      _formatSetPerformance(set),
                       textAlign: TextAlign.end,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
@@ -206,4 +209,29 @@ class _CompletedExerciseCard extends StatelessWidget {
 String _formatWeight(double value) {
   if (value == value.roundToDouble()) return value.toInt().toString();
   return value.toStringAsFixed(1);
+}
+
+String _formatSetPerformance(CompletedWorkoutSet set) {
+  if (set.durationSeconds != null && set.durationSeconds! > 0) {
+    final mins = set.durationSeconds! ~/ 60;
+    final secs = (set.durationSeconds! % 60).toString().padLeft(2, '0');
+    final timeStr = '${mins.toString().padLeft(2, '0')}:$secs';
+    if (set.incline != null && set.distance != null) {
+      return '${set.incline}% inc · ${set.distance} km · $timeStr';
+    }
+    if (set.distance != null) {
+      return '$timeStr · ${set.distance} km';
+    }
+    if (set.steps != null) {
+      return '${set.steps} steps · $timeStr';
+    }
+    return timeStr;
+  }
+  if (set.resistanceLevel != null && set.resistanceLevel!.isNotEmpty) {
+    return '${set.resistanceLevel} · ${set.reps} reps';
+  }
+  if (set.weightKg <= 0 && set.reps > 0) {
+    return '${set.reps} reps';
+  }
+  return '${_formatWeight(set.weightKg)} kg × ${set.reps} reps';
 }

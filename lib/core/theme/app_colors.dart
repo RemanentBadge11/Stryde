@@ -1,23 +1,41 @@
 import 'package:material_ui/material_ui.dart';
 
-/// Stryde's deliberately monochrome palette.
-///
-/// True black canvas, layered charcoal surfaces, and a strict white-to-gray
-/// type scale. No accent hue is permitted anywhere in the app.
+/// Stryde's dynamic theme palette supporting Dark/Light modes and Accent Colors.
 abstract final class AppColors {
-  static const Color background = Color(0xFF000000);
-  static const Color surface = Color(0xFF121212);
-  static const Color surfaceElevated = Color(0xFF181818);
-  static const Color surfaceVariant = Color(0xFF1F1F1F);
+  static bool isDark = true;
+  static Color customPrimary = const Color(0xFFFFFFFF);
 
-  static const Color primary = Color(0xFFFFFFFF);
-  static const Color onPrimary = Color(0xFF000000);
+  static Color get background =>
+      isDark ? const Color(0xFF000000) : const Color(0xFFFFFFFF);
+  static Color get surface =>
+      isDark ? const Color(0xFF121212) : const Color(0xFFF5F5F5);
+  static Color get surfaceElevated =>
+      isDark ? const Color(0xFF181818) : const Color(0xFFEEEEEE);
+  static Color get surfaceVariant =>
+      isDark ? const Color(0xFF1F1F1F) : const Color(0xFFE8E8E8);
 
-  static const Color textPrimary = Color(0xFFFFFFFF);
-  static const Color textSecondary = Color(0xFFA0A0A0);
-  static const Color textMuted = Color(0xFF6B6B6B);
+  static Color get primary => customPrimary;
+  static Color get onPrimary =>
+      (primary.computeLuminance() > 0.45)
+          ? const Color(0xFF000000)
+          : const Color(0xFFFFFFFF);
 
-  static const Color border = Color(0xFF262626);
-  static const Color borderStrong = Color(0xFF3D3D3D);
-  static const Color progressTrack = Color(0xFF202020);
+  static Color get textPrimary =>
+      isDark ? const Color(0xFFFFFFFF) : const Color(0xFF000000);
+  static Color get textSecondary =>
+      isDark ? const Color(0xFFA0A0A0) : const Color(0xFF666666);
+  static Color get textMuted =>
+      isDark ? const Color(0xFF6B6B6B) : const Color(0xFF888888);
+
+  static Color get border =>
+      isDark ? const Color(0xFF262626) : const Color(0xFFE0E0E0);
+  static Color get borderStrong =>
+      isDark ? const Color(0xFF3D3D3D) : const Color(0xFFCCCCCC);
+  static Color get progressTrack =>
+      isDark ? const Color(0xFF202020) : const Color(0xFFE0E0E0);
+
+  static void update({bool? dark, Color? accent}) {
+    if (dark != null) isDark = dark;
+    if (accent != null) customPrimary = accent;
+  }
 }

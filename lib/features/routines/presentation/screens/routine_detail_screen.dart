@@ -100,6 +100,7 @@ class _ExercisePreview extends StatelessWidget {
         children: <Widget>[
           ExerciseImage(
             imageUrl: prescription.exercise.imageUrl,
+            localImage: prescription.exercise.localImage,
             semanticLabel: prescription.exercise.name,
             width: 68,
             height: 58,
@@ -122,7 +123,7 @@ class _ExercisePreview extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.drag_handle_rounded, color: AppColors.textMuted),
+          Icon(Icons.drag_handle_rounded, color: AppColors.textMuted),
         ],
       ),
     );

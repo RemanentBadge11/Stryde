@@ -52,9 +52,9 @@ class _ExerciseTargetSheetState extends State<_ExerciseTargetSheet> {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(26)),
         border: Border(top: BorderSide(color: AppColors.border)),
       ),
       child: Padding(
@@ -85,6 +85,7 @@ class _ExerciseTargetSheetState extends State<_ExerciseTargetSheet> {
               children: <Widget>[
                 ExerciseImage(
                   imageUrl: widget.exercise.imageUrl,
+                  localImage: widget.exercise.localImage,
                   semanticLabel: widget.exercise.name,
                   width: 84,
                   height: 68,

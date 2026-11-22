@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stryde/core/services/audio_service.dart';
 import 'package:stryde/features/home/presentation/providers/daily_goals_provider.dart';
 import 'package:stryde/features/home/presentation/providers/login_streak_provider.dart';
+import 'package:stryde/features/medals/presentation/providers/medals_provider.dart';
 import 'package:stryde/features/progression/domain/entities/xp_transaction.dart';
 import 'package:stryde/features/progression/presentation/providers/user_progression_provider.dart';
 import 'package:stryde/features/progression/presentation/providers/xp_transactions_provider.dart';
@@ -126,25 +128,45 @@ class ActiveWorkoutExercise {
 class ActiveWorkoutSet {
   const ActiveWorkoutSet({
     required this.id,
-    required this.weightText,
-    required this.repsText,
+    this.weightText = '',
+    this.repsText = '',
+    this.timeText = '',
+    this.distanceText = '',
+    this.inclineText = '',
+    this.resistanceText = '',
+    this.stepsText = '',
     this.isCompleted = false,
   });
 
   final int id;
   final String weightText;
   final String repsText;
+  final String timeText;
+  final String distanceText;
+  final String inclineText;
+  final String resistanceText;
+  final String stepsText;
   final bool isCompleted;
 
   ActiveWorkoutSet copyWith({
     String? weightText,
     String? repsText,
+    String? timeText,
+    String? distanceText,
+    String? inclineText,
+    String? resistanceText,
+    String? stepsText,
     bool? isCompleted,
   }) {
     return ActiveWorkoutSet(
       id: id,
       weightText: weightText ?? this.weightText,
       repsText: repsText ?? this.repsText,
+      timeText: timeText ?? this.timeText,
+      distanceText: distanceText ?? this.distanceText,
+      inclineText: inclineText ?? this.inclineText,
+      resistanceText: resistanceText ?? this.resistanceText,
+      stepsText: stepsText ?? this.stepsText,
       isCompleted: isCompleted ?? this.isCompleted,
     );
   }
@@ -159,6 +181,7 @@ class WorkoutFinishResult {
     required this.newLevel,
     required this.completedDailyGoals,
     required this.xpAwarded,
+    this.prExercises = const <String>[],
   });
 
   final CompletedWorkout workout;
@@ -166,6 +189,9 @@ class WorkoutFinishResult {
   final int newLevel;
   final int completedDailyGoals;
   final int xpAwarded;
+  final List<String> prExercises;
+
+  bool get hasPr => prExercises.isNotEmpty;
 }
 
 class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
@@ -255,6 +281,11 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
       id: session.nextSetId,
       weightText: previous?.weightText ?? '',
       repsText: previous?.repsText ?? '',
+      timeText: previous?.timeText ?? '',
+      distanceText: previous?.distanceText ?? '',
+      inclineText: previous?.inclineText ?? '',
+      resistanceText: previous?.resistanceText ?? '',
+      stepsText: previous?.stepsText ?? '',
     );
     _replaceExercise(
       session,
@@ -270,8 +301,6 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
     final exercise = session!.exercises[exerciseIndex];
     final set = ActiveWorkoutSet(
       id: session.nextSetId,
-      weightText: '',
-      repsText: '',
     );
     _replaceExercise(
       session,
@@ -290,6 +319,11 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
       id: session.nextSetId,
       weightText: source.weightText,
       repsText: source.repsText,
+      timeText: source.timeText,
+      distanceText: source.distanceText,
+      inclineText: source.inclineText,
+      resistanceText: source.resistanceText,
+      stepsText: source.stepsText,
     );
     final sets = <ActiveWorkoutSet>[...exercise.sets]
       ..insert(setIndex + 1, duplicate);
@@ -308,7 +342,7 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
     final sets = <ActiveWorkoutSet>[...exercise.sets];
     var nextSetId = session.nextSetId;
     if (sets.length == 1) {
-      sets[0] = ActiveWorkoutSet(id: nextSetId++, weightText: '', repsText: '');
+      sets[0] = ActiveWorkoutSet(id: nextSetId++);
     } else {
       sets.removeAt(setIndex);
     }
@@ -332,12 +366,49 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
     _updateSet(exerciseIndex, setIndex, (set) => set.copyWith(repsText: value));
   }
 
+  void updateTime(int exerciseIndex, int setIndex, String value) {
+    _updateSet(exerciseIndex, setIndex, (set) => set.copyWith(timeText: value));
+  }
+
+  void updateDistance(int exerciseIndex, int setIndex, String value) {
+    _updateSet(
+      exerciseIndex,
+      setIndex,
+      (set) => set.copyWith(distanceText: value),
+    );
+  }
+
+  void updateIncline(int exerciseIndex, int setIndex, String value) {
+    _updateSet(
+      exerciseIndex,
+      setIndex,
+      (set) => set.copyWith(inclineText: value),
+    );
+  }
+
+  void updateResistance(int exerciseIndex, int setIndex, String value) {
+    _updateSet(
+      exerciseIndex,
+      setIndex,
+      (set) => set.copyWith(resistanceText: value),
+    );
+  }
+
+  void updateSteps(int exerciseIndex, int setIndex, String value) {
+    _updateSet(
+      exerciseIndex,
+      setIndex,
+      (set) => set.copyWith(stepsText: value),
+    );
+  }
+
   SetCompletionResult toggleSetCompletion(int exerciseIndex, int setIndex) {
     final session = state.session;
     if (!_validSetIndex(session, exerciseIndex, setIndex)) {
       return SetCompletionResult.unavailable;
     }
-    final set = session!.exercises[exerciseIndex].sets[setIndex];
+    final targetExercise = session!.exercises[exerciseIndex];
+    final set = targetExercise.sets[setIndex];
     if (set.isCompleted) {
       _updateSet(
         exerciseIndex,
@@ -347,9 +418,7 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
       return SetCompletionResult.uncompleted;
     }
 
-    final weight = double.tryParse(set.weightText.replaceAll(',', '.'));
-    final reps = int.tryParse(set.repsText);
-    if (weight == null || weight < 0 || reps == null || reps <= 0) {
+    if (!_validateSet(targetExercise.exercise.type, set)) {
       return SetCompletionResult.invalid;
     }
 
@@ -360,6 +429,49 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
     );
     startRestTimer();
     return SetCompletionResult.completed;
+  }
+
+  bool _validateSet(String type, ActiveWorkoutSet set) {
+    switch (type) {
+      case 'strength':
+      case 'weighted':
+        final weight = double.tryParse(set.weightText.replaceAll(',', '.'));
+        final reps = int.tryParse(set.repsText);
+        return weight != null && weight >= 0 && reps != null && reps > 0;
+      case 'bodyweight':
+      case 'reps_only_cardio':
+        final reps = int.tryParse(set.repsText);
+        return reps != null && reps > 0;
+      case 'time':
+      case 'time_only_cardio':
+      case 'distance_cardio':
+        final seconds = _parseDurationSeconds(set.timeText);
+        return seconds > 0;
+      case 'resistance':
+        final reps = int.tryParse(set.repsText);
+        return set.resistanceText.trim().isNotEmpty && reps != null && reps > 0;
+      case 'cardio':
+        final seconds = _parseDurationSeconds(set.timeText);
+        final distance = double.tryParse(set.distanceText.replaceAll(',', '.'));
+        return seconds > 0 && distance != null && distance > 0;
+      case 'incline_cardio':
+        final incline = double.tryParse(set.inclineText.replaceAll(',', '.'));
+        final distance = double.tryParse(set.distanceText.replaceAll(',', '.'));
+        final seconds = _parseDurationSeconds(set.timeText);
+        return incline != null &&
+            incline >= 0 &&
+            distance != null &&
+            distance > 0 &&
+            seconds > 0;
+      case 'steps_cardio':
+        final steps = int.tryParse(set.stepsText);
+        final seconds = _parseDurationSeconds(set.timeText);
+        return steps != null && steps > 0 && seconds > 0;
+      default:
+        final weight = double.tryParse(set.weightText.replaceAll(',', '.'));
+        final reps = int.tryParse(set.repsText);
+        return weight != null && weight >= 0 && reps != null && reps > 0;
+    }
   }
 
   void startRestTimer({Duration duration = defaultRestDuration}) {
@@ -442,14 +554,59 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
     final exercises = <CompletedWorkoutExercise>[];
     for (final exercise in session.exercises) {
       final sets = <CompletedWorkoutSet>[];
+      final type = exercise.exercise.type;
       for (var i = 0; i < exercise.sets.length; i++) {
         final set = exercise.sets[i];
         if (!set.isCompleted) continue;
+
+        double weight = 0;
+        int reps = 0;
+        int? durationSeconds;
+        String? resistanceLevel;
+        double? distance;
+        double? incline;
+        int? steps;
+
+        switch (type) {
+          case 'strength':
+          case 'weighted':
+            weight = double.tryParse(set.weightText.replaceAll(',', '.')) ?? 0;
+            reps = int.tryParse(set.repsText) ?? 0;
+          case 'bodyweight':
+          case 'reps_only_cardio':
+            reps = int.tryParse(set.repsText) ?? 0;
+          case 'time':
+          case 'time_only_cardio':
+          case 'distance_cardio':
+            durationSeconds = _parseDurationSeconds(set.timeText);
+          case 'resistance':
+            resistanceLevel = set.resistanceText.trim();
+            reps = int.tryParse(set.repsText) ?? 0;
+          case 'cardio':
+            durationSeconds = _parseDurationSeconds(set.timeText);
+            distance = double.tryParse(set.distanceText.replaceAll(',', '.'));
+          case 'incline_cardio':
+            incline = double.tryParse(set.inclineText.replaceAll(',', '.'));
+            distance = double.tryParse(set.distanceText.replaceAll(',', '.'));
+            durationSeconds = _parseDurationSeconds(set.timeText);
+          case 'steps_cardio':
+            steps = int.tryParse(set.stepsText);
+            durationSeconds = _parseDurationSeconds(set.timeText);
+          default:
+            weight = double.tryParse(set.weightText.replaceAll(',', '.')) ?? 0;
+            reps = int.tryParse(set.repsText) ?? 0;
+        }
+
         sets.add(
           CompletedWorkoutSet(
             setNumber: i + 1,
-            weightKg: double.tryParse(set.weightText.replaceAll(',', '.')) ?? 0,
-            reps: int.tryParse(set.repsText) ?? 0,
+            weightKg: weight,
+            reps: reps,
+            durationSeconds: durationSeconds,
+            resistanceLevel: resistanceLevel,
+            distance: distance,
+            incline: incline,
+            steps: steps,
           ),
         );
       }
@@ -459,6 +616,7 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
             exerciseId: exercise.exercise.id,
             exerciseName: exercise.exercise.name,
             sets: List<CompletedWorkoutSet>.unmodifiable(sets),
+            exerciseType: exercise.exercise.type,
           ),
         );
       }
@@ -469,10 +627,35 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
       id: now.microsecondsSinceEpoch.toString(),
       routineId: session.routine.id,
       routineName: session.routine.name,
+      startedAt: session.startedAt,
       completedAt: now,
       duration: session.elapsedAt(now),
       exercises: List<CompletedWorkoutExercise>.unmodifiable(exercises),
     );
+
+    // Evaluate PRs against prior history (beat previous max volume: weight * reps)
+    final priorHistory = ref.read(workoutHistoryProvider);
+    final prExercises = <String>[];
+    for (final exercise in exercises) {
+      double previousMaxVol = 0;
+      for (final pastWorkout in priorHistory) {
+        for (final pastEx in pastWorkout.exercises) {
+          if (pastEx.exerciseId == exercise.exerciseId) {
+            for (final pastSet in pastEx.sets) {
+              if (pastSet.volume > previousMaxVol) {
+                previousMaxVol = pastSet.volume;
+              }
+            }
+          }
+        }
+      }
+      final hasPr = exercise.sets.any(
+        (s) => s.volume > 0 && s.volume > previousMaxVol,
+      );
+      if (hasPr) {
+        prExercises.add(exercise.exerciseName);
+      }
+    }
 
     // Initialize today's goals before inserting this workout, so a direct
     // deep-link still evaluates goals generated from genuinely prior history.
@@ -495,6 +678,16 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
           );
     }
     final newLevel = ref.read(userProgressionProvider).currentLevel;
+    final currentStreak = ref.read(loginStreakProvider).currentStreak;
+    final allWorkouts = ref.read(workoutHistoryProvider);
+    final totalPrs = calculateTotalPrsFromHistory(allWorkouts);
+
+    ref.read(medalsProvider.notifier).evaluateAndUnlock(
+          level: newLevel,
+          streak: currentStreak,
+          totalPrs: totalPrs,
+          hasNewPr: prExercises.isNotEmpty,
+        );
 
     _ticker?.cancel();
     _ticker = null;
@@ -505,6 +698,7 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
       newLevel: newLevel,
       completedDailyGoals: completedDailyGoals,
       xpAwarded: xpAwarded,
+      prExercises: List<String>.unmodifiable(prExercises),
     );
   }
 
@@ -520,6 +714,9 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
       final now = DateTime.now();
       final restEnded =
           session.restEndsAt != null && !session.restEndsAt!.isAfter(now);
+      if (restEnded) {
+        ref.read(audioServiceProvider).playDing();
+      }
       state = ActiveWorkoutState(
         session: restEnded ? session.copyWith(clearRestTimer: true) : session,
         now: now,
@@ -578,4 +775,18 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
     final sets = session!.exercises[exerciseIndex].sets;
     return setIndex >= 0 && setIndex < sets.length;
   }
+}
+
+int _parseDurationSeconds(String text) {
+  final clean = text.trim();
+  if (clean.isEmpty) return 0;
+  if (clean.contains(':')) {
+    final parts = clean.split(':');
+    if (parts.length == 2) {
+      final mins = int.tryParse(parts[0]) ?? 0;
+      final secs = int.tryParse(parts[1]) ?? 0;
+      return mins * 60 + secs;
+    }
+  }
+  return int.tryParse(clean) ?? 0;
 }

@@ -4,2015 +4,2528 @@
     "name": "Bench Press",
     "primaryMuscle": "Chest",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/bench_press.jpg"
   },
   {
     "id": "incline-bench-press",
     "name": "Incline Bench Press",
     "primaryMuscle": "Chest",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/incline_bench_press.jpg"
   },
   {
     "id": "decline-bench-press",
     "name": "Decline Bench Press",
     "primaryMuscle": "Chest",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/decline_bench_press.jpg"
   },
   {
     "id": "dumbbell-bench-press",
     "name": "Dumbbell Bench Press",
     "primaryMuscle": "Chest",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/dumbbell_bench_press.jpg"
   },
   {
     "id": "incline-dumbbell-press",
     "name": "Incline Dumbbell Press",
     "primaryMuscle": "Chest",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/incline_dumbbell_press.jpg"
   },
   {
     "id": "decline-dumbbell-press",
     "name": "Decline Dumbbell Press",
     "primaryMuscle": "Chest",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/decline_dumbbell_press.jpg"
   },
   {
     "id": "dumbbell-fly",
     "name": "Dumbbell Fly",
     "primaryMuscle": "Chest",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/dumbbell_fly.jpg"
   },
   {
     "id": "incline-dumbbell-fly",
     "name": "Incline Dumbbell Fly",
     "primaryMuscle": "Chest",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/incline_dumbbell_fly.jpg"
   },
   {
     "id": "cable-fly",
     "name": "Cable Fly",
     "primaryMuscle": "Chest",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/cable_fly.jpg"
   },
   {
     "id": "low-cable-crossover",
     "name": "Low Cable Crossover",
     "primaryMuscle": "Chest",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/low_cable_crossover.jpg"
   },
   {
     "id": "high-cable-crossover",
     "name": "High Cable Crossover",
     "primaryMuscle": "Chest",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/high_cable_crossover.jpg"
   },
   {
     "id": "chest-press",
     "name": "Chest Press",
     "primaryMuscle": "Chest",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/chest_press.jpg"
   },
   {
     "id": "pec-deck",
     "name": "Pec Deck",
     "primaryMuscle": "Chest",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength"
   },
   {
     "id": "push-up",
     "name": "Push Up",
     "primaryMuscle": "Chest",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/push_up.jpg"
   },
   {
     "id": "wide-push-up",
     "name": "Wide Push Up",
     "primaryMuscle": "Chest",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/wide_push_up.jpg"
   },
   {
     "id": "decline-push-up",
     "name": "Decline Push Up",
     "primaryMuscle": "Chest",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/decline_push_up.jpg"
   },
   {
     "id": "chest-dip",
     "name": "Chest Dip",
     "primaryMuscle": "Chest",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/chest_dip.jpg"
   },
   {
     "id": "smith-machine-bench-press",
     "name": "Smith Machine Bench Press",
     "primaryMuscle": "Chest",
     "equipment": "Smith Machine",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/smith_machine_bench_press.jpg"
   },
   {
     "id": "resistance-band-chest-press",
     "name": "Resistance Band Chest Press",
     "primaryMuscle": "Chest",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/resistance_band_chest_press.jpg"
   },
   {
     "id": "svend-press",
     "name": "Svend Press",
     "primaryMuscle": "Chest",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/svend_press.jpg"
   },
   {
     "id": "landmine-chest-press",
     "name": "Landmine Chest Press",
     "primaryMuscle": "Chest",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/landmine_chest_press.jpg"
   },
   {
     "id": "barbell-floor-press",
     "name": "Barbell Floor Press",
     "primaryMuscle": "Chest",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/barbell_floor_press.jpg"
   },
   {
     "id": "pull-up",
     "name": "Pull Up",
     "primaryMuscle": "Back",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/pull_up.jpg"
   },
   {
     "id": "chin-up",
     "name": "Chin Up",
     "primaryMuscle": "Back",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/chin_up.jpg"
   },
   {
     "id": "neutral-grip-pull-up",
     "name": "Neutral Grip Pull Up",
     "primaryMuscle": "Back",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/neutral_grip_pull_up.jpg"
   },
   {
     "id": "assisted-pull-up",
     "name": "Assisted Pull Up",
     "primaryMuscle": "Back",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/assisted_pull_up.jpg"
   },
   {
     "id": "lat-pulldown",
     "name": "Lat Pulldown",
     "primaryMuscle": "Back",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/lat_pulldown.jpg"
   },
   {
     "id": "wide-grip-lat-pulldown",
     "name": "Wide Grip Lat Pulldown",
     "primaryMuscle": "Back",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/wide_grip_lat_pulldown.jpg"
   },
   {
     "id": "close-grip-lat-pulldown",
     "name": "Close Grip Lat Pulldown",
     "primaryMuscle": "Back",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/close_grip_lat_pulldown.jpg"
   },
   {
     "id": "seated-cable-row",
     "name": "Seated Cable Row",
     "primaryMuscle": "Back",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/seated_cable_row.jpg"
   },
   {
     "id": "single-arm-cable-row",
     "name": "Single Arm Cable Row",
     "primaryMuscle": "Back",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/single_arm_cable_row.jpg"
   },
   {
     "id": "barbell-row",
     "name": "Barbell Row",
     "primaryMuscle": "Back",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/barbell_row.jpg"
   },
   {
     "id": "pendlay-row",
     "name": "Pendlay Row",
     "primaryMuscle": "Back",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/pendlay_row.jpg"
   },
   {
     "id": "t-bar-row",
     "name": "T-Bar Row",
     "primaryMuscle": "Back",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/t_bar_row.jpg"
   },
   {
     "id": "one-arm-dumbbell-row",
     "name": "One Arm Dumbbell Row",
     "primaryMuscle": "Back",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/one_arm_dumbbell_row.jpg"
   },
   {
     "id": "chest-supported-dumbbell-row",
     "name": "Chest Supported Dumbbell Row",
     "primaryMuscle": "Back",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/chest_supported_dumbbell_row.jpg"
   },
   {
     "id": "machine-high-row",
     "name": "Machine High Row",
     "primaryMuscle": "Back",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/machine_high_row.jpg"
   },
   {
     "id": "machine-low-row",
     "name": "Machine Low Row",
     "primaryMuscle": "Back",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/machine_low_row.jpg"
   },
   {
     "id": "inverted-row",
     "name": "Inverted Row",
     "primaryMuscle": "Back",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/inverted_row.jpg"
   },
   {
     "id": "straight-arm-pulldown",
     "name": "Straight Arm Pulldown",
     "primaryMuscle": "Back",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/straight_arm_pulldown.jpg"
   },
   {
     "id": "cable-pullover",
     "name": "Cable Pullover",
     "primaryMuscle": "Back",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/cable_pullover.jpg"
   },
   {
     "id": "meadows-row",
     "name": "Meadows Row",
     "primaryMuscle": "Back",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/meadows_row.jpg"
   },
   {
     "id": "renegade-row",
     "name": "Renegade Row",
     "primaryMuscle": "Back",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength"
   },
   {
     "id": "resistance-band-row",
     "name": "Resistance Band Row",
     "primaryMuscle": "Back",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength"
   },
   {
     "id": "kneeling-lat-pulldown",
     "name": "Kneeling Lat Pulldown",
     "primaryMuscle": "Back",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/kneeling_lat_pulldown.jpg"
   },
   {
     "id": "dumbbell-pullover",
     "name": "Dumbbell Pullover",
     "primaryMuscle": "Back",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/dumbbell_pullover.jpg"
   },
   {
     "id": "overhead-press",
     "name": "Overhead Press",
     "primaryMuscle": "Shoulders",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength"
   },
   {
     "id": "seated-barbell-shoulder-press",
     "name": "Seated Barbell Shoulder Press",
     "primaryMuscle": "Shoulders",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/seated_barbell_shoulder_press.jpg"
   },
   {
     "id": "dumbbell-shoulder-press",
     "name": "Dumbbell Shoulder Press",
     "primaryMuscle": "Shoulders",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/dumbbell_shoulder_press.jpg"
   },
   {
     "id": "arnold-press",
     "name": "Arnold Press",
     "primaryMuscle": "Shoulders",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/arnold_press.jpg"
   },
   {
     "id": "machine-shoulder-press",
     "name": "Machine Shoulder Press",
     "primaryMuscle": "Shoulders",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/machine_shoulder_press.jpg"
   },
   {
     "id": "smith-machine-shoulder-press",
     "name": "Smith Machine Shoulder Press",
     "primaryMuscle": "Shoulders",
     "equipment": "Smith Machine",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/smith_machine_shoulder_press.jpg"
   },
   {
     "id": "dumbbell-lateral-raise",
     "name": "Dumbbell Lateral Raise",
     "primaryMuscle": "Shoulders",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/dumbbell_lateral_raise.jpg"
   },
   {
     "id": "cable-lateral-raise",
     "name": "Cable Lateral Raise",
     "primaryMuscle": "Shoulders",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/cable_lateral_raise.jpg"
   },
   {
     "id": "machine-lateral-raise",
     "name": "Machine Lateral Raise",
     "primaryMuscle": "Shoulders",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/machine_lateral_raise.jpg"
   },
   {
     "id": "front-raise",
     "name": "Front Raise",
     "primaryMuscle": "Shoulders",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/front_raise.jpg"
   },
   {
     "id": "cable-front-raise",
     "name": "Cable Front Raise",
     "primaryMuscle": "Shoulders",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/cable_front_raise.jpg"
   },
   {
     "id": "rear-delt-fly",
     "name": "Rear Delt Fly",
     "primaryMuscle": "Shoulders",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength"
   },
   {
     "id": "reverse-pec-deck",
     "name": "Reverse Pec Deck",
     "primaryMuscle": "Shoulders",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength"
   },
   {
     "id": "face-pull",
     "name": "Face Pull",
     "primaryMuscle": "Shoulders",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength"
   },
   {
     "id": "upright-row",
     "name": "Upright Row",
     "primaryMuscle": "Shoulders",
     "equipment": "EZ Bar",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/upright_row.jpg"
   },
   {
     "id": "landmine-press",
     "name": "Landmine Press",
     "primaryMuscle": "Shoulders",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/landmine_press.jpg"
   },
   {
     "id": "pike-push-up",
     "name": "Pike Push Up",
     "primaryMuscle": "Shoulders",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "bodyweight"
   },
   {
     "id": "handstand-push-up",
     "name": "Handstand Push Up",
     "primaryMuscle": "Shoulders",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/handstand_push_up.jpg"
   },
   {
     "id": "resistance-band-lateral-raise",
     "name": "Resistance Band Lateral Raise",
     "primaryMuscle": "Shoulders",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "resistance"
   },
   {
     "id": "y-raise",
     "name": "Y Raise",
     "primaryMuscle": "Shoulders",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/y_raise.jpg"
   },
   {
     "id": "biceps-curl",
     "name": "Biceps Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/biceps_curl.jpg"
   },
   {
     "id": "alternating-dumbbell-curl",
     "name": "Alternating Dumbbell Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "hammer-curl",
     "name": "Hammer Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/hammer_curl.jpg"
   },
   {
     "id": "incline-dumbbell-curl",
     "name": "Incline Dumbbell Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/incline_dumbbell_curl.jpg"
   },
   {
     "id": "concentration-curl",
     "name": "Concentration Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/concentration_curl.jpg"
   },
   {
     "id": "zottman-curl",
     "name": "Zottman Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/zottman_curl.jpg"
   },
   {
     "id": "barbell-curl",
     "name": "Barbell Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/barbell_curl.jpg"
   },
   {
     "id": "ez-bar-curl",
     "name": "EZ Bar Curl",
     "primaryMuscle": "Biceps",
     "equipment": "EZ Bar",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/ez_bar_curl.jpg"
   },
   {
     "id": "preacher-curl",
     "name": "Preacher Curl",
     "primaryMuscle": "Biceps",
     "equipment": "EZ Bar",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/preacher_curl.jpg"
   },
   {
     "id": "machine-preacher-curl",
     "name": "Machine Preacher Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/machine_preacher_curl.jpg"
   },
   {
     "id": "cable-curl",
     "name": "Cable Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/cable_curl.jpg"
   },
   {
     "id": "bayesian-cable-curl",
     "name": "Bayesian Cable Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/bayesian_cable_curl.jpg"
   },
   {
     "id": "high-cable-curl",
     "name": "High Cable Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/high_cable_curl.jpg"
   },
   {
     "id": "spider-curl",
     "name": "Spider Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/spider_curl.jpg"
   },
   {
     "id": "resistance-band-curl",
     "name": "Resistance Band Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/resistance_band_curl.jpg"
   },
   {
     "id": "drag-curl",
     "name": "Drag Curl",
     "primaryMuscle": "Biceps",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/drag_curl.jpg"
   },
   {
     "id": "triceps-pushdown",
     "name": "Triceps Pushdown",
     "primaryMuscle": "Triceps",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/triceps_pushdown.jpg"
   },
   {
     "id": "rope-pushdown",
     "name": "Rope Pushdown",
     "primaryMuscle": "Triceps",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/rope_pushdown.jpg"
   },
   {
     "id": "reverse-grip-pushdown",
     "name": "Reverse Grip Pushdown",
     "primaryMuscle": "Triceps",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/reverse_grip_pushdown.jpg"
   },
   {
     "id": "overhead-cable-extension",
     "name": "Overhead Cable Extension",
     "primaryMuscle": "Triceps",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength"
   },
   {
     "id": "single-arm-cable-extension",
     "name": "Single Arm Cable Extension",
     "primaryMuscle": "Triceps",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/single_arm_cable_extension.jpg"
   },
   {
     "id": "skull-crusher",
     "name": "Skull Crusher",
     "primaryMuscle": "Triceps",
     "equipment": "EZ Bar",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/skull_crusher.jpg"
   },
   {
     "id": "dumbbell-skull-crusher",
     "name": "Dumbbell Skull Crusher",
     "primaryMuscle": "Triceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength"
   },
   {
     "id": "dumbbell-overhead-extension",
     "name": "Dumbbell Overhead Extension",
     "primaryMuscle": "Triceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength"
   },
   {
     "id": "close-grip-bench-press",
     "name": "Close Grip Bench Press",
     "primaryMuscle": "Triceps",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/close_grip_bench_press.jpg"
   },
   {
     "id": "jm-press",
     "name": "JM Press",
     "primaryMuscle": "Triceps",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/jm_press.jpg"
   },
   {
     "id": "bench-dip",
     "name": "Bench Dip",
     "primaryMuscle": "Triceps",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/bench_dip.jpg"
   },
   {
     "id": "parallel-bar-dip",
     "name": "Parallel Bar Dip",
     "primaryMuscle": "Triceps",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/parallel_bar_dip.jpg"
   },
   {
     "id": "diamond-push-up",
     "name": "Diamond Push Up",
     "primaryMuscle": "Triceps",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/diamond_push_up.jpg"
   },
   {
     "id": "triceps-kickback",
     "name": "Triceps Kickback",
     "primaryMuscle": "Triceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/triceps_kickback.jpg"
   },
   {
     "id": "machine-triceps-extension",
     "name": "Machine Triceps Extension",
     "primaryMuscle": "Triceps",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/machine_triceps_extension.jpg"
   },
   {
     "id": "resistance-band-pushdown",
     "name": "Resistance Band Pushdown",
     "primaryMuscle": "Triceps",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength"
   },
   {
     "id": "tate-press",
     "name": "Tate Press",
     "primaryMuscle": "Triceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/tate_press.jpg"
   },
   {
     "id": "cross-body-cable-extension",
     "name": "Cross Body Cable Extension",
     "primaryMuscle": "Triceps",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/bench_press.png"
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/cross_body_cable_extension.jpg"
   },
   {
     "id": "barbell-wrist-curl",
     "name": "Barbell Wrist Curl",
     "primaryMuscle": "Forearms",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/barbell_wrist_curl.jpg"
   },
   {
     "id": "reverse-barbell-wrist-curl",
     "name": "Reverse Barbell Wrist Curl",
     "primaryMuscle": "Forearms",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/reverse_barbell_wrist_curl.jpg"
   },
   {
     "id": "dumbbell-wrist-curl",
     "name": "Dumbbell Wrist Curl",
     "primaryMuscle": "Forearms",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "reverse-dumbbell-wrist-curl",
     "name": "Reverse Dumbbell Wrist Curl",
     "primaryMuscle": "Forearms",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/reverse_dumbbell_wrist_curl.jpg"
   },
   {
     "id": "behind-back-wrist-curl",
     "name": "Behind Back Wrist Curl",
     "primaryMuscle": "Forearms",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/behind_back_wrist_curl.jpg"
   },
   {
     "id": "reverse-curl",
     "name": "Reverse Curl",
     "primaryMuscle": "Forearms",
     "equipment": "EZ Bar",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/reverse_curl.jpg"
   },
   {
     "id": "cable-wrist-curl",
     "name": "Cable Wrist Curl",
     "primaryMuscle": "Forearms",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/cable_wrist_curl.jpg"
   },
   {
     "id": "wrist-roller",
     "name": "Wrist Roller",
     "primaryMuscle": "Forearms",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "farmer-carry",
     "name": "Farmer Carry",
     "primaryMuscle": "Forearms",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "plate-pinch",
     "name": "Plate Pinch",
     "primaryMuscle": "Forearms",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "dead-hang",
     "name": "Dead Hang",
     "primaryMuscle": "Forearms",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "time"
   },
   {
     "id": "towel-pull-up",
     "name": "Towel Pull Up",
     "primaryMuscle": "Forearms",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/towel_pull_up.jpg"
   },
   {
     "id": "back-squat",
     "name": "Back Squat",
     "primaryMuscle": "Quadriceps",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/back_squat.jpg"
   },
   {
     "id": "front-squat",
     "name": "Front Squat",
     "primaryMuscle": "Quadriceps",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/front_squat.jpg"
   },
   {
     "id": "high-bar-squat",
     "name": "High Bar Squat",
     "primaryMuscle": "Quadriceps",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/high_bar_squat.jpg"
   },
   {
     "id": "goblet-squat",
     "name": "Goblet Squat",
     "primaryMuscle": "Quadriceps",
     "equipment": "Kettlebell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/goblet_squat.jpg"
   },
   {
     "id": "hack-squat",
     "name": "Hack Squat",
     "primaryMuscle": "Quadriceps",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/hack_squat.jpg"
   },
   {
     "id": "pendulum-squat",
     "name": "Pendulum Squat",
     "primaryMuscle": "Quadriceps",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/pendulum_squat.jpg"
   },
   {
     "id": "smith-machine-squat",
     "name": "Smith Machine Squat",
     "primaryMuscle": "Quadriceps",
     "equipment": "Smith Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/smith_machine_squat.jpg"
   },
   {
     "id": "leg-press",
     "name": "Leg Press",
     "primaryMuscle": "Quadriceps",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/leg_press.jpg"
   },
   {
     "id": "single-leg-press",
     "name": "Single Leg Press",
     "primaryMuscle": "Quadriceps",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "leg-extension",
     "name": "Leg Extension",
     "primaryMuscle": "Quadriceps",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/leg_extension.jpg"
   },
   {
     "id": "bulgarian-split-squat",
     "name": "Bulgarian Split Squat",
     "primaryMuscle": "Quadriceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/bulgarian_split_squat.jpg"
   },
   {
     "id": "walking-lunge",
     "name": "Walking Lunge",
     "primaryMuscle": "Quadriceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/walking_lunge.jpg"
   },
   {
     "id": "reverse-lunge",
     "name": "Reverse Lunge",
     "primaryMuscle": "Quadriceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/reverse_lunge.jpg"
   },
   {
     "id": "forward-lunge",
     "name": "Forward Lunge",
     "primaryMuscle": "Quadriceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/forward_lunge.jpg"
   },
   {
     "id": "step-up",
     "name": "Step Up",
     "primaryMuscle": "Quadriceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/step_up.jpg"
   },
   {
     "id": "sissy-squat",
     "name": "Sissy Squat",
     "primaryMuscle": "Quadriceps",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/sissy_squat.jpg"
   },
   {
     "id": "wall-sit",
     "name": "Wall Sit",
     "primaryMuscle": "Quadriceps",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/wall_sit.jpg"
   },
   {
     "id": "spanish-squat",
     "name": "Spanish Squat",
     "primaryMuscle": "Quadriceps",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "cyclist-squat",
     "name": "Cyclist Squat",
     "primaryMuscle": "Quadriceps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/cyclist_squat.jpg"
   },
   {
     "id": "box-squat",
     "name": "Box Squat",
     "primaryMuscle": "Quadriceps",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "romanian-deadlift",
     "name": "Romanian Deadlift",
     "primaryMuscle": "Hamstrings",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/romanian_deadlift.jpg"
   },
   {
     "id": "dumbbell-romanian-deadlift",
     "name": "Dumbbell Romanian Deadlift",
     "primaryMuscle": "Hamstrings",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/dumbbell_romanian_deadlift.jpg"
   },
   {
     "id": "stiff-leg-deadlift",
     "name": "Stiff Leg Deadlift",
     "primaryMuscle": "Hamstrings",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/stiff_leg_deadlift.jpg"
   },
   {
     "id": "single-leg-romanian-deadlift",
     "name": "Single Leg Romanian Deadlift",
     "primaryMuscle": "Hamstrings",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/single_leg_romanian_deadlift.jpg"
   },
   {
     "id": "seated-leg-curl",
     "name": "Seated Leg Curl",
     "primaryMuscle": "Hamstrings",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/seated_leg_curl.jpg"
   },
   {
     "id": "lying-leg-curl",
     "name": "Lying Leg Curl",
     "primaryMuscle": "Hamstrings",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/lying_leg_curl.jpg"
   },
   {
     "id": "standing-leg-curl",
     "name": "Standing Leg Curl",
     "primaryMuscle": "Hamstrings",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "nordic-hamstring-curl",
     "name": "Nordic Hamstring Curl",
     "primaryMuscle": "Hamstrings",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "glute-ham-raise",
     "name": "Glute Ham Raise",
     "primaryMuscle": "Hamstrings",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
-  },
-  {
-    "id": "good-morning",
-    "name": "Good Morning",
-    "primaryMuscle": "Hamstrings",
-    "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/glute_ham_raise.jpg"
   },
   {
     "id": "cable-pull-through",
     "name": "Cable Pull Through",
     "primaryMuscle": "Hamstrings",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "kettlebell-swing",
     "name": "Kettlebell Swing",
     "primaryMuscle": "Hamstrings",
     "equipment": "Kettlebell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/kettlebell_swing.jpg"
   },
   {
     "id": "sliding-leg-curl",
     "name": "Sliding Leg Curl",
     "primaryMuscle": "Hamstrings",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/sliding_leg_curl.jpg"
   },
   {
     "id": "resistance-band-leg-curl",
     "name": "Resistance Band Leg Curl",
     "primaryMuscle": "Hamstrings",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "resistance"
   },
   {
     "id": "razor-curl",
     "name": "Razor Curl",
     "primaryMuscle": "Hamstrings",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "snatch-grip-romanian-deadlift",
     "name": "Snatch Grip Romanian Deadlift",
     "primaryMuscle": "Hamstrings",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/snatch_grip_romanian_deadlift.jpg"
   },
   {
     "id": "barbell-hip-thrust",
     "name": "Barbell Hip Thrust",
     "primaryMuscle": "Glutes",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "dumbbell-hip-thrust",
     "name": "Dumbbell Hip Thrust",
     "primaryMuscle": "Glutes",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "smith-machine-hip-thrust",
     "name": "Smith Machine Hip Thrust",
     "primaryMuscle": "Glutes",
     "equipment": "Smith Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "glute-bridge",
     "name": "Glute Bridge",
     "primaryMuscle": "Glutes",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/glute_bridge.jpg"
   },
   {
     "id": "single-leg-glute-bridge",
     "name": "Single Leg Glute Bridge",
     "primaryMuscle": "Glutes",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "cable-glute-kickback",
     "name": "Cable Glute Kickback",
     "primaryMuscle": "Glutes",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/cable_glute_kickback.jpg"
   },
   {
     "id": "machine-glute-kickback",
     "name": "Machine Glute Kickback",
     "primaryMuscle": "Glutes",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "frog-pump",
     "name": "Frog Pump",
     "primaryMuscle": "Glutes",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/frog_pump.jpg"
   },
   {
     "id": "sumo-deadlift",
     "name": "Sumo Deadlift",
     "primaryMuscle": "Glutes",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/sumo_deadlift.jpg"
   },
   {
     "id": "sumo-squat",
     "name": "Sumo Squat",
     "primaryMuscle": "Glutes",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "curtsy-lunge",
     "name": "Curtsy Lunge",
     "primaryMuscle": "Glutes",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/curtsy_lunge.jpg"
   },
   {
     "id": "deficit-reverse-lunge",
     "name": "Deficit Reverse Lunge",
     "primaryMuscle": "Glutes",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "banded-lateral-walk",
     "name": "Banded Lateral Walk",
     "primaryMuscle": "Glutes",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "banded-clamshell",
     "name": "Banded Clamshell",
     "primaryMuscle": "Glutes",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "resistance"
   },
   {
     "id": "cable-hip-abduction",
     "name": "Cable Hip Abduction",
     "primaryMuscle": "Glutes",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "reverse-hyperextension",
     "name": "Reverse Hyperextension",
     "primaryMuscle": "Glutes",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/reverse_hyperextension.jpg"
   },
   {
     "id": "step-down",
     "name": "Step Down",
     "primaryMuscle": "Glutes",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "bodyweight"
   },
   {
     "id": "kneeling-squat",
     "name": "Kneeling Squat",
     "primaryMuscle": "Glutes",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "standing-calf-raise",
     "name": "Standing Calf Raise",
     "primaryMuscle": "Calves",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/standing_calf_raise.jpg"
   },
   {
     "id": "seated-calf-raise",
     "name": "Seated Calf Raise",
     "primaryMuscle": "Calves",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/seated_calf_raise.jpg"
   },
   {
     "id": "leg-press-calf-raise",
     "name": "Leg Press Calf Raise",
     "primaryMuscle": "Calves",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/leg_press_calf_raise.jpg"
   },
   {
     "id": "donkey-calf-raise",
     "name": "Donkey Calf Raise",
     "primaryMuscle": "Calves",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/donkey_calf_raise.jpg"
   },
   {
     "id": "single-leg-calf-raise",
     "name": "Single Leg Calf Raise",
     "primaryMuscle": "Calves",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "bodyweight"
   },
   {
     "id": "dumbbell-calf-raise",
     "name": "Dumbbell Calf Raise",
     "primaryMuscle": "Calves",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/dumbbell_calf_raise.jpg"
   },
   {
     "id": "smith-machine-calf-raise",
     "name": "Smith Machine Calf Raise",
     "primaryMuscle": "Calves",
     "equipment": "Smith Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "barbell-calf-raise",
     "name": "Barbell Calf Raise",
     "primaryMuscle": "Calves",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/barbell_calf_raise.jpg"
   },
   {
     "id": "tibialis-raise",
     "name": "Tibialis Raise",
     "primaryMuscle": "Calves",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/tibialis_raise.jpg"
   },
   {
     "id": "machine-tibialis-raise",
     "name": "Machine Tibialis Raise",
     "primaryMuscle": "Calves",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
-  },
-  {
-    "id": "jump-rope-calf-bounce",
-    "name": "Jump Rope Calf Bounce",
-    "primaryMuscle": "Calves",
-    "equipment": "Other",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/machine_tibialis_raise.jpg"
   },
   {
     "id": "farmer-walk-on-toes",
     "name": "Farmer Walk on Toes",
     "primaryMuscle": "Calves",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "crunch",
     "name": "Crunch",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/crunch.jpg"
   },
   {
     "id": "sit-up",
     "name": "Sit Up",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/sit_up.jpg"
   },
   {
     "id": "decline-sit-up",
     "name": "Decline Sit Up",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/decline_sit_up.jpg"
   },
   {
     "id": "cable-crunch",
     "name": "Cable Crunch",
     "primaryMuscle": "Abs",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "machine-crunch",
     "name": "Machine Crunch",
     "primaryMuscle": "Abs",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/machine_crunch.jpg"
   },
   {
     "id": "hanging-knee-raise",
     "name": "Hanging Knee Raise",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight"
   },
   {
     "id": "hanging-leg-raise",
     "name": "Hanging Leg Raise",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/hanging_leg_raise.jpg"
   },
   {
     "id": "captain-chair-knee-raise",
     "name": "Captain Chair Knee Raise",
     "primaryMuscle": "Abs",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "reverse-crunch",
     "name": "Reverse Crunch",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/reverse_crunch.jpg"
   },
   {
     "id": "ab-wheel-rollout",
     "name": "Ab Wheel Rollout",
     "primaryMuscle": "Abs",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight"
   },
   {
     "id": "plank",
     "name": "Plank",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "time",
+    "local_image": "assets/Visuals/images/plank.jpg"
   },
   {
     "id": "rkc-plank",
     "name": "RKC Plank",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "time",
+    "local_image": "assets/Visuals/images/rkc_plank.jpg"
   },
   {
     "id": "dead-bug",
     "name": "Dead Bug",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "time",
+    "local_image": "assets/Visuals/images/dead_bug.jpg"
   },
   {
     "id": "hollow-body-hold",
     "name": "Hollow Body Hold",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "time"
   },
   {
     "id": "v-up",
     "name": "V Up",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight"
   },
   {
     "id": "toe-touch",
     "name": "Toe Touch",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight"
   },
   {
     "id": "jackknife-sit-up",
     "name": "Jackknife Sit Up",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/jackknife_sit_up.jpg"
   },
   {
     "id": "swiss-ball-crunch",
     "name": "Swiss Ball Crunch",
     "primaryMuscle": "Abs",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight"
   },
   {
     "id": "resistance-band-crunch",
     "name": "Resistance Band Crunch",
     "primaryMuscle": "Abs",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "resistance",
+    "local_image": "assets/Visuals/images/resistance_band_crunch.jpg"
   },
   {
     "id": "dragon-flag",
     "name": "Dragon Flag",
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight"
   },
   {
     "id": "russian-twist",
     "name": "Russian Twist",
     "primaryMuscle": "Obliques",
     "equipment": "Medicine Ball",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/russian_twist.jpg"
   },
   {
     "id": "cable-wood-chop",
     "name": "Cable Wood Chop",
     "primaryMuscle": "Obliques",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/cable_wood_chop.jpg"
   },
   {
     "id": "high-to-low-wood-chop",
     "name": "High to Low Wood Chop",
     "primaryMuscle": "Obliques",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/high_to_low_wood_chop.jpg"
   },
   {
     "id": "low-to-high-wood-chop",
     "name": "Low to High Wood Chop",
     "primaryMuscle": "Obliques",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/low_to_high_wood_chop.jpg"
   },
   {
     "id": "side-plank",
     "name": "Side Plank",
     "primaryMuscle": "Obliques",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "time"
   },
   {
     "id": "side-plank-hip-dip",
     "name": "Side Plank Hip Dip",
     "primaryMuscle": "Obliques",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "time",
+    "local_image": "assets/Visuals/images/side_plank_hip_dip.jpg"
   },
   {
     "id": "bicycle-crunch",
     "name": "Bicycle Crunch",
     "primaryMuscle": "Obliques",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight"
   },
   {
     "id": "heel-touch",
     "name": "Heel Touch",
     "primaryMuscle": "Obliques",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/heel_touch.jpg"
   },
   {
     "id": "dumbbell-side-bend",
     "name": "Dumbbell Side Bend",
     "primaryMuscle": "Obliques",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/dumbbell_side_bend.jpg"
   },
   {
     "id": "suitcase-carry",
     "name": "Suitcase Carry",
     "primaryMuscle": "Obliques",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "pallof-press",
     "name": "Pallof Press",
     "primaryMuscle": "Obliques",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/pallof_press.jpg"
   },
   {
     "id": "landmine-rotation",
     "name": "Landmine Rotation",
     "primaryMuscle": "Obliques",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "hanging-windshield-wiper",
     "name": "Hanging Windshield Wiper",
     "primaryMuscle": "Obliques",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight"
   },
   {
     "id": "oblique-crunch",
     "name": "Oblique Crunch",
     "primaryMuscle": "Obliques",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/oblique_crunch.jpg"
   },
   {
     "id": "barbell-shrug",
     "name": "Barbell Shrug",
     "primaryMuscle": "Traps",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/barbell_shrug.jpg"
   },
   {
     "id": "dumbbell-shrug",
     "name": "Dumbbell Shrug",
     "primaryMuscle": "Traps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/dumbbell_shrug.jpg"
   },
   {
     "id": "smith-machine-shrug",
     "name": "Smith Machine Shrug",
     "primaryMuscle": "Traps",
     "equipment": "Smith Machine",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/smith_machine_shrug.jpg"
   },
   {
     "id": "cable-shrug",
     "name": "Cable Shrug",
     "primaryMuscle": "Traps",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/cable_shrug.jpg"
   },
   {
     "id": "trap-bar-shrug",
     "name": "Trap Bar Shrug",
     "primaryMuscle": "Traps",
     "equipment": "Trap Bar",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength"
   },
   {
     "id": "incline-dumbbell-shrug",
     "name": "Incline Dumbbell Shrug",
     "primaryMuscle": "Traps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/incline_dumbbell_shrug.jpg"
   },
   {
     "id": "behind-back-barbell-shrug",
     "name": "Behind Back Barbell Shrug",
     "primaryMuscle": "Traps",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength"
   },
   {
     "id": "farmer-walk",
     "name": "Farmer Walk",
     "primaryMuscle": "Traps",
     "equipment": "Trap Bar",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength"
   },
   {
     "id": "overhead-carry",
     "name": "Overhead Carry",
     "primaryMuscle": "Traps",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength"
   },
   {
     "id": "scapular-pull-up",
     "name": "Scapular Pull Up",
     "primaryMuscle": "Traps",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/scapular_pull_up.jpg"
   },
   {
     "id": "deadlift",
     "name": "Deadlift",
     "primaryMuscle": "Lower Back",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/deadlift.jpg"
   },
   {
     "id": "rack-pull",
     "name": "Rack Pull",
     "primaryMuscle": "Lower Back",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/rack_pull.jpg"
   },
   {
     "id": "back-extension",
     "name": "Back Extension",
     "primaryMuscle": "Lower Back",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/back_extension.jpg"
   },
   {
     "id": "weighted-back-extension",
     "name": "Weighted Back Extension",
     "primaryMuscle": "Lower Back",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "weighted"
   },
   {
     "id": "superman",
     "name": "Superman",
     "primaryMuscle": "Lower Back",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/superman.jpg"
   },
   {
     "id": "bird-dog",
     "name": "Bird Dog",
     "primaryMuscle": "Lower Back",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/bird_dog.jpg"
   },
   {
     "id": "jefferson-curl",
     "name": "Jefferson Curl",
     "primaryMuscle": "Lower Back",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
-  },
-  {
-    "id": "seated-good-morning",
-    "name": "Seated Good Morning",
-    "primaryMuscle": "Lower Back",
-    "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
-  },
-  {
-    "id": "cable-good-morning",
-    "name": "Cable Good Morning",
-    "primaryMuscle": "Lower Back",
-    "equipment": "Cable",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/jefferson_curl.jpg"
   },
   {
     "id": "45-degree-hyperextension",
     "name": "45 Degree Hyperextension",
     "primaryMuscle": "Lower Back",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/45_degree_hyperextension.jpg"
   },
   {
     "id": "barbell-clean",
     "name": "Barbell Clean",
     "primaryMuscle": "Full Body",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/barbell_clean.jpg"
   },
   {
     "id": "power-clean",
     "name": "Power Clean",
     "primaryMuscle": "Full Body",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/power_clean.jpg"
   },
   {
     "id": "clean-and-jerk",
     "name": "Clean and Jerk",
     "primaryMuscle": "Full Body",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "barbell-snatch",
     "name": "Barbell Snatch",
     "primaryMuscle": "Full Body",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "dumbbell-thruster",
     "name": "Dumbbell Thruster",
     "primaryMuscle": "Full Body",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "barbell-thruster",
     "name": "Barbell Thruster",
     "primaryMuscle": "Full Body",
     "equipment": "Barbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/barbell_thruster.jpg"
   },
   {
     "id": "kettlebell-clean-and-press",
     "name": "Kettlebell Clean and Press",
     "primaryMuscle": "Full Body",
     "equipment": "Kettlebell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "turkish-get-up",
     "name": "Turkish Get Up",
     "primaryMuscle": "Full Body",
     "equipment": "Kettlebell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/turkish_get_up.jpg"
   },
   {
     "id": "burpee",
     "name": "Burpee",
     "primaryMuscle": "Full Body",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/burpee.jpg"
   },
   {
     "id": "man-maker",
     "name": "Man Maker",
     "primaryMuscle": "Full Body",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "bear-crawl",
     "name": "Bear Crawl",
     "primaryMuscle": "Full Body",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/bear_crawl.jpg"
   },
   {
     "id": "sled-push",
     "name": "Sled Push",
     "primaryMuscle": "Full Body",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "sled-pull",
     "name": "Sled Pull",
     "primaryMuscle": "Full Body",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "strength"
   },
   {
     "id": "battle-rope-slam",
     "name": "Battle Rope Slam",
     "primaryMuscle": "Full Body",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "sandbag-clean",
     "name": "Sandbag Clean",
     "primaryMuscle": "Full Body",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "devil-press",
     "name": "Devil Press",
     "primaryMuscle": "Full Body",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "treadmill-run",
     "name": "Treadmill Run",
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "cardio",
+    "local_image": "assets/Visuals/images/treadmill_run.jpg"
   },
   {
     "id": "treadmill-walk",
     "name": "Treadmill Walk",
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "cardio"
   },
   {
     "id": "incline-treadmill-walk",
     "name": "Incline Treadmill Walk",
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "incline_cardio"
   },
   {
     "id": "stationary-bike",
     "name": "Stationary Bike",
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "time_only_cardio"
   },
   {
     "id": "air-bike",
     "name": "Air Bike",
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "time_only_cardio",
+    "local_image": "assets/Visuals/images/air_bike.jpg"
   },
   {
     "id": "rowing-machine",
     "name": "Rowing Machine",
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
-    "imageUrl": "asset:assets/images/pullup.png"
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "time_only_cardio",
+    "local_image": "assets/Visuals/images/rowing_machine.jpg"
   },
   {
     "id": "elliptical",
     "name": "Elliptical",
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "stair-climber",
     "name": "Stair Climber",
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "steps_cardio"
   },
   {
     "id": "ski-erg",
     "name": "Ski Erg",
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "time_only_cardio"
   },
   {
     "id": "jump-rope",
     "name": "Jump Rope",
     "primaryMuscle": "Cardio",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/jump_rope.jpg"
   },
   {
     "id": "jumping-jack",
     "name": "Jumping Jack",
     "primaryMuscle": "Cardio",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight"
   },
   {
     "id": "mountain-climber",
     "name": "Mountain Climber",
     "primaryMuscle": "Cardio",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/mountain_climber.jpg"
   },
   {
     "id": "high-knees",
     "name": "High Knees",
     "primaryMuscle": "Cardio",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/high_knees.jpg"
   },
   {
     "id": "box-jump",
     "name": "Box Jump",
     "primaryMuscle": "Cardio",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight"
   },
   {
     "id": "shuttle-run",
     "name": "Shuttle Run",
     "primaryMuscle": "Cardio",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "distance_cardio",
+    "local_image": "assets/Visuals/images/shuttle_run.jpg"
   },
   {
     "id": "swimming",
     "name": "Swimming",
     "primaryMuscle": "Cardio",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "time_only_cardio",
+    "local_image": "assets/Visuals/images/swimming.jpg"
   },
   {
     "id": "hip-adduction-machine",
     "name": "Hip Adduction Machine",
     "primaryMuscle": "Adductors",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/hip_adduction_machine.jpg"
   },
   {
     "id": "cable-hip-adduction",
     "name": "Cable Hip Adduction",
     "primaryMuscle": "Adductors",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/cable_hip_adduction.jpg"
   },
   {
     "id": "side-lying-hip-adduction",
     "name": "Side Lying Hip Adduction",
     "primaryMuscle": "Adductors",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "copenhagen-plank",
     "name": "Copenhagen Plank",
     "primaryMuscle": "Adductors",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "sumo-goblet-squat",
     "name": "Sumo Goblet Squat",
     "primaryMuscle": "Adductors",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "lateral-lunge",
     "name": "Lateral Lunge",
     "primaryMuscle": "Adductors",
     "equipment": "Dumbbell",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "resistance-band-hip-adduction",
     "name": "Resistance Band Hip Adduction",
     "primaryMuscle": "Adductors",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "sliding-cossack-squat",
     "name": "Sliding Cossack Squat",
     "primaryMuscle": "Adductors",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "hip-abduction-machine",
     "name": "Hip Abduction Machine",
     "primaryMuscle": "Abductors",
     "equipment": "Machine",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/hip_abduction_machine.jpg"
   },
   {
     "id": "standing-cable-hip-abduction",
     "name": "Standing Cable Hip Abduction",
     "primaryMuscle": "Abductors",
     "equipment": "Cable",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "side-lying-leg-raise",
     "name": "Side Lying Leg Raise",
     "primaryMuscle": "Abductors",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "fire-hydrant",
     "name": "Fire Hydrant",
     "primaryMuscle": "Abductors",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "monster-walk",
     "name": "Monster Walk",
     "primaryMuscle": "Abductors",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength",
+    "local_image": "assets/Visuals/images/monster_walk.jpg"
   },
   {
     "id": "lateral-band-walk",
     "name": "Lateral Band Walk",
     "primaryMuscle": "Abductors",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "standing-band-abduction",
     "name": "Standing Band Abduction",
     "primaryMuscle": "Abductors",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "seated-band-abduction",
     "name": "Seated Band Abduction",
     "primaryMuscle": "Abductors",
     "equipment": "Resistance Band",
-    "imageUrl": "asset:assets/images/squat.png"
+    "imageUrl": "asset:assets/images/squat.png",
+    "type": "strength"
   },
   {
     "id": "neck-flexion",
     "name": "Neck Flexion",
     "primaryMuscle": "Neck",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight"
   },
   {
     "id": "neck-extension",
     "name": "Neck Extension",
     "primaryMuscle": "Neck",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "lateral-neck-flexion",
     "name": "Lateral Neck Flexion",
     "primaryMuscle": "Neck",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight"
   },
   {
     "id": "neck-rotation",
     "name": "Neck Rotation",
     "primaryMuscle": "Neck",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "harness-neck-extension",
     "name": "Harness Neck Extension",
     "primaryMuscle": "Neck",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "plate-neck-flexion",
     "name": "Plate Neck Flexion",
     "primaryMuscle": "Neck",
     "equipment": "Other",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "bodyweight"
   },
   {
     "id": "isometric-neck-hold",
     "name": "Isometric Neck Hold",
     "primaryMuscle": "Neck",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
   },
   {
     "id": "neck-bridge",
     "name": "Neck Bridge",
     "primaryMuscle": "Neck",
     "equipment": "Bodyweight",
-    "imageUrl": "asset:assets/images/generic.png"
+    "imageUrl": "asset:assets/images/generic.png",
+    "type": "strength"
+  },
+  {
+    "id": "push-up-weighted",
+    "name": "Push Up (Weighted)",
+    "primaryMuscle": "Chest",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "weighted",
+    "local_image": "assets/Visuals/images/push_up_weighted.jpg"
+  },
+  {
+    "id": "decline-push-up-weighted",
+    "name": "Decline Push Up (Weighted)",
+    "primaryMuscle": "Chest",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "weighted",
+    "local_image": "assets/Visuals/images/decline_push_up_weighted.jpg"
+  },
+  {
+    "id": "chest-dip-weighted",
+    "name": "Chest Dip (Weighted)",
+    "primaryMuscle": "Chest",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "weighted",
+    "local_image": "assets/Visuals/images/chest_dip_weighted.jpg"
+  },
+  {
+    "id": "pull-up-weighted",
+    "name": "Pull Up (Weighted)",
+    "primaryMuscle": "Back",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "weighted",
+    "local_image": "assets/Visuals/images/pull_up_weighted.jpg"
+  },
+  {
+    "id": "chin-up-weighted",
+    "name": "Chin Up (Weighted)",
+    "primaryMuscle": "Back",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "weighted",
+    "local_image": "assets/Visuals/images/chin_up_weighted.jpg"
+  },
+  {
+    "id": "neutral-grip-pull-up-weighted",
+    "name": "Neutral Grip Pull Up (Weighted)",
+    "primaryMuscle": "Back",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/pullup.png",
+    "type": "weighted",
+    "local_image": "assets/Visuals/images/neutral_grip_pull_up_weighted.jpg"
+  },
+  {
+    "id": "bench-dip-weighted",
+    "name": "Bench Dip (Weighted)",
+    "primaryMuscle": "Triceps",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "weighted",
+    "local_image": "assets/Visuals/images/bench_dip_weighted.jpg"
+  },
+  {
+    "id": "parallel-bar-dip-weighted",
+    "name": "Parallel Bar Dip (Weighted)",
+    "primaryMuscle": "Triceps",
+    "equipment": "Bodyweight",
+    "imageUrl": "asset:assets/images/bench_press.png",
+    "type": "weighted",
+    "local_image": "assets/Visuals/images/parallel_bar_dip_weighted.jpg"
   }
 ]

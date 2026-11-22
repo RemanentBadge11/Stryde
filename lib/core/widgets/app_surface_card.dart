@@ -23,7 +23,7 @@ class AppSurfaceCard extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: <Color>[AppColors.surfaceElevated, AppColors.surface],

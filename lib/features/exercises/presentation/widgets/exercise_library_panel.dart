@@ -64,7 +64,7 @@ class _ExerciseLibraryPanelState extends ConsumerState<ExerciseLibraryPanel> {
         ),
         const SizedBox(height: AppSpacing.space12),
         library.when(
-          loading: () => const Expanded(
+          loading: () => Expanded(
             child: Center(
               child: CircularProgressIndicator(color: AppColors.primary),
             ),
@@ -228,15 +228,15 @@ class _SearchField extends StatelessWidget {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppColors.border),
+          borderSide: BorderSide(color: AppColors.border),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppColors.border),
+          borderSide: BorderSide(color: AppColors.border),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppColors.primary),
+          borderSide: BorderSide(color: AppColors.primary),
         ),
       ),
     );
@@ -304,7 +304,7 @@ class _ExerciseListTile extends StatelessWidget {
       color: AppColors.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: AppColors.border),
+        side: BorderSide(color: AppColors.border),
       ),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
@@ -315,6 +315,7 @@ class _ExerciseListTile extends StatelessWidget {
             children: <Widget>[
               ExerciseImage(
                 imageUrl: exercise.imageUrl,
+                localImage: exercise.localImage,
                 semanticLabel: exercise.name,
                 width: 76,
                 height: 58,
@@ -370,7 +371,7 @@ class _LoadError extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const Icon(
+          Icon(
             Icons.error_outline_rounded,
             color: AppColors.textSecondary,
             size: 36,
@@ -394,9 +395,9 @@ void _showExerciseDetails(BuildContext context, Exercise exercise) {
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
     builder: (context) => Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         border: Border(top: BorderSide(color: AppColors.border)),
       ),
       padding: EdgeInsets.fromLTRB(
@@ -411,6 +412,7 @@ void _showExerciseDetails(BuildContext context, Exercise exercise) {
         children: <Widget>[
           ExerciseImage(
             imageUrl: exercise.imageUrl,
+            localImage: exercise.localImage,
             semanticLabel: exercise.name,
             height: 190,
             borderRadius: 18,

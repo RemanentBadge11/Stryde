@@ -5,6 +5,7 @@ import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
 import 'package:stryde/core/widgets/app_surface_card.dart';
 import 'package:stryde/core/widgets/empty_state_card.dart';
+import 'package:stryde/core/widgets/loading_state_card.dart';
 import 'package:stryde/core/widgets/section_header.dart';
 import 'package:stryde/features/progression/domain/entities/xp_transaction.dart';
 import 'package:stryde/features/progression/presentation/providers/skill_allocations_provider.dart';
@@ -21,9 +22,13 @@ class StatsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final progression = ref.watch(userProgressionProvider);
+    final progressionLoading = ref.watch(userProgressionLoadingProvider);
     final transactions = ref.watch(xpTransactionsProvider);
+    final transactionsLoading = ref.watch(xpTransactionsLoadingProvider);
     final allocations = ref.watch(skillAllocationsProvider);
+    final allocationsLoading = ref.watch(skillAllocationsLoadingProvider);
     final history = ref.watch(workoutHistoryProvider);
+    final historyLoading = ref.watch(workoutHistoryLoadingProvider);
     final recentTransactions = transactions.take(4).toList(growable: false);
     final recentHistory = history.take(3).toList(growable: false);
 
@@ -49,14 +54,17 @@ class StatsScreen extends ConsumerWidget {
               ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: AppSpacing.space24),
-            ProgressionCard(
-              progression: progression,
-              onRankTap: () => context.push('/ranks'),
-            ),
+            if (progressionLoading)
+              const LoadingStateCard(height: 180)
+            else
+              ProgressionCard(
+                progression: progression,
+                onRankTap: () => context.push('/ranks'),
+              ),
             const SizedBox(height: AppSpacing.space32),
             SectionHeader(
               title: 'XP Breakdown',
-              subtitle: 'Every award from this run',
+              subtitle: 'Every award across your account',
               trailing: TextButton(
                 key: const ValueKey<String>('view-all-xp'),
                 onPressed: () => context.push('/stats/xp-history'),
@@ -64,7 +72,10 @@ class StatsScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.space12),
-            _TransactionLedger(transactions: recentTransactions),
+            if (transactionsLoading)
+              const LoadingStateCard()
+            else
+              _TransactionLedger(transactions: recentTransactions),
             const SizedBox(height: AppSpacing.space32),
             SectionHeader(
               title: 'Assign Skill Points',
@@ -72,32 +83,35 @@ class StatsScreen extends ConsumerWidget {
               trailing: _AvailablePill(points: progression.skillPoints),
             ),
             const SizedBox(height: AppSpacing.space12),
-            _SkillAllocationCard(
-              allocations: allocations,
-              available: progression.skillPoints,
-              onSpend: (muscle) {
-                final spent = ref
-                    .read(skillAllocationsProvider.notifier)
-                    .spend(muscle);
-                if (!spent) {
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar()
-                    ..showSnackBar(
-                      SnackBar(
-                        content: const Text(
-                          'Earn more skill points by leveling up.',
+            if (allocationsLoading || progressionLoading)
+              const LoadingStateCard(height: 280)
+            else
+              _SkillAllocationCard(
+                allocations: allocations,
+                available: progression.skillPoints,
+                onSpend: (muscle) {
+                  final spent = ref
+                      .read(skillAllocationsProvider.notifier)
+                      .spend(muscle);
+                  if (!spent) {
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(
+                        SnackBar(
+                          content: const Text(
+                            'Earn more skill points by leveling up.',
+                          ),
+                          backgroundColor: AppColors.surfaceVariant,
+                          behavior: SnackBarBehavior.floating,
                         ),
-                        backgroundColor: AppColors.surfaceVariant,
-                        behavior: SnackBarBehavior.floating,
-                      ),
-                    );
-                }
-              },
-            ),
+                      );
+                  }
+                },
+              ),
             const SizedBox(height: AppSpacing.space32),
             SectionHeader(
               title: 'Recent Workouts',
-              subtitle: 'Finished this session',
+              subtitle: 'Synced from your training history',
               trailing: TextButton(
                 key: const ValueKey<String>('view-all-workouts'),
                 onPressed: () => context.push('/stats/workout-history'),
@@ -105,12 +119,13 @@ class StatsScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.space12),
-            if (history.isEmpty)
+            if (historyLoading)
+              const LoadingStateCard()
+            else if (history.isEmpty)
               const EmptyStateCard(
                 icon: Icons.history_rounded,
                 title: 'No sessions yet',
-                message:
-                    'Finish a workout and it will appear here until the app closes.',
+                message: 'Finish a workout and it will appear here.',
               )
             else
               for (var i = 0; i < recentHistory.length; i++) ...<Widget>[
@@ -135,6 +150,7 @@ class XpHistoryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactions = ref.watch(xpTransactionsProvider);
+    final isLoading = ref.watch(xpTransactionsLoadingProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -145,7 +161,12 @@ class XpHistoryScreen extends ConsumerWidget {
       ),
       body: SafeArea(
         top: false,
-        child: transactions.isEmpty
+        child: isLoading
+            ? const Padding(
+                padding: EdgeInsets.all(AppSpacing.space24),
+                child: LoadingStateCard(),
+              )
+            : transactions.isEmpty
             ? const Padding(
                 padding: EdgeInsets.all(AppSpacing.space24),
                 child: EmptyStateCard(
@@ -181,6 +202,7 @@ class WorkoutHistoryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final history = ref.watch(workoutHistoryProvider);
+    final isLoading = ref.watch(workoutHistoryLoadingProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -191,14 +213,18 @@ class WorkoutHistoryScreen extends ConsumerWidget {
       ),
       body: SafeArea(
         top: false,
-        child: history.isEmpty
+        child: isLoading
+            ? const Padding(
+                padding: EdgeInsets.all(AppSpacing.space24),
+                child: LoadingStateCard(),
+              )
+            : history.isEmpty
             ? const Padding(
                 padding: EdgeInsets.all(AppSpacing.space24),
                 child: EmptyStateCard(
                   icon: Icons.history_rounded,
                   title: 'No sessions yet',
-                  message:
-                      'Finish a workout and it will appear here until the app closes.',
+                  message: 'Finish a workout and it will appear here.',
                 ),
               )
             : ListView.separated(
@@ -377,7 +403,7 @@ class _SkillAllocationCard extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              const Icon(
+              Icon(
                 Icons.auto_awesome_outlined,
                 size: 20,
                 color: AppColors.textPrimary,

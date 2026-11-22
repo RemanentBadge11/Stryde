@@ -1,10 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
 import 'package:stryde/core/widgets/app_surface_card.dart';
+import 'package:stryde/core/widgets/loading_state_card.dart';
 import 'package:stryde/core/widgets/section_header.dart';
+import 'package:stryde/features/auth/presentation/providers/auth_provider.dart';
 import 'package:stryde/features/profile/presentation/providers/profile_goals_provider.dart';
+import 'package:stryde/features/profile/presentation/providers/user_profile_provider.dart';
 import 'package:stryde/features/progression/presentation/providers/user_progression_provider.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -14,7 +18,10 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final goals = ref.watch(profileGoalsProvider);
     final progression = ref.watch(userProgressionProvider);
+    final progressionLoading = ref.watch(userProgressionLoadingProvider);
     final notifier = ref.read(profileGoalsProvider.notifier);
+    final userProfile = ref.watch(userProfileProvider);
+    final displayName = userProfile.effectiveName;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -29,7 +36,20 @@ class ProfileScreen extends ConsumerWidget {
             AppSpacing.space32,
           ),
           children: <Widget>[
-            Text('Profile', style: Theme.of(context).textTheme.displayMedium),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text('Profile', style: Theme.of(context).textTheme.displayMedium),
+                IconButton(
+                  key: const ValueKey<String>('profile-settings-button'),
+                  icon: const Icon(Icons.settings_outlined, size: 26),
+                  color: AppColors.textPrimary,
+                  tooltip: 'Settings',
+                  onPressed: () => context.push('/settings'),
+                ),
+              ],
+            ),
             const SizedBox(height: AppSpacing.space8),
             Text(
               'Set the targets that shape your habits.',
@@ -38,10 +58,62 @@ class ProfileScreen extends ConsumerWidget {
               ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: AppSpacing.space24),
-            _IdentityCard(
-              level: progression.currentLevel,
-              rank: progression.rankTitle,
-              skillPoints: progression.skillPoints,
+            if (progressionLoading)
+              const LoadingStateCard(height: 112)
+            else
+              _IdentityCard(
+                name: displayName,
+                level: progression.currentLevel,
+                rank: progression.rankTitle,
+                skillPoints: progression.skillPoints,
+                avatarUrl: userProfile.avatarUrl,
+              ),
+            const SizedBox(height: AppSpacing.space16),
+            AppSurfaceCard(
+              onTap: () => context.push('/medals'),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.space20,
+                vertical: AppSpacing.space16,
+              ),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.all(AppSpacing.space8),
+                    decoration: BoxDecoration(
+                      color: AppColors.surfaceVariant,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.military_tech_rounded,
+                      color: AppColors.primary,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.space16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Medals',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Milestones & Achievements',
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.textSecondary,
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: AppSpacing.space32),
             SectionHeader(
@@ -57,39 +129,66 @@ class ProfileScreen extends ConsumerWidget {
                     icon: Icons.directions_walk_rounded,
                     label: 'Daily Steps',
                     value: _formatNumber(goals.steps),
+                    rawValue: '${goals.steps}',
                     unit: 'steps',
+                    isDecimal: false,
                     onDecrease: () => notifier.adjustSteps(
                       -ProfileGoalsNotifier.stepIncrement,
                     ),
                     onIncrease: () => notifier.adjustSteps(
                       ProfileGoalsNotifier.stepIncrement,
                     ),
+                    onManualSubmit: (text) {
+                      final clean = text.replaceAll(',', '').replaceAll(' ', '').trim();
+                      final parsed = int.tryParse(clean);
+                      if (parsed != null && parsed > 0) {
+                        notifier.setGoals(steps: parsed);
+                      }
+                    },
                   ),
                   const Divider(),
                   _GoalStepper(
                     icon: Icons.water_drop_outlined,
                     label: 'Daily Water',
                     value: _formatWater(goals.waterLiters),
+                    rawValue: _formatWater(goals.waterLiters),
                     unit: 'liters',
+                    isDecimal: true,
                     onDecrease: () => notifier.adjustWater(
                       -ProfileGoalsNotifier.waterIncrement,
                     ),
                     onIncrease: () => notifier.adjustWater(
                       ProfileGoalsNotifier.waterIncrement,
                     ),
+                    onManualSubmit: (text) {
+                      final clean = text.replaceAll(',', '.').replaceAll(' ', '').replaceAll(RegExp(r'[Ll]'), '').trim();
+                      final parsed = double.tryParse(clean);
+                      if (parsed != null && parsed > 0) {
+                        notifier.setGoals(water: parsed);
+                      }
+                    },
                   ),
                   const Divider(),
                   _GoalStepper(
                     icon: Icons.restaurant_outlined,
                     label: 'Daily Protein',
                     value: '${goals.proteinGrams}',
+                    rawValue: '${goals.proteinGrams}',
                     unit: 'grams',
+                    isDecimal: false,
                     onDecrease: () => notifier.adjustProtein(
                       -ProfileGoalsNotifier.proteinIncrement,
                     ),
                     onIncrease: () => notifier.adjustProtein(
                       ProfileGoalsNotifier.proteinIncrement,
                     ),
+                    onManualSubmit: (text) {
+                      final clean = text.replaceAll(RegExp(r'[Gg]'), '').replaceAll(' ', '').trim();
+                      final parsed = int.tryParse(clean);
+                      if (parsed != null && parsed > 0) {
+                        notifier.setGoals(protein: parsed);
+                      }
+                    },
                   ),
                 ],
               ),
@@ -100,7 +199,7 @@ class ProfileScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(AppSpacing.space16),
               child: Row(
                 children: <Widget>[
-                  const Icon(
+                  Icon(
                     Icons.info_outline_rounded,
                     size: 20,
                     color: AppColors.textSecondary,
@@ -108,11 +207,51 @@ class ProfileScreen extends ConsumerWidget {
                   const SizedBox(width: AppSpacing.space12),
                   Expanded(
                     child: Text(
-                      'Everything is in memory. Closing Stryde resets your goals, XP, and history.',
+                      'XP, streaks, skills, workout history, and daily goals sync to your account.',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ),
                 ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.space32),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: OutlinedButton(
+                key: const ValueKey<String>('profile-logout-button'),
+                onPressed: () async {
+                  final signedOut = await ref
+                      .read(authProvider.notifier)
+                      .signOut();
+                  if (!context.mounted || signedOut) return;
+                  final message = ref.read(authProvider).errorMessage;
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        content: Text(message ?? 'Unable to log out.'),
+                        backgroundColor: AppColors.surfaceVariant,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColors.textPrimary,
+                  side: BorderSide(color: AppColors.border),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Icon(Icons.logout_rounded, size: 20),
+                    SizedBox(width: AppSpacing.space12),
+                    Text('Logout'),
+                  ],
+                ),
               ),
             ),
           ],
@@ -124,17 +263,22 @@ class ProfileScreen extends ConsumerWidget {
 
 class _IdentityCard extends StatelessWidget {
   const _IdentityCard({
+    required this.name,
     required this.level,
     required this.rank,
     required this.skillPoints,
+    this.avatarUrl,
   });
 
+  final String name;
   final int level;
   final String rank;
   final int skillPoints;
+  final String? avatarUrl;
 
   @override
   Widget build(BuildContext context) {
+    final hasAvatar = avatarUrl != null && avatarUrl!.trim().isNotEmpty;
     return AppSurfaceCard(
       padding: const EdgeInsets.all(AppSpacing.space24),
       child: Row(
@@ -146,22 +290,32 @@ class _IdentityCard extends StatelessWidget {
               color: AppColors.primary,
               shape: BoxShape.circle,
             ),
+            clipBehavior: Clip.antiAlias,
             alignment: Alignment.center,
-            child: const Icon(
-              Icons.person_rounded,
-              size: 34,
-              color: AppColors.onPrimary,
-            ),
+            child: hasAvatar
+                ? Image.network(
+                    avatarUrl!,
+                    fit: BoxFit.cover,
+                    width: 64,
+                    height: 64,
+                    errorBuilder: (context, error, stackTrace) => Icon(
+                      Icons.person_rounded,
+                      size: 34,
+                      color: AppColors.onPrimary,
+                    ),
+                  )
+                : Icon(
+                    Icons.person_rounded,
+                    size: 34,
+                    color: AppColors.onPrimary,
+                  ),
           ),
           const SizedBox(width: AppSpacing.space16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  'Stryder',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
+                Text(name, style: Theme.of(context).textTheme.headlineSmall),
                 const SizedBox(height: AppSpacing.space4),
                 Text(
                   'Level $level · $rank',
@@ -170,7 +324,7 @@ class _IdentityCard extends StatelessWidget {
                 const SizedBox(height: AppSpacing.space8),
                 Row(
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       Icons.bolt_rounded,
                       size: 15,
                       color: AppColors.textPrimary,
@@ -195,22 +349,66 @@ class _IdentityCard extends StatelessWidget {
   }
 }
 
-class _GoalStepper extends StatelessWidget {
+class _GoalStepper extends StatefulWidget {
   const _GoalStepper({
     required this.icon,
     required this.label,
     required this.value,
+    required this.rawValue,
     required this.unit,
+    required this.isDecimal,
     required this.onDecrease,
     required this.onIncrease,
+    required this.onManualSubmit,
   });
 
   final IconData icon;
   final String label;
   final String value;
+  final String rawValue;
   final String unit;
+  final bool isDecimal;
   final VoidCallback onDecrease;
   final VoidCallback onIncrease;
+  final ValueChanged<String> onManualSubmit;
+
+  @override
+  State<_GoalStepper> createState() => _GoalStepperState();
+}
+
+class _GoalStepperState extends State<_GoalStepper> {
+  late final TextEditingController _controller;
+  late final FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.rawValue);
+    _focusNode = FocusNode();
+  }
+
+  @override
+  void didUpdateWidget(covariant _GoalStepper oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!_focusNode.hasFocus && oldWidget.rawValue != widget.rawValue) {
+      _controller.text = widget.rawValue;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    final text = _controller.text.trim();
+    if (text.isNotEmpty) {
+      widget.onManualSubmit(text);
+    }
+    _focusNode.unfocus();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -226,17 +424,17 @@ class _GoalStepper extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.border),
             ),
-            child: Icon(icon, size: 19, color: AppColors.textSecondary),
+            child: Icon(widget.icon, size: 19, color: AppColors.textSecondary),
           ),
           const SizedBox(width: AppSpacing.space12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(label, style: Theme.of(context).textTheme.titleSmall),
+                Text(widget.label, style: Theme.of(context).textTheme.titleSmall),
                 const SizedBox(height: 2),
                 Text(
-                  '$value $unit',
+                  '${widget.value} ${widget.unit}',
                   style: Theme.of(
                     context,
                   ).textTheme.bodySmall?.copyWith(color: AppColors.textPrimary),
@@ -246,14 +444,53 @@ class _GoalStepper extends StatelessWidget {
           ),
           _StepButton(
             icon: Icons.remove_rounded,
-            tooltip: 'Decrease $label',
-            onPressed: onDecrease,
+            tooltip: 'Decrease ${widget.label}',
+            onPressed: widget.onDecrease,
           ),
-          const SizedBox(width: AppSpacing.space8),
+          const SizedBox(width: AppSpacing.space6),
           _StepButton(
             icon: Icons.add_rounded,
-            tooltip: 'Increase $label',
-            onPressed: onIncrease,
+            tooltip: 'Increase ${widget.label}',
+            onPressed: widget.onIncrease,
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          SizedBox(
+            width: 68,
+            height: 38,
+            child: TextField(
+              key: ValueKey<String>('goal-input-${widget.label}'),
+              controller: _controller,
+              focusNode: _focusNode,
+              keyboardType: TextInputType.numberWithOptions(
+                decimal: widget.isDecimal,
+              ),
+              textInputAction: TextInputAction.done,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 4,
+                  vertical: 8,
+                ),
+                filled: true,
+                fillColor: AppColors.surfaceVariant,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: AppColors.border),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: AppColors.border),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: AppColors.primary),
+                ),
+              ),
+              onSubmitted: (_) => _submit(),
+            ),
           ),
         ],
       ),
@@ -282,7 +519,7 @@ class _StepButton extends StatelessWidget {
         maximumSize: const Size(38, 38),
         backgroundColor: AppColors.surfaceVariant,
         foregroundColor: AppColors.textPrimary,
-        side: const BorderSide(color: AppColors.border),
+        side: BorderSide(color: AppColors.border),
       ),
       icon: Icon(icon, size: 19),
     );

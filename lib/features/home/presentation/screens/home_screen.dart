@@ -5,6 +5,7 @@ import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
 import 'package:stryde/core/widgets/app_surface_card.dart';
 import 'package:stryde/core/widgets/cycle_countdown.dart';
+import 'package:stryde/core/widgets/loading_state_card.dart';
 import 'package:stryde/core/widgets/section_header.dart';
 import 'package:stryde/features/home/domain/entities/habit.dart';
 import 'package:stryde/features/home/presentation/providers/daily_goals_provider.dart';
@@ -12,6 +13,7 @@ import 'package:stryde/features/home/presentation/providers/habits_provider.dart
 import 'package:stryde/features/home/presentation/providers/login_streak_provider.dart';
 import 'package:stryde/features/home/presentation/providers/weekly_quests_provider.dart';
 import 'package:stryde/features/profile/presentation/providers/profile_goals_provider.dart';
+import 'package:stryde/features/profile/presentation/providers/user_profile_provider.dart';
 import 'package:stryde/features/progression/presentation/providers/user_progression_provider.dart';
 import 'package:stryde/features/progression/presentation/widgets/progression_card.dart';
 import 'package:stryde/features/workout_history/domain/entities/completed_workout.dart';
@@ -23,12 +25,15 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final progression = ref.watch(userProgressionProvider);
+    final progressionLoading = ref.watch(userProgressionLoadingProvider);
     final profileGoals = ref.watch(profileGoalsProvider);
     final habitState = ref.watch(habitsProvider);
     final questState = ref.watch(weeklyQuestsProvider);
     final dailyGoalState = ref.watch(dailyGoalsProvider);
     final history = ref.watch(workoutHistoryProvider);
+    final historyLoading = ref.watch(workoutHistoryLoadingProvider);
     final loginStreak = ref.watch(loginStreakProvider).currentStreak;
+    final userProfile = ref.watch(userProfileProvider);
 
     final habits = habitDefinitionsFor(profileGoals);
     final completedHabits = habits
@@ -55,13 +60,20 @@ class HomeScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  _HomeHeader(streak: loginStreak),
-                  const SizedBox(height: AppSpacing.space24),
-                  ProgressionCard(
-                    progression: progression,
-                    onRankTap: () => context.push('/ranks'),
-                    onAssignSkills: () => context.go('/stats'),
+                  HomeHeader(
+                    streak: loginStreak,
+                    username: userProfile.greetingName,
+                    avatarUrl: userProfile.avatarUrl,
                   ),
+                  const SizedBox(height: AppSpacing.space24),
+                  if (progressionLoading)
+                    const LoadingStateCard(height: 180)
+                  else
+                    ProgressionCard(
+                      progression: progression,
+                      onRankTap: () => context.push('/ranks'),
+                      onAssignSkills: () => context.go('/stats'),
+                    ),
                   const SizedBox(height: AppSpacing.space32),
                   SectionHeader(
                     title: 'Habits',
@@ -196,7 +208,10 @@ class HomeScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: AppSpacing.space12),
-                  _QuickStats(history: history, streak: loginStreak),
+                  if (historyLoading)
+                    const LoadingStateCard()
+                  else
+                    _QuickStats(history: history, streak: loginStreak),
                 ],
               ),
             ),
@@ -235,10 +250,33 @@ IconData _habitIcon(String id) {
   }
 }
 
-class _HomeHeader extends StatelessWidget {
-  const _HomeHeader({required this.streak});
+class HomeHeader extends StatelessWidget {
+  const HomeHeader({
+    required this.streak,
+    this.username,
+    this.avatarUrl,
+    super.key,
+  });
 
   final int streak;
+  final String? username;
+  final String? avatarUrl;
+
+  static String greeting([DateTime? dateTime, String? username]) {
+    if (username == null || username.trim().isEmpty) {
+      return 'Good Morning';
+    }
+    final hour = (dateTime ?? DateTime.now()).hour;
+    final String timeGreeting;
+    if (hour >= 5 && hour < 12) {
+      timeGreeting = 'Good Morning';
+    } else if (hour >= 12 && hour < 17) {
+      timeGreeting = 'Good Afternoon';
+    } else {
+      timeGreeting = 'Good Evening';
+    }
+    return '$timeGreeting, ${username.trim()}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -255,7 +293,7 @@ class _HomeHeader extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    'Good Morning',
+                    greeting(DateTime.now(), username),
                     maxLines: 1,
                     style: Theme.of(context).textTheme.displayMedium,
                   ),
@@ -275,7 +313,10 @@ class _HomeHeader extends StatelessWidget {
         Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            _ProfileButton(onTap: () => context.go('/profile')),
+            _ProfileButton(
+              onTap: () => context.go('/profile'),
+              avatarUrl: avatarUrl,
+            ),
             const SizedBox(height: AppSpacing.space8),
             _StreakBubble(streak: streak),
           ],
@@ -286,12 +327,15 @@ class _HomeHeader extends StatelessWidget {
 }
 
 class _ProfileButton extends StatelessWidget {
-  const _ProfileButton({required this.onTap});
+  const _ProfileButton({required this.onTap, this.avatarUrl});
 
   final VoidCallback onTap;
+  final String? avatarUrl;
 
   @override
   Widget build(BuildContext context) {
+    final hasAvatar = avatarUrl != null && avatarUrl!.trim().isNotEmpty;
+
     return Semantics(
       button: true,
       label: 'Open profile',
@@ -308,11 +352,23 @@ class _ProfileButton extends StatelessWidget {
             child: InkWell(
               onTap: onTap,
               customBorder: const CircleBorder(),
-              child: const Icon(
-                Icons.person_outline_rounded,
-                size: 27,
-                color: AppColors.textPrimary,
-              ),
+              child: hasAvatar
+                  ? Image.network(
+                      avatarUrl!,
+                      fit: BoxFit.cover,
+                      width: 52,
+                      height: 52,
+                      errorBuilder: (context, error, stackTrace) => Icon(
+                        Icons.person_outline_rounded,
+                        size: 27,
+                        color: AppColors.textPrimary,
+                      ),
+                    )
+                  : Icon(
+                      Icons.person_outline_rounded,
+                      size: 27,
+                      color: AppColors.textPrimary,
+                    ),
             ),
           ),
         ),
@@ -351,7 +407,7 @@ class _StreakBubble extends StatelessWidget {
                 angle: (1 - value) * -0.16,
                 child: Transform.scale(scale: value, child: child),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.local_fire_department_rounded,
                 size: 18,
                 color: AppColors.textPrimary,
@@ -436,9 +492,9 @@ class _ChecklistItem extends StatelessWidget {
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 200),
                   child: isCompleted
-                      ? const Icon(
+                      ? Icon(
                           Icons.check_rounded,
-                          key: ValueKey<String>('checked'),
+                          key: const ValueKey<String>('checked'),
                           size: 21,
                           color: AppColors.onPrimary,
                         )
@@ -541,7 +597,7 @@ class _NextSessionCard extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       Icons.calendar_month_outlined,
                       size: 21,
                       color: AppColors.textSecondary,

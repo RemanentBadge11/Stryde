@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
 import 'package:stryde/core/widgets/app_surface_card.dart';
+import 'package:stryde/core/widgets/loading_state_card.dart';
 import 'package:stryde/features/progression/domain/entities/rank.dart';
 import 'package:stryde/features/progression/presentation/providers/user_progression_provider.dart';
 
@@ -12,6 +13,7 @@ class RankProgressionScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final progression = ref.watch(userProgressionProvider);
+    final isLoading = ref.watch(userProgressionLoadingProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -22,55 +24,67 @@ class RankProgressionScreen extends ConsumerWidget {
       ),
       body: SafeArea(
         top: false,
-        child: ListView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(
-            AppSpacing.space24,
-            AppSpacing.space16,
-            AppSpacing.space24,
-            AppSpacing.space32,
-          ),
-          children: <Widget>[
-            Text('The climb', style: Theme.of(context).textTheme.displaySmall),
-            const SizedBox(height: AppSpacing.space8),
-            Text(
-              'Every level costs 500 XP. Rank breakthroughs award 3 bonus skill points.',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyLarge?.copyWith(color: AppColors.textSecondary),
-            ),
-            const SizedBox(height: AppSpacing.space24),
-            _CurrentRankCard(
-              level: progression.currentLevel,
-              rank: progression.rank,
-              skillPoints: progression.skillPoints,
-            ),
-            const SizedBox(height: AppSpacing.space32),
-            Text('All Ranks', style: Theme.of(context).textTheme.headlineSmall),
-            const SizedBox(height: AppSpacing.space12),
-            for (var i = 0; i < Ranks.all.length; i++) ...<Widget>[
-              _RankCard(
-                rank: Ranks.all[i],
-                currentLevel: progression.currentLevel,
+        child: isLoading
+            ? const Padding(
+                padding: EdgeInsets.all(AppSpacing.space24),
+                child: LoadingStateCard(),
+              )
+            : ListView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.space24,
+                  AppSpacing.space16,
+                  AppSpacing.space24,
+                  AppSpacing.space32,
+                ),
+                children: <Widget>[
+                  Text(
+                    'The climb',
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                  const SizedBox(height: AppSpacing.space8),
+                  Text(
+                    'Every level costs 500 XP. Rank breakthroughs award 3 bonus skill points.',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.space24),
+                  _CurrentRankCard(
+                    level: progression.currentLevel,
+                    rank: progression.rank,
+                    skillPoints: progression.skillPoints,
+                  ),
+                  const SizedBox(height: AppSpacing.space32),
+                  Text(
+                    'All Ranks',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: AppSpacing.space12),
+                  for (var i = 0; i < Ranks.all.length; i++) ...<Widget>[
+                    _RankCard(
+                      rank: Ranks.all[i],
+                      currentLevel: progression.currentLevel,
+                    ),
+                    if (i != Ranks.all.length - 1)
+                      const SizedBox(height: AppSpacing.space12),
+                  ],
+                  const SizedBox(height: AppSpacing.space24),
+                  const _RuleCard(
+                    icon: Icons.bolt_rounded,
+                    title: '+1 skill point per level',
+                    detail:
+                        'Spend points on Chest, Back, Legs, Shoulders, Biceps, or Triceps.',
+                  ),
+                  const SizedBox(height: AppSpacing.space12),
+                  const _RuleCard(
+                    icon: Icons.workspace_premium_outlined,
+                    title: '+3 bonus points at rank breakthroughs',
+                    detail:
+                        'Crossing into Level 6, 11, or 16 triggers the bonus.',
+                  ),
+                ],
               ),
-              if (i != Ranks.all.length - 1)
-                const SizedBox(height: AppSpacing.space12),
-            ],
-            const SizedBox(height: AppSpacing.space24),
-            const _RuleCard(
-              icon: Icons.bolt_rounded,
-              title: '+1 skill point per level',
-              detail:
-                  'Spend points on Chest, Back, Legs, Shoulders, Biceps, or Triceps.',
-            ),
-            const SizedBox(height: AppSpacing.space12),
-            const _RuleCard(
-              icon: Icons.workspace_premium_outlined,
-              title: '+3 bonus points at rank breakthroughs',
-              detail: 'Crossing into Level 6, 11, or 16 triggers the bonus.',
-            ),
-          ],
-        ),
       ),
     );
   }

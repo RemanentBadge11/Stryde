@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
@@ -10,6 +11,7 @@ import 'package:stryde/features/exercises/presentation/widgets/exercise_picker_s
 import 'package:stryde/features/routines/domain/entities/workout_routine.dart';
 import 'package:stryde/features/routines/presentation/widgets/exercise_target_sheet.dart';
 import 'package:stryde/features/workout_logging/presentation/providers/active_workout_provider.dart';
+import 'package:stryde/features/workout_logging/presentation/widgets/pr_celebration_overlay.dart';
 
 class ActiveWorkoutScreen extends ConsumerStatefulWidget {
   const ActiveWorkoutScreen({required this.routine, super.key});
@@ -43,9 +45,9 @@ class _ActiveWorkoutScreenState extends ConsumerState<ActiveWorkoutScreen> {
     final workoutState = ref.watch(activeWorkoutProvider);
     final session = workoutState.session;
     if (session == null) {
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: AppColors.background,
-        body: SizedBox.shrink(),
+        body: const SizedBox.shrink(),
       );
     }
 
@@ -94,7 +96,9 @@ class _ActiveWorkoutScreenState extends ConsumerState<ActiveWorkoutScreen> {
             const SizedBox(width: AppSpacing.space12),
           ],
         ),
-        body: Stack(
+        body: SafeArea(
+          top: false,
+          child: Stack(
           children: <Widget>[
             ListView(
               physics: const BouncingScrollPhysics(),
@@ -152,6 +156,31 @@ class _ActiveWorkoutScreenState extends ConsumerState<ActiveWorkoutScreen> {
                           .read(activeWorkoutProvider.notifier)
                           .updateReps(i, setIndex, value);
                     },
+                    onTimeChanged: (setIndex, value) {
+                      ref
+                          .read(activeWorkoutProvider.notifier)
+                          .updateTime(i, setIndex, value);
+                    },
+                    onDistanceChanged: (setIndex, value) {
+                      ref
+                          .read(activeWorkoutProvider.notifier)
+                          .updateDistance(i, setIndex, value);
+                    },
+                    onInclineChanged: (setIndex, value) {
+                      ref
+                          .read(activeWorkoutProvider.notifier)
+                          .updateIncline(i, setIndex, value);
+                    },
+                    onResistanceChanged: (setIndex, value) {
+                      ref
+                          .read(activeWorkoutProvider.notifier)
+                          .updateResistance(i, setIndex, value);
+                    },
+                    onStepsChanged: (setIndex, value) {
+                      ref
+                          .read(activeWorkoutProvider.notifier)
+                          .updateSteps(i, setIndex, value);
+                    },
                   ),
                   if (i != exerciseDrafts.length - 1)
                     const SizedBox(height: AppSpacing.space16),
@@ -194,6 +223,7 @@ class _ActiveWorkoutScreenState extends ConsumerState<ActiveWorkoutScreen> {
           ],
         ),
       ),
+      ),
     );
   }
 
@@ -217,13 +247,38 @@ class _ActiveWorkoutScreenState extends ConsumerState<ActiveWorkoutScreen> {
   }
 
   void _completeSet(int exerciseIndex, int setIndex) {
+    final session = ref.read(activeWorkoutProvider).session;
+    final exerciseType =
+        session?.exercises[exerciseIndex].exercise.type ?? 'strength';
     final result = ref
         .read(activeWorkoutProvider.notifier)
         .toggleSetCompletion(exerciseIndex, setIndex);
     if (result == SetCompletionResult.invalid) {
-      _showMessage('Enter a valid weight and rep count first.');
+      _showMessage(_invalidSetMessage(exerciseType));
     } else if (result == SetCompletionResult.completed) {
       FocusScope.of(context).unfocus();
+    }
+  }
+
+  String _invalidSetMessage(String type) {
+    switch (type) {
+      case 'bodyweight':
+      case 'reps_only_cardio':
+        return 'Enter a valid rep count first.';
+      case 'time':
+      case 'time_only_cardio':
+      case 'distance_cardio':
+        return 'Enter a valid duration (MM:SS) first.';
+      case 'resistance':
+        return 'Enter resistance and reps first.';
+      case 'cardio':
+        return 'Enter time and distance first.';
+      case 'incline_cardio':
+        return 'Enter incline, distance, and time first.';
+      case 'steps_cardio':
+        return 'Enter steps and time first.';
+      default:
+        return 'Enter a valid weight and rep count first.';
     }
   }
 
@@ -264,7 +319,7 @@ class _ActiveWorkoutScreenState extends ConsumerState<ActiveWorkoutScreen> {
               Container(
                 width: 64,
                 height: 64,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: AppColors.primary,
                   shape: BoxShape.circle,
                 ),
@@ -300,14 +355,21 @@ class _ActiveWorkoutScreenState extends ConsumerState<ActiveWorkoutScreen> {
       ),
     );
 
-    if (mounted) context.go('/');
+    if (result.hasPr && mounted) {
+      await PrCelebrationOverlay.show(
+        context: context,
+        exerciseNames: result.prExercises,
+      );
+    }
+
+    if (mounted) context.go('/home');
   }
 
   void _discardWorkout() {
     setState(() => _isFinishing = true);
     final discarded = ref.read(activeWorkoutProvider.notifier).discardWorkout();
     if (!discarded) return;
-    context.go('/');
+    context.go('/home');
   }
 
   void _showMessage(String message) {
@@ -427,7 +489,7 @@ class _WorkoutElapsedCard extends StatelessWidget {
                 fixedSize: const Size(42, 42),
                 backgroundColor: AppColors.surfaceVariant,
                 foregroundColor: AppColors.textPrimary,
-                side: const BorderSide(color: AppColors.borderStrong),
+                side: BorderSide(color: AppColors.borderStrong),
                 shape: const CircleBorder(),
               ),
               icon: Icon(
@@ -469,7 +531,7 @@ class _WorkoutHeader extends StatelessWidget {
               color: AppColors.surfaceVariant,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.fitness_center_rounded,
               color: AppColors.textPrimary,
             ),
@@ -516,6 +578,11 @@ class _ExerciseLoggerCard extends StatelessWidget {
     required this.onCompleteSet,
     required this.onWeightChanged,
     required this.onRepsChanged,
+    required this.onTimeChanged,
+    required this.onDistanceChanged,
+    required this.onInclineChanged,
+    required this.onResistanceChanged,
+    required this.onStepsChanged,
   });
 
   final ActiveWorkoutExercise draft;
@@ -528,9 +595,15 @@ class _ExerciseLoggerCard extends StatelessWidget {
   final ValueChanged<int> onCompleteSet;
   final void Function(int index, String value) onWeightChanged;
   final void Function(int index, String value) onRepsChanged;
+  final void Function(int index, String value) onTimeChanged;
+  final void Function(int index, String value) onDistanceChanged;
+  final void Function(int index, String value) onInclineChanged;
+  final void Function(int index, String value) onResistanceChanged;
+  final void Function(int index, String value) onStepsChanged;
 
   @override
   Widget build(BuildContext context) {
+    final type = draft.exercise.type;
     return AppSurfaceCard(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.space16),
@@ -540,6 +613,7 @@ class _ExerciseLoggerCard extends StatelessWidget {
               children: <Widget>[
                 ExerciseImage(
                   imageUrl: draft.exercise.imageUrl,
+                  localImage: draft.exercise.localImage,
                   semanticLabel: draft.exercise.name,
                   width: 52,
                   height: 44,
@@ -564,7 +638,7 @@ class _ExerciseLoggerCard extends StatelessWidget {
                 ),
                 PopupMenuButton<_ExerciseMenuAction>(
                   color: AppColors.surfaceElevated,
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.more_horiz_rounded,
                     color: AppColors.textPrimary,
                   ),
@@ -599,36 +673,7 @@ class _ExerciseLoggerCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.space16),
             const Divider(),
             const SizedBox(height: AppSpacing.space12),
-            Row(
-              children: <Widget>[
-                SizedBox(
-                  width: 42,
-                  child: Text(
-                    'SET',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.space8),
-                Expanded(
-                  child: Text(
-                    'WEIGHT (KG)',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.space8),
-                Expanded(
-                  child: Text(
-                    'REPS',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.space8),
-                const SizedBox(width: 42),
-              ],
-            ),
+            _buildHeaderRow(context, type),
             const SizedBox(height: AppSpacing.space8),
             for (var i = 0; i < draft.sets.length; i++) ...<Widget>[
               _SetRow(
@@ -636,11 +681,17 @@ class _ExerciseLoggerCard extends StatelessWidget {
                 set: draft.sets[i],
                 displayNumber: i + 1,
                 exerciseName: draft.exercise.name,
+                exerciseType: type,
                 onDuplicate: () => onDuplicateSet(i),
                 onDelete: () => onDeleteSet(i),
                 onComplete: () => onCompleteSet(i),
                 onWeightChanged: (value) => onWeightChanged(i, value),
                 onRepsChanged: (value) => onRepsChanged(i, value),
+                onTimeChanged: (value) => onTimeChanged(i, value),
+                onDistanceChanged: (value) => onDistanceChanged(i, value),
+                onInclineChanged: (value) => onInclineChanged(i, value),
+                onResistanceChanged: (value) => onResistanceChanged(i, value),
+                onStepsChanged: (value) => onStepsChanged(i, value),
               ),
               if (i != draft.sets.length - 1)
                 const SizedBox(height: AppSpacing.space8),
@@ -659,6 +710,147 @@ class _ExerciseLoggerCard extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildHeaderRow(BuildContext context, String type) {
+    final style = Theme.of(context).textTheme.labelSmall;
+    final columns = <Widget>[
+      SizedBox(
+        width: 42,
+        child: Text('SET', textAlign: TextAlign.center, style: style),
+      ),
+      const SizedBox(width: AppSpacing.space8),
+    ];
+
+    switch (type) {
+      case 'strength':
+      case 'weighted':
+        columns.addAll(<Widget>[
+          Expanded(
+            child: Text(
+              'WEIGHT (KG)',
+              textAlign: TextAlign.center,
+              style: style,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: Text('REPS', textAlign: TextAlign.center, style: style),
+          ),
+        ]);
+      case 'bodyweight':
+      case 'reps_only_cardio':
+        columns.add(
+          Expanded(
+            child: Text('REPS', textAlign: TextAlign.center, style: style),
+          ),
+        );
+      case 'time':
+      case 'time_only_cardio':
+      case 'distance_cardio':
+        columns.add(
+          Expanded(
+            child: Text(
+              'TIME (MM:SS)',
+              textAlign: TextAlign.center,
+              style: style,
+            ),
+          ),
+        );
+      case 'resistance':
+        columns.addAll(<Widget>[
+          Expanded(
+            child: Text(
+              'RESISTANCE',
+              textAlign: TextAlign.center,
+              style: style,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: Text('REPS', textAlign: TextAlign.center, style: style),
+          ),
+        ]);
+      case 'cardio':
+        columns.addAll(<Widget>[
+          Expanded(
+            child: Text(
+              'TIME (MM:SS)',
+              textAlign: TextAlign.center,
+              style: style,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: Text(
+              'DISTANCE (KM)',
+              textAlign: TextAlign.center,
+              style: style,
+            ),
+          ),
+        ]);
+      case 'incline_cardio':
+        columns.addAll(<Widget>[
+          Expanded(
+            child: Text(
+              'INCLINE (%)',
+              textAlign: TextAlign.center,
+              style: style,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: Text(
+              'DISTANCE (KM)',
+              textAlign: TextAlign.center,
+              style: style,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: Text(
+              'TIME (MM:SS)',
+              textAlign: TextAlign.center,
+              style: style,
+            ),
+          ),
+        ]);
+      case 'steps_cardio':
+        columns.addAll(<Widget>[
+          Expanded(
+            child: Text('STEPS', textAlign: TextAlign.center, style: style),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: Text(
+              'TIME (MM:SS)',
+              textAlign: TextAlign.center,
+              style: style,
+            ),
+          ),
+        ]);
+      default:
+        columns.addAll(<Widget>[
+          Expanded(
+            child: Text(
+              'WEIGHT (KG)',
+              textAlign: TextAlign.center,
+              style: style,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: Text('REPS', textAlign: TextAlign.center, style: style),
+          ),
+        ]);
+    }
+
+    columns.addAll(<Widget>[
+      const SizedBox(width: AppSpacing.space8),
+      const SizedBox(width: 42),
+    ]);
+
+    return Row(children: columns);
+  }
 }
 
 class _SetRow extends StatelessWidget {
@@ -666,22 +858,34 @@ class _SetRow extends StatelessWidget {
     required this.set,
     required this.displayNumber,
     required this.exerciseName,
+    required this.exerciseType,
     required this.onDuplicate,
     required this.onDelete,
     required this.onComplete,
     required this.onWeightChanged,
     required this.onRepsChanged,
+    required this.onTimeChanged,
+    required this.onDistanceChanged,
+    required this.onInclineChanged,
+    required this.onResistanceChanged,
+    required this.onStepsChanged,
     super.key,
   });
 
   final ActiveWorkoutSet set;
   final int displayNumber;
   final String exerciseName;
+  final String exerciseType;
   final VoidCallback onDuplicate;
   final VoidCallback onDelete;
   final VoidCallback onComplete;
   final ValueChanged<String> onWeightChanged;
   final ValueChanged<String> onRepsChanged;
+  final ValueChanged<String> onTimeChanged;
+  final ValueChanged<String> onDistanceChanged;
+  final ValueChanged<String> onInclineChanged;
+  final ValueChanged<String> onResistanceChanged;
+  final ValueChanged<String> onStepsChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -735,24 +939,7 @@ class _SetRow extends StatelessWidget {
           ),
         ),
         const SizedBox(width: AppSpacing.space8),
-        Expanded(
-          child: _SetInput(
-            initialValue: set.weightText,
-            hintText: '0',
-            readOnly: set.isCompleted,
-            decimal: true,
-            onChanged: onWeightChanged,
-          ),
-        ),
-        const SizedBox(width: AppSpacing.space8),
-        Expanded(
-          child: _SetInput(
-            initialValue: set.repsText,
-            hintText: '0',
-            readOnly: set.isCompleted,
-            onChanged: onRepsChanged,
-          ),
-        ),
+        ..._buildInputs(context),
         const SizedBox(width: AppSpacing.space8),
         Tooltip(
           message: set.isCompleted
@@ -779,6 +966,168 @@ class _SetRow extends StatelessWidget {
       ],
     );
   }
+
+  List<Widget> _buildInputs(BuildContext context) {
+    switch (exerciseType) {
+      case 'strength':
+      case 'weighted':
+        return <Widget>[
+          Expanded(
+            child: _SetInput(
+              initialValue: set.weightText,
+              hintText: '0',
+              readOnly: set.isCompleted,
+              decimal: true,
+              onChanged: onWeightChanged,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: _SetInput(
+              initialValue: set.repsText,
+              hintText: '0',
+              readOnly: set.isCompleted,
+              onChanged: onRepsChanged,
+            ),
+          ),
+        ];
+      case 'bodyweight':
+      case 'reps_only_cardio':
+        return <Widget>[
+          Expanded(
+            child: _SetInput(
+              initialValue: set.repsText,
+              hintText: '0',
+              readOnly: set.isCompleted,
+              onChanged: onRepsChanged,
+            ),
+          ),
+        ];
+      case 'time':
+      case 'time_only_cardio':
+      case 'distance_cardio':
+        return <Widget>[
+          Expanded(
+            child: _TimeInput(
+              initialValue: set.timeText,
+              readOnly: set.isCompleted,
+              onChanged: onTimeChanged,
+            ),
+          ),
+        ];
+      case 'resistance':
+        return <Widget>[
+          Expanded(
+            child: _SetInput(
+              initialValue: set.resistanceText,
+              hintText: 'Medium',
+              readOnly: set.isCompleted,
+              keyboardType: TextInputType.text,
+              onChanged: onResistanceChanged,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: _SetInput(
+              initialValue: set.repsText,
+              hintText: '0',
+              readOnly: set.isCompleted,
+              onChanged: onRepsChanged,
+            ),
+          ),
+        ];
+      case 'cardio':
+        return <Widget>[
+          Expanded(
+            child: _TimeInput(
+              initialValue: set.timeText,
+              readOnly: set.isCompleted,
+              onChanged: onTimeChanged,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: _SetInput(
+              initialValue: set.distanceText,
+              hintText: '0.0',
+              readOnly: set.isCompleted,
+              decimal: true,
+              onChanged: onDistanceChanged,
+            ),
+          ),
+        ];
+      case 'incline_cardio':
+        return <Widget>[
+          Expanded(
+            child: _SetInput(
+              initialValue: set.inclineText,
+              hintText: '0',
+              readOnly: set.isCompleted,
+              decimal: true,
+              onChanged: onInclineChanged,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: _SetInput(
+              initialValue: set.distanceText,
+              hintText: '0.0',
+              readOnly: set.isCompleted,
+              decimal: true,
+              onChanged: onDistanceChanged,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: _TimeInput(
+              initialValue: set.timeText,
+              readOnly: set.isCompleted,
+              onChanged: onTimeChanged,
+            ),
+          ),
+        ];
+      case 'steps_cardio':
+        return <Widget>[
+          Expanded(
+            child: _SetInput(
+              initialValue: set.stepsText,
+              hintText: '0',
+              readOnly: set.isCompleted,
+              onChanged: onStepsChanged,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: _TimeInput(
+              initialValue: set.timeText,
+              readOnly: set.isCompleted,
+              onChanged: onTimeChanged,
+            ),
+          ),
+        ];
+      default:
+        return <Widget>[
+          Expanded(
+            child: _SetInput(
+              initialValue: set.weightText,
+              hintText: '0',
+              readOnly: set.isCompleted,
+              decimal: true,
+              onChanged: onWeightChanged,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.space8),
+          Expanded(
+            child: _SetInput(
+              initialValue: set.repsText,
+              hintText: '0',
+              readOnly: set.isCompleted,
+              onChanged: onRepsChanged,
+            ),
+          ),
+        ];
+    }
+  }
 }
 
 class _SetInput extends StatelessWidget {
@@ -788,6 +1137,7 @@ class _SetInput extends StatelessWidget {
     required this.readOnly,
     required this.onChanged,
     this.decimal = false,
+    this.keyboardType,
   });
 
   final String initialValue;
@@ -795,6 +1145,7 @@ class _SetInput extends StatelessWidget {
   final bool readOnly;
   final ValueChanged<String> onChanged;
   final bool decimal;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -804,7 +1155,8 @@ class _SetInput extends StatelessWidget {
         initialValue: initialValue,
         readOnly: readOnly,
         textAlign: TextAlign.center,
-        keyboardType: TextInputType.numberWithOptions(decimal: decimal),
+        keyboardType: keyboardType ??
+            TextInputType.numberWithOptions(decimal: decimal),
         style: Theme.of(context).textTheme.titleSmall,
         onChanged: onChanged,
         decoration: InputDecoration(
@@ -823,15 +1175,124 @@ class _SetInput extends StatelessWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: AppColors.border),
+            borderSide: BorderSide(color: AppColors.border),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: AppColors.primary),
+            borderSide: BorderSide(color: AppColors.primary),
           ),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
       ),
+    );
+  }
+}
+
+class _TimeInput extends StatefulWidget {
+  const _TimeInput({
+    required this.initialValue,
+    required this.readOnly,
+    required this.onChanged,
+  });
+
+  final String initialValue;
+  final bool readOnly;
+  final ValueChanged<String> onChanged;
+
+  @override
+  State<_TimeInput> createState() => _TimeInputState();
+}
+
+class _TimeInputState extends State<_TimeInput> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.initialValue);
+  }
+
+  @override
+  void didUpdateWidget(covariant _TimeInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialValue != widget.initialValue &&
+        widget.initialValue != _controller.text) {
+      _controller.text = widget.initialValue;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 42,
+      child: TextFormField(
+        controller: _controller,
+        readOnly: widget.readOnly,
+        textAlign: TextAlign.center,
+        keyboardType: TextInputType.number,
+        style: Theme.of(context).textTheme.titleSmall,
+        inputFormatters: <TextInputFormatter>[
+          _TimeMaskTextInputFormatter(),
+        ],
+        onChanged: widget.onChanged,
+        decoration: InputDecoration(
+          isDense: true,
+          filled: true,
+          fillColor: widget.readOnly
+              ? AppColors.surfaceVariant.withValues(alpha: 0.65)
+              : AppColors.surfaceVariant,
+          hintText: '00:00',
+          hintStyle: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: AppColors.textMuted),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.space8,
+            vertical: AppSpacing.space12,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: AppColors.border),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: AppColors.primary),
+          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      ),
+    );
+  }
+}
+
+class _TimeMaskTextInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final digits = newValue.text.replaceAll(RegExp(r'\D'), '');
+    if (digits.isEmpty) {
+      return const TextEditingValue(text: '');
+    }
+
+    final clamped = digits.length > 4 ? digits.substring(0, 4) : digits;
+    String formatted;
+    if (clamped.length <= 2) {
+      formatted = clamped;
+    } else {
+      formatted =
+          '${clamped.substring(0, clamped.length - 2)}:${clamped.substring(clamped.length - 2)}';
+    }
+
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: formatted.length),
     );
   }
 }
@@ -861,11 +1322,11 @@ class _RestTimerCard extends StatelessWidget {
           Container(
             width: 46,
             height: 46,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: AppColors.primary,
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.timer_outlined, color: AppColors.onPrimary),
+            child: Icon(Icons.timer_outlined, color: AppColors.onPrimary),
           ),
           const SizedBox(width: AppSpacing.space12),
           Expanded(

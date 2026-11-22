@@ -8,6 +8,7 @@ import 'package:stryde/core/theme/app_colors.dart';
 class ExerciseImage extends StatelessWidget {
   const ExerciseImage({
     required this.imageUrl,
+    this.localImage,
     required this.semanticLabel,
     this.width,
     this.height,
@@ -16,6 +17,7 @@ class ExerciseImage extends StatelessWidget {
   });
 
   final String imageUrl;
+  final String? localImage;
   final String semanticLabel;
   final double? width;
   final double? height;
@@ -63,9 +65,13 @@ class ExerciseImage extends StatelessWidget {
   }
 
   Widget _buildImage() {
-    if (imageUrl.startsWith('asset:')) {
+    final assetPath = (localImage != null && localImage!.isNotEmpty)
+        ? localImage!
+        : (imageUrl.startsWith('asset:') ? imageUrl.substring('asset:'.length) : null);
+
+    if (assetPath != null) {
       return Image.asset(
-        imageUrl.substring('asset:'.length),
+        assetPath,
         semanticLabel: semanticLabel,
         width: width,
         height: height,
@@ -109,7 +115,7 @@ class _ImagePlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Icon(Icons.image_outlined, color: AppColors.textMuted, size: 20),
     );
   }
@@ -120,7 +126,7 @@ class _ImageFallback extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Icon(
         Icons.fitness_center_rounded,
         color: AppColors.textMuted,

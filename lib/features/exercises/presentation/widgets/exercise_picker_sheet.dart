@@ -16,9 +16,9 @@ Future<Exercise?> showExercisePickerSheet(
     builder: (sheetContext) => FractionallySizedBox(
       heightFactor: 0.94,
       child: DecoratedBox(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: AppColors.background,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(26)),
           border: Border(top: BorderSide(color: AppColors.border)),
         ),
         child: Padding(

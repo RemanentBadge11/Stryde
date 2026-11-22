@@ -29,7 +29,7 @@ class WorkoutHistoryCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: AppColors.border),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.fitness_center_rounded,
                   size: 19,
                   color: AppColors.textPrimary,
@@ -53,7 +53,7 @@ class WorkoutHistoryCard extends StatelessWidget {
                 ),
               ),
               if (onTap != null)
-                const Icon(
+                Icon(
                   Icons.arrow_forward_rounded,
                   size: 20,
                   color: AppColors.textPrimary,

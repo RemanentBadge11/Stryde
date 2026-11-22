@@ -3,65 +3,94 @@ import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_typography.dart';
 
 abstract final class AppTheme {
-  static const ColorScheme _colorScheme = ColorScheme(
-    brightness: Brightness.dark,
-    primary: AppColors.primary,
-    onPrimary: AppColors.onPrimary,
-    primaryContainer: AppColors.surfaceVariant,
-    onPrimaryContainer: AppColors.textPrimary,
-    secondary: Color(0xFFD6D6D6),
-    onSecondary: AppColors.background,
-    secondaryContainer: AppColors.surfaceVariant,
-    onSecondaryContainer: AppColors.textPrimary,
-    tertiary: Color(0xFFBDBDBD),
-    onTertiary: AppColors.background,
-    tertiaryContainer: AppColors.surfaceElevated,
-    onTertiaryContainer: AppColors.textPrimary,
-    error: Color(0xFFE0E0E0),
-    onError: AppColors.background,
-    errorContainer: AppColors.surfaceVariant,
-    onErrorContainer: AppColors.textPrimary,
-    surface: AppColors.surface,
-    onSurface: AppColors.textPrimary,
-    surfaceContainerHighest: AppColors.surfaceVariant,
-    onSurfaceVariant: AppColors.textSecondary,
-    outline: AppColors.border,
-    outlineVariant: AppColors.surfaceVariant,
-    shadow: Colors.black,
-    scrim: Colors.black,
-    inverseSurface: AppColors.textPrimary,
-    onInverseSurface: AppColors.background,
-    inversePrimary: AppColors.surfaceVariant,
-    surfaceTint: Colors.transparent,
-  );
+  static ThemeData buildTheme({
+    required bool isDark,
+    required Color accentColor,
+  }) {
+    final background =
+        isDark ? const Color(0xFF000000) : const Color(0xFFFFFFFF);
+    final surface =
+        isDark ? const Color(0xFF121212) : const Color(0xFFF5F5F5);
+    final surfaceElevated =
+        isDark ? const Color(0xFF181818) : const Color(0xFFEEEEEE);
+    final surfaceVariant =
+        isDark ? const Color(0xFF1F1F1F) : const Color(0xFFE8E8E8);
+    final textPrimary =
+        isDark ? const Color(0xFFFFFFFF) : const Color(0xFF000000);
+    final textSecondary =
+        isDark ? const Color(0xFFA0A0A0) : const Color(0xFF666666);
+    final textMuted =
+        isDark ? const Color(0xFF6B6B6B) : const Color(0xFF888888);
+    final border =
+        isDark ? const Color(0xFF262626) : const Color(0xFFE0E0E0);
+    final progressTrack =
+        isDark ? const Color(0xFF202020) : const Color(0xFFE0E0E0);
 
-  static ThemeData get dark {
+    final onPrimary =
+        (accentColor.computeLuminance() > 0.45)
+            ? const Color(0xFF000000)
+            : const Color(0xFFFFFFFF);
+
+    final colorScheme = ColorScheme(
+      brightness: isDark ? Brightness.dark : Brightness.light,
+      primary: accentColor,
+      onPrimary: onPrimary,
+      primaryContainer: surfaceVariant,
+      onPrimaryContainer: textPrimary,
+      secondary: isDark ? const Color(0xFFD6D6D6) : const Color(0xFF4A4A4A),
+      onSecondary: background,
+      secondaryContainer: surfaceVariant,
+      onSecondaryContainer: textPrimary,
+      tertiary: isDark ? const Color(0xFFBDBDBD) : const Color(0xFF616161),
+      onTertiary: background,
+      tertiaryContainer: surfaceElevated,
+      onTertiaryContainer: textPrimary,
+      error: const Color(0xFFE0E0E0),
+      onError: background,
+      errorContainer: surfaceVariant,
+      onErrorContainer: textPrimary,
+      surface: surface,
+      onSurface: textPrimary,
+      surfaceContainerHighest: surfaceVariant,
+      onSurfaceVariant: textSecondary,
+      outline: border,
+      outlineVariant: surfaceVariant,
+      shadow: Colors.black,
+      scrim: Colors.black,
+      inverseSurface: textPrimary,
+      onInverseSurface: background,
+      inversePrimary: surfaceVariant,
+      surfaceTint: Colors.transparent,
+    );
+
+    final textTheme = AppTypography.getTextTheme(isDark: isDark);
+
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.dark,
-      colorScheme: _colorScheme,
-      scaffoldBackgroundColor: AppColors.background,
-      canvasColor: AppColors.background,
-      dividerColor: AppColors.border,
-      textTheme: AppTypography.textTheme,
-      primaryTextTheme: AppTypography.textTheme,
-      iconTheme: const IconThemeData(color: AppColors.textSecondary),
-      dividerTheme: const DividerThemeData(
-        color: AppColors.border,
+      brightness: isDark ? Brightness.dark : Brightness.light,
+      colorScheme: colorScheme,
+      scaffoldBackgroundColor: background,
+      canvasColor: background,
+      dividerColor: border,
+      textTheme: textTheme,
+      primaryTextTheme: textTheme,
+      iconTheme: IconThemeData(color: textSecondary),
+      dividerTheme: DividerThemeData(
+        color: border,
         thickness: 1,
         space: 1,
       ),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppColors.primary,
-        linearTrackColor: AppColors.progressTrack,
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: accentColor,
+        linearTrackColor: progressTrack,
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.onPrimary,
-          disabledBackgroundColor: AppColors.surfaceVariant,
-          disabledForegroundColor: AppColors.textMuted,
-          textStyle: AppTypography.textTheme.labelLarge,
+          backgroundColor: accentColor,
+          foregroundColor: onPrimary,
+          disabledBackgroundColor: surfaceVariant,
+          disabledForegroundColor: textMuted,
+          textStyle: textTheme.labelLarge,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -69,13 +98,23 @@ abstract final class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: AppColors.textPrimary,
-          textStyle: AppTypography.textTheme.labelLarge,
+          foregroundColor: textPrimary,
+          textStyle: textTheme.labelLarge,
         ),
       ),
-      splashColor: AppColors.primary.withValues(alpha: 0.08),
-      highlightColor: AppColors.primary.withValues(alpha: 0.04),
-      hoverColor: AppColors.primary.withValues(alpha: 0.04),
+      splashColor: accentColor.withValues(alpha: 0.08),
+      highlightColor: accentColor.withValues(alpha: 0.04),
+      hoverColor: accentColor.withValues(alpha: 0.04),
     );
   }
+
+  static ThemeData get dark => buildTheme(
+        isDark: true,
+        accentColor: AppColors.customPrimary,
+      );
+
+  static ThemeData get light => buildTheme(
+        isDark: false,
+        accentColor: AppColors.customPrimary,
+      );
 }

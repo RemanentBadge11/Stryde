@@ -43,71 +43,74 @@ class _CustomRoutineBuilderScreenState
           const SizedBox(width: AppSpacing.space8),
         ],
       ),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.space16,
-          AppSpacing.space16,
-          AppSpacing.space16,
-          120,
-        ),
-        children: <Widget>[
-          TextField(
-            controller: _nameController,
-            textCapitalization: TextCapitalization.words,
-            style: Theme.of(context).textTheme.titleLarge,
-            decoration: InputDecoration(
-              labelText: 'Routine name',
-              hintText: 'e.g. Upper Strength',
-              filled: true,
-              fillColor: AppColors.surface,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
+      body: SafeArea(
+        top: false,
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.space16,
+            AppSpacing.space16,
+            AppSpacing.space16,
+            120,
           ),
-          const SizedBox(height: AppSpacing.space24),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(
-                  'Exercises',
-                  style: Theme.of(context).textTheme.headlineSmall,
+          children: <Widget>[
+            TextField(
+              controller: _nameController,
+              textCapitalization: TextCapitalization.words,
+              style: Theme.of(context).textTheme.titleLarge,
+              decoration: InputDecoration(
+                labelText: 'Routine name',
+                hintText: 'e.g. Upper Strength',
+                filled: true,
+                fillColor: AppColors.surface,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
               ),
-              Text(
-                '${_exercises.length}',
-                style: Theme.of(context).textTheme.labelLarge,
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.space12),
-          if (_exercises.isEmpty)
-            const EmptyStateCard(
-              icon: Icons.playlist_add_rounded,
-              title: 'Build your routine',
-              message: 'Add exercises and set a target for sets and reps.',
-            )
-          else
-            for (var i = 0; i < _exercises.length; i++) ...<Widget>[
-              _RoutineExerciseCard(
-                prescription: _exercises[i],
-                onEdit: () => _editTarget(i),
-                onRemove: () => setState(() => _exercises.removeAt(i)),
-              ),
-              if (i != _exercises.length - 1)
-                const SizedBox(height: AppSpacing.space8),
-            ],
-          const SizedBox(height: AppSpacing.space16),
-          SizedBox(
-            height: 52,
-            child: OutlinedButton.icon(
-              onPressed: _addExercise,
-              icon: const Icon(Icons.add_rounded),
-              label: const Text('Add Exercise'),
             ),
-          ),
-        ],
+            const SizedBox(height: AppSpacing.space24),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    'Exercises',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                ),
+                Text(
+                  '${_exercises.length}',
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.space12),
+            if (_exercises.isEmpty)
+              const EmptyStateCard(
+                icon: Icons.playlist_add_rounded,
+                title: 'Build your routine',
+                message: 'Add exercises and set a target for sets and reps.',
+              )
+            else
+              for (var i = 0; i < _exercises.length; i++) ...<Widget>[
+                _RoutineExerciseCard(
+                  prescription: _exercises[i],
+                  onEdit: () => _editTarget(i),
+                  onRemove: () => setState(() => _exercises.removeAt(i)),
+                ),
+                if (i != _exercises.length - 1)
+                  const SizedBox(height: AppSpacing.space8),
+              ],
+            const SizedBox(height: AppSpacing.space16),
+            SizedBox(
+              height: 52,
+              child: OutlinedButton.icon(
+                onPressed: _addExercise,
+                icon: const Icon(Icons.add_rounded),
+                label: const Text('Add Exercise'),
+              ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: SafeArea(
         top: false,
@@ -212,6 +215,7 @@ class _RoutineExerciseCard extends StatelessWidget {
         children: <Widget>[
           ExerciseImage(
             imageUrl: exercise.imageUrl,
+            localImage: exercise.localImage,
             semanticLabel: exercise.name,
             width: 72,
             height: 62,
