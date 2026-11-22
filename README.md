@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="concepts/Futuristic%20Stryde%20Emblem%20Logo.png" alt="Stryde Logo" width="160" />
+  <img src="concepts\icon.png" alt="Stryde Logo" width="160" />
 </p>
 
 <h1 align="center">STRYDE</h1>
