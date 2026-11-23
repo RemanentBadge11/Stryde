@@ -1,3 +1,4 @@
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
@@ -19,17 +20,36 @@ class ProgressionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppSurfaceCard(
+      onTap: onRankTap,
       child: Stack(
         children: <Widget>[
           Positioned(
-            right: -16,
-            top: 8,
-            child: Transform.rotate(
-              angle: -0.12,
-              child: Icon(
-                Icons.shield_outlined,
-                size: 118,
-                color: AppColors.primary.withValues(alpha: 0.05),
+            right: 18,
+            top: 50,
+            child: IgnorePointer(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 400),
+                transitionBuilder: (child, animation) => FadeTransition(
+                  opacity: animation,
+                  child: ScaleTransition(
+                    scale: Tween<double>(begin: 0.85, end: 1.0).animate(
+                      CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOutCubic,
+                      ),
+                    ),
+                    child: child,
+                  ),
+                ),
+                child: SizedBox(
+                  key: ValueKey<String>(progression.rank.name),
+                  width: 76,
+                  height: 76,
+                  child: SvgPicture.asset(
+                    progression.rank.assetPath,
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
             ),
           ),
@@ -119,46 +139,43 @@ class ProgressionCard extends StatelessWidget {
                 const SizedBox(height: AppSpacing.space16),
                 const Divider(),
                 const SizedBox(height: AppSpacing.space8),
-                InkWell(
-                  onTap: onRankTap,
-                  borderRadius: BorderRadius.circular(12),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: AppSpacing.space8,
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.military_tech_outlined,
-                          size: 20,
-                          color: AppColors.textSecondary,
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: AppSpacing.space8,
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.military_tech_outlined,
+                        size: 20,
+                        color: AppColors.textSecondary,
+                      ),
+                      const SizedBox(width: AppSpacing.space8),
+                      Expanded(
+                        child: Text(
+                          'Rank Progression',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: AppColors.textSecondary,
+                                fontWeight: FontWeight.w500,
+                              ),
                         ),
-                        const SizedBox(width: AppSpacing.space8),
-                        Expanded(
-                          child: Text(
-                            'Rank Progression',
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                          ),
+                      ),
+                      Text(
+                        progression.currentLevel >= UserProgression.maxLevel
+                            ? 'MAX LEVEL'
+                            : '${_formatNumber(progression.xpRemaining)} XP to go',
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: AppColors.textPrimary,
                         ),
-                        Text(
-                          progression.currentLevel >= UserProgression.maxLevel
-                              ? 'MAX LEVEL'
-                              : '${_formatNumber(progression.xpRemaining)} XP to go',
-                          style: Theme.of(context).textTheme.labelLarge
-                              ?.copyWith(color: AppColors.textPrimary),
-                        ),
-                        const SizedBox(width: AppSpacing.space4),
-                        Icon(
-                          Icons.chevron_right_rounded,
-                          size: 20,
-                          color: AppColors.textSecondary,
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: AppSpacing.space4),
+                      Icon(
+                        Icons.chevron_right_rounded,
+                        size: 20,
+                        color: AppColors.textSecondary,
+                      ),
+                    ],
                   ),
                 ),
               ],

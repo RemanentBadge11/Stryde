@@ -199,6 +199,7 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
   static const Duration defaultRestDuration = Duration(seconds: 90);
 
   Timer? _ticker;
+  bool _isFinishing = false;
 
   @override
   ActiveWorkoutState build() {
@@ -208,6 +209,7 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
 
   bool startWorkout(WorkoutRoutine routine, {DateTime? startedAt}) {
     if (state.isOngoing) return false;
+    _isFinishing = false;
 
     final now = startedAt ?? DateTime.now();
     var nextSetId = 0;
@@ -299,9 +301,7 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
     final session = state.session;
     if (!_validExerciseIndex(session, exerciseIndex)) return;
     final exercise = session!.exercises[exerciseIndex];
-    final set = ActiveWorkoutSet(
-      id: session.nextSetId,
-    );
+    final set = ActiveWorkoutSet(id: session.nextSetId);
     _replaceExercise(
       session,
       exerciseIndex,
@@ -539,6 +539,7 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
   }
 
   bool discardWorkout() {
+    _isFinishing = false;
     if (state.session == null) return false;
     _ticker?.cancel();
     _ticker = null;
@@ -547,159 +548,168 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
   }
 
   WorkoutFinishResult? finishWorkout({DateTime? completedAt}) {
+    if (_isFinishing) return null;
     final session = state.session;
     if (session == null) return null;
 
-    final now = completedAt ?? DateTime.now();
-    final exercises = <CompletedWorkoutExercise>[];
-    for (final exercise in session.exercises) {
-      final sets = <CompletedWorkoutSet>[];
-      final type = exercise.exercise.type;
-      for (var i = 0; i < exercise.sets.length; i++) {
-        final set = exercise.sets[i];
-        if (!set.isCompleted) continue;
+    _isFinishing = true;
+    try {
+      final now = completedAt ?? DateTime.now();
+      final exercises = <CompletedWorkoutExercise>[];
+      for (final exercise in session.exercises) {
+        final sets = <CompletedWorkoutSet>[];
+        final type = exercise.exercise.type;
+        for (var i = 0; i < exercise.sets.length; i++) {
+          final set = exercise.sets[i];
+          if (!set.isCompleted) continue;
 
-        double weight = 0;
-        int reps = 0;
-        int? durationSeconds;
-        String? resistanceLevel;
-        double? distance;
-        double? incline;
-        int? steps;
+          double weight = 0;
+          int reps = 0;
+          int? durationSeconds;
+          String? resistanceLevel;
+          double? distance;
+          double? incline;
+          int? steps;
 
-        switch (type) {
-          case 'strength':
-          case 'weighted':
-            weight = double.tryParse(set.weightText.replaceAll(',', '.')) ?? 0;
-            reps = int.tryParse(set.repsText) ?? 0;
-          case 'bodyweight':
-          case 'reps_only_cardio':
-            reps = int.tryParse(set.repsText) ?? 0;
-          case 'time':
-          case 'time_only_cardio':
-          case 'distance_cardio':
-            durationSeconds = _parseDurationSeconds(set.timeText);
-          case 'resistance':
-            resistanceLevel = set.resistanceText.trim();
-            reps = int.tryParse(set.repsText) ?? 0;
-          case 'cardio':
-            durationSeconds = _parseDurationSeconds(set.timeText);
-            distance = double.tryParse(set.distanceText.replaceAll(',', '.'));
-          case 'incline_cardio':
-            incline = double.tryParse(set.inclineText.replaceAll(',', '.'));
-            distance = double.tryParse(set.distanceText.replaceAll(',', '.'));
-            durationSeconds = _parseDurationSeconds(set.timeText);
-          case 'steps_cardio':
-            steps = int.tryParse(set.stepsText);
-            durationSeconds = _parseDurationSeconds(set.timeText);
-          default:
-            weight = double.tryParse(set.weightText.replaceAll(',', '.')) ?? 0;
-            reps = int.tryParse(set.repsText) ?? 0;
+          switch (type) {
+            case 'strength':
+            case 'weighted':
+              weight = double.tryParse(set.weightText.replaceAll(',', '.')) ?? 0;
+              reps = int.tryParse(set.repsText) ?? 0;
+            case 'bodyweight':
+            case 'reps_only_cardio':
+              reps = int.tryParse(set.repsText) ?? 0;
+            case 'time':
+            case 'time_only_cardio':
+            case 'distance_cardio':
+              durationSeconds = _parseDurationSeconds(set.timeText);
+            case 'resistance':
+              resistanceLevel = set.resistanceText.trim();
+              reps = int.tryParse(set.repsText) ?? 0;
+            case 'cardio':
+              durationSeconds = _parseDurationSeconds(set.timeText);
+              distance = double.tryParse(set.distanceText.replaceAll(',', '.'));
+            case 'incline_cardio':
+              incline = double.tryParse(set.inclineText.replaceAll(',', '.'));
+              distance = double.tryParse(set.distanceText.replaceAll(',', '.'));
+              durationSeconds = _parseDurationSeconds(set.timeText);
+            case 'steps_cardio':
+              steps = int.tryParse(set.stepsText);
+              durationSeconds = _parseDurationSeconds(set.timeText);
+            default:
+              weight = double.tryParse(set.weightText.replaceAll(',', '.')) ?? 0;
+              reps = int.tryParse(set.repsText) ?? 0;
+          }
+
+          sets.add(
+            CompletedWorkoutSet(
+              setNumber: i + 1,
+              weightKg: weight,
+              reps: reps,
+              durationSeconds: durationSeconds,
+              resistanceLevel: resistanceLevel,
+              distance: distance,
+              incline: incline,
+              steps: steps,
+            ),
+          );
         }
-
-        sets.add(
-          CompletedWorkoutSet(
-            setNumber: i + 1,
-            weightKg: weight,
-            reps: reps,
-            durationSeconds: durationSeconds,
-            resistanceLevel: resistanceLevel,
-            distance: distance,
-            incline: incline,
-            steps: steps,
-          ),
-        );
+        if (sets.isNotEmpty) {
+          exercises.add(
+            CompletedWorkoutExercise(
+              exerciseId: exercise.exercise.id,
+              exerciseName: exercise.exercise.name,
+              sets: List<CompletedWorkoutSet>.unmodifiable(sets),
+              exerciseType: exercise.exercise.type,
+            ),
+          );
+        }
       }
-      if (sets.isNotEmpty) {
-        exercises.add(
-          CompletedWorkoutExercise(
-            exerciseId: exercise.exercise.id,
-            exerciseName: exercise.exercise.name,
-            sets: List<CompletedWorkoutSet>.unmodifiable(sets),
-            exerciseType: exercise.exercise.type,
-          ),
-        );
-      }
-    }
 
-    final hasCompletedSets = exercises.isNotEmpty;
-    final workout = CompletedWorkout(
-      id: now.microsecondsSinceEpoch.toString(),
-      routineId: session.routine.id,
-      routineName: session.routine.name,
-      startedAt: session.startedAt,
-      completedAt: now,
-      duration: session.elapsedAt(now),
-      exercises: List<CompletedWorkoutExercise>.unmodifiable(exercises),
-    );
+      final hasCompletedSets = exercises.isNotEmpty;
+      final workout = CompletedWorkout(
+        id: now.microsecondsSinceEpoch.toString(),
+        routineId: session.routine.id,
+        routineName: session.routine.name,
+        startedAt: session.startedAt,
+        completedAt: now,
+        duration: session.elapsedAt(now),
+        exercises: List<CompletedWorkoutExercise>.unmodifiable(exercises),
+      );
 
-    // Evaluate PRs against prior history (beat previous max volume: weight * reps)
-    final priorHistory = ref.read(workoutHistoryProvider);
-    final prExercises = <String>[];
-    for (final exercise in exercises) {
-      double previousMaxVol = 0;
-      for (final pastWorkout in priorHistory) {
-        for (final pastEx in pastWorkout.exercises) {
-          if (pastEx.exerciseId == exercise.exerciseId) {
-            for (final pastSet in pastEx.sets) {
-              if (pastSet.volume > previousMaxVol) {
-                previousMaxVol = pastSet.volume;
+      // Evaluate PRs against prior history (beat previous max volume: weight * reps)
+      final priorHistory = ref.read(workoutHistoryProvider);
+      final prExercises = <String>[];
+      for (final exercise in exercises) {
+        double previousMaxVol = 0;
+        for (final pastWorkout in priorHistory) {
+          for (final pastEx in pastWorkout.exercises) {
+            if (pastEx.exerciseId == exercise.exerciseId) {
+              for (final pastSet in pastEx.sets) {
+                if (pastSet.volume > previousMaxVol) {
+                  previousMaxVol = pastSet.volume;
+                }
               }
             }
           }
         }
-      }
-      final hasPr = exercise.sets.any(
-        (s) => s.volume > 0 && s.volume > previousMaxVol,
-      );
-      if (hasPr) {
-        prExercises.add(exercise.exerciseName);
-      }
-    }
-
-    // Initialize today's goals before inserting this workout, so a direct
-    // deep-link still evaluates goals generated from genuinely prior history.
-    ref.read(dailyGoalsProvider);
-    final previousLevel = ref.read(userProgressionProvider).currentLevel;
-    ref.read(workoutHistoryProvider.notifier).addWorkout(workout);
-    final dailyGoals = ref.read(dailyGoalsProvider.notifier);
-    final completedDailyGoals = dailyGoals.evaluateWorkout(workout);
-    dailyGoals.generateFromHistoryIfNeeded();
-    ref.read(loginStreakProvider.notifier).recordActivity(now);
-    final xpAwarded = hasCompletedSets ? workoutXp : 0;
-    if (xpAwarded > 0) {
-      ref.read(userProgressionProvider.notifier).addXp(xpAwarded);
-      ref
-          .read(xpTransactionsProvider.notifier)
-          .log(
-            description: 'Completed ${workout.routineName}',
-            amount: xpAwarded,
-            source: XpSource.workout,
-          );
-    }
-    final newLevel = ref.read(userProgressionProvider).currentLevel;
-    final currentStreak = ref.read(loginStreakProvider).currentStreak;
-    final allWorkouts = ref.read(workoutHistoryProvider);
-    final totalPrs = calculateTotalPrsFromHistory(allWorkouts);
-
-    ref.read(medalsProvider.notifier).evaluateAndUnlock(
-          level: newLevel,
-          streak: currentStreak,
-          totalPrs: totalPrs,
-          hasNewPr: prExercises.isNotEmpty,
+        final hasPr = exercise.sets.any(
+          (s) => s.volume > 0 && s.volume > previousMaxVol,
         );
+        if (hasPr) {
+          prExercises.add(exercise.exerciseName);
+        }
+      }
 
-    _ticker?.cancel();
-    _ticker = null;
-    state = ActiveWorkoutState.idle(now);
-    return WorkoutFinishResult(
-      workout: workout,
-      previousLevel: previousLevel,
-      newLevel: newLevel,
-      completedDailyGoals: completedDailyGoals,
-      xpAwarded: xpAwarded,
-      prExercises: List<String>.unmodifiable(prExercises),
-    );
+      // Initialize today's goals before inserting this workout, so a direct
+      // deep-link still evaluates goals generated from genuinely prior history.
+      ref.read(dailyGoalsProvider);
+      final previousLevel = ref.read(userProgressionProvider).currentLevel;
+      ref.read(workoutHistoryProvider.notifier).addWorkout(workout);
+      final dailyGoals = ref.read(dailyGoalsProvider.notifier);
+      final completedDailyGoals = dailyGoals.evaluateWorkout(workout);
+      dailyGoals.generateFromHistoryIfNeeded();
+      ref.read(loginStreakProvider.notifier).recordActivity(now);
+      final xpAwarded = hasCompletedSets ? workoutXp : 0;
+      if (xpAwarded > 0) {
+        ref.read(userProgressionProvider.notifier).addXp(xpAwarded);
+        ref
+            .read(xpTransactionsProvider.notifier)
+            .log(
+              description: 'Completed ${workout.routineName}',
+              amount: xpAwarded,
+              source: XpSource.workout,
+            );
+      }
+      final newLevel = ref.read(userProgressionProvider).currentLevel;
+      final currentStreak = ref.read(loginStreakProvider).currentStreak;
+      final allWorkouts = ref.read(workoutHistoryProvider);
+      final totalPrs = calculateTotalPrsFromHistory(allWorkouts);
+
+      ref
+          .read(medalsProvider.notifier)
+          .evaluateAndUnlock(
+            level: newLevel,
+            streak: currentStreak,
+            totalPrs: totalPrs,
+            totalWorkouts: allWorkouts.length,
+            hasNewPr: prExercises.isNotEmpty,
+          );
+
+      _ticker?.cancel();
+      _ticker = null;
+      state = ActiveWorkoutState.idle(now);
+      return WorkoutFinishResult(
+        workout: workout,
+        previousLevel: previousLevel,
+        newLevel: newLevel,
+        completedDailyGoals: completedDailyGoals,
+        xpAwarded: xpAwarded,
+        prExercises: List<String>.unmodifiable(prExercises),
+      );
+    } finally {
+      _isFinishing = false;
+    }
   }
 
   void _startTicker() {

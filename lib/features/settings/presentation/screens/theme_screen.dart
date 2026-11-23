@@ -27,9 +27,9 @@ class ThemeScreen extends ConsumerWidget {
         ),
         title: Text(
           'Themes',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         ),
         centerTitle: false,
       ),
@@ -44,9 +44,9 @@ class ThemeScreen extends ConsumerWidget {
             Text(
               'APPEARANCE',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    letterSpacing: 1.0,
-                  ),
+                color: AppColors.textSecondary,
+                letterSpacing: 1.0,
+              ),
             ),
             const SizedBox(height: AppSpacing.space12),
             AppSurfaceCard(
@@ -61,7 +61,9 @@ class ThemeScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
-                      isDark ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
+                      isDark
+                          ? Icons.dark_mode_outlined
+                          : Icons.light_mode_outlined,
                       size: 22,
                       color: AppColors.textPrimary,
                     ),
@@ -73,16 +75,16 @@ class ThemeScreen extends ConsumerWidget {
                       children: <Widget>[
                         Text(
                           isDark ? 'Dark Mode' : 'Light Mode',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          isDark ? 'Monochrome true-black' : 'Clean high-contrast light',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: AppColors.textSecondary,
-                              ),
+                          isDark
+                              ? 'Monochrome true-black'
+                              : 'Clean high-contrast light',
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: AppColors.textSecondary),
                         ),
                       ],
                     ),
@@ -91,7 +93,9 @@ class ThemeScreen extends ConsumerWidget {
                     key: const ValueKey<String>('theme-mode-switch'),
                     value: isDark,
                     activeThumbColor: themeState.accentColor,
-                    activeTrackColor: themeState.accentColor.withValues(alpha: 0.35),
+                    activeTrackColor: themeState.accentColor.withValues(
+                      alpha: 0.35,
+                    ),
                     inactiveThumbColor: AppColors.textSecondary,
                     inactiveTrackColor: AppColors.surfaceVariant,
                     onChanged: (val) {
@@ -107,9 +111,9 @@ class ThemeScreen extends ConsumerWidget {
             Text(
               'ACCENT COLOR',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    letterSpacing: 1.0,
-                  ),
+                color: AppColors.textSecondary,
+                letterSpacing: 1.0,
+              ),
             ),
             const SizedBox(height: AppSpacing.space12),
             AppSurfaceCard(
@@ -120,15 +124,15 @@ class ThemeScreen extends ConsumerWidget {
                   Text(
                     'Color Accent',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'Customizes buttons, progress indicators, and checkmarks.',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.space20),
                   Wrap(
@@ -137,14 +141,20 @@ class ThemeScreen extends ConsumerWidget {
                     children: <Widget>[
                       for (final option in kAccentColors)
                         _ColorCircle(
-                          key: ValueKey<String>('accent-color-${option.name.toLowerCase()}'),
+                          key: ValueKey<String>(
+                            'accent-color-${option.name.toLowerCase()}',
+                          ),
                           option: option,
-                          isSelected: themeState.accentColorHex.toUpperCase() ==
+                          isSelected:
+                              themeState.accentColorHex.toUpperCase() ==
                                   option.hex.toUpperCase() ||
                               themeState.accentColor.toARGB32() ==
                                   option.color.toARGB32(),
                           onTap: () {
-                            themeNotifier.setAccentColor(option.color, option.hex);
+                            themeNotifier.setAccentColor(
+                              option.color,
+                              option.hex,
+                            );
                           },
                         ),
                     ],
@@ -156,9 +166,9 @@ class ThemeScreen extends ConsumerWidget {
             Text(
               'PREVIEW',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    letterSpacing: 1.0,
-                  ),
+                color: AppColors.textSecondary,
+                letterSpacing: 1.0,
+              ),
             ),
             const SizedBox(height: AppSpacing.space12),
             AppSurfaceCard(
@@ -240,7 +250,8 @@ class _ColorCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWhite = option.color.toARGB32() == const Color(0xFFFFFFFF).toARGB32();
+    final isWhite =
+        option.color.toARGB32() == const Color(0xFFFFFFFF).toARGB32();
     final checkColor = (option.color.computeLuminance() > 0.5)
         ? Colors.black
         : Colors.white;
@@ -253,7 +264,9 @@ class _ColorCircle extends StatelessWidget {
         message: option.name,
         child: GestureDetector(
           onTap: onTap,
-          child: Container(
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOutCubic,
             width: 44,
             height: 44,
             decoration: BoxDecoration(
@@ -262,8 +275,8 @@ class _ColorCircle extends StatelessWidget {
               border: Border.all(
                 color: isSelected
                     ? (isWhite && !AppColors.isDark
-                        ? Colors.black
-                        : AppColors.textPrimary)
+                          ? Colors.black
+                          : AppColors.textPrimary)
                     : (isWhite ? AppColors.borderStrong : Colors.transparent),
                 width: isSelected ? 3.0 : 1.5,
               ),
@@ -277,9 +290,17 @@ class _ColorCircle extends StatelessWidget {
                     ]
                   : null,
             ),
-            child: isSelected
-                ? Icon(Icons.check_rounded, size: 22, color: checkColor)
-                : null,
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 180),
+              child: isSelected
+                  ? Icon(
+                      Icons.check_rounded,
+                      key: const ValueKey<bool>(true),
+                      size: 22,
+                      color: checkColor,
+                    )
+                  : const SizedBox.shrink(),
+            ),
           ),
         ),
       ),

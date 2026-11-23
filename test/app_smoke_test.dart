@@ -54,8 +54,8 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('LEVEL 1'), findsOneWidget);
-    expect(find.text('Fresher'), findsOneWidget);
-    expect(find.text('0 / 500 XP', findRichText: true), findsOneWidget);
+    expect(find.text('Initiate'), findsOneWidget);
+    expect(find.text('0 / 100 XP', findRichText: true), findsOneWidget);
     expect(find.text('Habits'), findsOneWidget);
     expect(find.text('Weekly Quests'), findsOneWidget);
     expect(find.text('Daily Goals'), findsOneWidget);
@@ -102,7 +102,7 @@ void main() {
 
     await tester.tap(find.text('Walk 10,000 steps'));
     await tester.pump();
-    expect(find.text('30 / 500 XP', findRichText: true), findsOneWidget);
+    expect(find.text('30 / 100 XP', findRichText: true), findsOneWidget);
     expect(find.textContaining('+30 XP'), findsWidgets);
     expect(
       find.descendant(
@@ -310,17 +310,18 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byTooltip('Start empty workout'), findsOneWidget);
     expect(tester.getSize(workoutControl).width, 60);
-    expect(find.text('0 / 500 XP', findRichText: true), findsOneWidget);
+    expect(find.text('0 / 100 XP', findRichText: true), findsOneWidget);
 
     await tester.tap(find.text('Rank Progression'));
     await tester.pumpAndSettle();
     expect(find.text('The climb'), findsOneWidget);
     expect(find.text('All Ranks'), findsOneWidget);
-    expect(find.text('Fresher'), findsWidgets);
+    expect(find.text('Initiate'), findsWidgets);
     expect(find.text('Rising Star'), findsOneWidget);
     expect(find.text('Locked In'), findsOneWidget);
-    expect(find.text('More Coming Soon'), findsOneWidget);
     expect(find.text('CURRENT'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('Godslayer'), 200);
+    expect(find.text('Godslayer'), findsOneWidget);
   });
 
   testWidgets('finishing a workout awards XP and writes the ledger', (
@@ -372,7 +373,7 @@ void main() {
 
     await tester.tap(find.byTooltip('Finish workout'));
     await tester.pumpAndSettle();
-    expect(find.text('Workout Complete'), findsOneWidget);
+    expect(find.text('Level Up'), findsOneWidget);
     await tester.tap(find.text('Back Home'));
     await tester.pumpAndSettle();
     if (find.text('NEW PR!').evaluate().isNotEmpty) {
@@ -380,7 +381,7 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    expect(find.text('100 / 500 XP', findRichText: true), findsOneWidget);
+    expect(find.text('0 / 150 XP', findRichText: true), findsOneWidget);
 
     await tester.tap(find.text('Stats'));
     await tester.pumpAndSettle();
@@ -407,7 +408,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Good Morning'), findsOneWidget);
-    expect(find.text('0 / 500 XP', findRichText: true), findsOneWidget);
+    expect(find.text('0 / 100 XP', findRichText: true), findsOneWidget);
     expect(find.byTooltip('Start empty workout'), findsOneWidget);
 
     await tester.tap(find.text('Stats'));
@@ -439,7 +440,7 @@ void main() {
       await tester.tap(find.text('NEW PR!'));
       await tester.pumpAndSettle();
     }
-    expect(find.text('0 / 500 XP', findRichText: true), findsOneWidget);
+    expect(find.text('0 / 100 XP', findRichText: true), findsOneWidget);
 
     await tester.tap(find.text('Stats'));
     await tester.pumpAndSettle();

@@ -2,13 +2,18 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:stryde/core/database/local_cache_service.dart';
 import 'package:stryde/core/providers/loading_flag_notifier.dart';
+import 'package:stryde/core/sync/sync_service.dart';
 import 'package:stryde/features/auth/presentation/providers/auth_provider.dart';
 import 'package:stryde/features/home/presentation/providers/login_streak_provider.dart';
 import 'package:stryde/features/medals/presentation/providers/medals_provider.dart';
 import 'package:stryde/features/profile/data/profile_repository.dart';
+import 'package:stryde/features/progression/data/xp_history_repository.dart';
 import 'package:stryde/features/progression/domain/entities/rank.dart';
 import 'package:stryde/features/progression/domain/entities/user_progression.dart';
+import 'package:stryde/features/progression/domain/services/xp_progression_engine.dart';
+import 'package:stryde/features/progression/presentation/providers/global_notification_provider.dart';
 
 final userProgressionProvider =
     NotifierProvider<UserProgressionNotifier, UserProgression>(
@@ -31,7 +36,10 @@ class UserProgressionNotifier extends Notifier<UserProgression> {
   UserProgression build() {
     final user = ref.read(currentUserProvider);
     _activeUserId = user?.id;
-    if (user != null && _repository != null) {
+    final shouldHydrate = user != null && _repository != null;
+    _hydrated = !shouldHydrate;
+
+    if (shouldHydrate) {
       Future.microtask(() {
         if (_activeUserId == user.id) {
           ref.read(userProgressionLoadingProvider.notifier).setLoading(true);
@@ -53,13 +61,13 @@ class UserProgressionNotifier extends Notifier<UserProgression> {
 
     _activeUserId = userId;
     _hydratingUserId = null;
-    _hydrated = false;
+    final shouldHydrate = userId != null && _repository != null;
+    _hydrated = !shouldHydrate;
     _pendingXp = 0;
     state = const UserProgression(currentLevel: 1, currentXp: 0);
 
-    final loading = userId != null && _repository != null;
-    ref.read(userProgressionLoadingProvider.notifier).setLoading(loading);
-    if (loading) unawaited(_hydrate(userId));
+    ref.read(userProgressionLoadingProvider.notifier).setLoading(shouldHydrate);
+    if (shouldHydrate) unawaited(_hydrate(userId));
   }
 
   Future<void> _hydrate(String userId) async {
@@ -75,18 +83,57 @@ class UserProgressionNotifier extends Notifier<UserProgression> {
     _hydratingUserId = userId;
 
     try {
-      final profile = await repository.fetch(userId);
+      final profile = await repository.getOrFetchProfile(userId);
       if (_activeUserId != userId) return;
 
       final pendingXp = _pendingXp;
-      final loaded = UserProgression(
-        currentLevel: (profile?.level ?? 1).clamp(1, UserProgression.maxLevel),
-        currentXp: (profile?.xp ?? 0).clamp(0, UserProgression.xpPerLevel),
-        skillPoints: (profile?.skillPoints ?? 0).clamp(0, 1 << 31),
-      );
+      final existingSkillPoints =
+          (profile?.availableSkillPoints ?? profile?.skillPoints ?? 0).clamp(
+            0,
+            1 << 31,
+          );
+
+      int totalXp = profile?.totalXp ?? 0;
+      if (totalXp <= 0) {
+        final xpHistoryRepo = ref.read(xpHistoryRepositoryProvider);
+        if (xpHistoryRepo != null) {
+          try {
+            final txs = await xpHistoryRepo.fetch(userId);
+            final historyTotal = txs.fold<int>(0, (sum, tx) => sum + tx.amount);
+            if (historyTotal > 0) {
+              totalXp = historyTotal;
+            }
+          } catch (_) {}
+        }
+      }
+
+      final UserProgression loaded;
+      if (totalXp > 0) {
+        loaded = XpProgressionEngine.progressionFromTotalXp(
+          totalXp,
+          skillPoints: existingSkillPoints,
+        );
+      } else {
+        loaded = XpProgressionEngine.recalculateFromOldProgression(
+          oldLevel: profile?.level ?? 1,
+          oldXp: profile?.xp ?? 0,
+          existingSkillPoints: existingSkillPoints,
+        );
+      }
+      final previousLevel = loaded.currentLevel;
       state = _addXpTo(loaded, pendingXp);
       _pendingXp = 0;
       _hydrated = true;
+
+      if (pendingXp > 0 && state.currentLevel > previousLevel) {
+        final notifications = calculateProgressionNotifications(
+          fromLevel: previousLevel,
+          toLevel: state.currentLevel,
+        );
+        if (notifications.isNotEmpty) {
+          ref.read(globalNotificationProvider.notifier).enqueue(notifications);
+        }
+      }
 
       ref
           .read(loginStreakProvider.notifier)
@@ -95,10 +142,18 @@ class UserProgressionNotifier extends Notifier<UserProgression> {
             lastActivityOn: profile?.lastActivityOn,
           );
 
-      if (pendingXp > 0) _queuePersist();
+      if ((profile?.totalXp == null || profile!.totalXp! <= 0) &&
+          state.totalXp > 0) {
+        _queuePersist();
+      } else if (pendingXp > 0) {
+        _queuePersist();
+      }
       ref
           .read(medalsProvider.notifier)
           .evaluateAndUnlock(level: state.currentLevel);
+      unawaited(
+        ref.read(syncServiceProvider.notifier).reconcileProfile(userId),
+      );
     } catch (_) {
       if (_activeUserId == userId) {
         final shouldPersist = _pendingXp > 0;
@@ -118,7 +173,20 @@ class UserProgressionNotifier extends Notifier<UserProgression> {
   void addXp(int amount) {
     if (amount <= 0) return;
 
+    final oldLevel = state.currentLevel;
     state = _addXpTo(state, amount);
+    final newLevel = state.currentLevel;
+
+    if (_hydrated && newLevel > oldLevel) {
+      final notifications = calculateProgressionNotifications(
+        fromLevel: oldLevel,
+        toLevel: newLevel,
+      );
+      if (notifications.isNotEmpty) {
+        ref.read(globalNotificationProvider.notifier).enqueue(notifications);
+      }
+    }
+
     ref
         .read(medalsProvider.notifier)
         .evaluateAndUnlock(level: state.currentLevel);
@@ -138,8 +206,8 @@ class UserProgressionNotifier extends Notifier<UserProgression> {
     var bonusSkillPoints = 0;
 
     while (level < UserProgression.maxLevel &&
-        xp >= UserProgression.xpPerLevel) {
-      xp -= UserProgression.xpPerLevel;
+        xp >= XpProgressionEngine.xpRequiredForLevel(level)) {
+      xp -= XpProgressionEngine.xpRequiredForLevel(level);
       level += 1;
       levelsGained += 1;
       if (Ranks.breakthroughLevels.contains(level)) {
@@ -148,12 +216,13 @@ class UserProgressionNotifier extends Notifier<UserProgression> {
     }
 
     if (level >= UserProgression.maxLevel) {
-      xp = xp.clamp(0, UserProgression.xpPerLevel).toInt();
+      xp = xp.clamp(0, XpProgressionEngine.xpRequiredForLevel(level)).toInt();
     }
 
     return progression.copyWith(
       currentLevel: level,
       currentXp: xp,
+      totalXp: progression.totalXp + amount,
       skillPoints: progression.skillPoints + levelsGained + bonusSkillPoints,
       levelUpRevision: progression.levelUpRevision + (levelsGained > 0 ? 1 : 0),
     );
@@ -161,20 +230,56 @@ class UserProgressionNotifier extends Notifier<UserProgression> {
 
   void _queuePersist() {
     final userId = _activeUserId;
-    final repository = _repository;
-    if (userId == null || repository == null) return;
+    if (userId == null) return;
 
     final xp = state.currentXp;
     final level = state.currentLevel;
     final skillPoints = state.skillPoints;
+    final totalXp = state.totalXp;
+    final localCache = ref.read(localCacheServiceProvider);
+
     _persistenceQueue = _persistenceQueue.then((_) async {
       try {
-        await repository.saveProgression(
-          userId: userId,
+        final repo = _repository;
+        if (repo != null) {
+          try {
+            await repo.saveProgression(
+              userId: userId,
+              xp: xp,
+              level: level,
+              skillPoints: skillPoints,
+              totalXp: totalXp,
+              availableSkillPoints: skillPoints,
+            );
+          } catch (_) {}
+        }
+
+        final now = DateTime.now();
+        await localCache.updateCachedProfile(
+          userId,
           xp: xp,
           level: level,
           skillPoints: skillPoints,
+          totalXp: totalXp,
+          availableSkillPoints: skillPoints,
+          lastUpdated: now,
         );
+        await localCache.enqueue(
+          entityType: 'profile',
+          action: 'update',
+          payload: <String, dynamic>{
+            'userId': userId,
+            'values': <String, dynamic>{
+              'xp': xp,
+              'level': level,
+              'skill_points': skillPoints,
+              'available_skill_points': skillPoints,
+              'total_xp': totalXp,
+              'updated_at': now.toUtc().toIso8601String(),
+            },
+          },
+        );
+        unawaited(ref.read(syncServiceProvider.notifier).syncPending());
       } catch (_) {
         // Keep the optimistic local progression while offline.
       }

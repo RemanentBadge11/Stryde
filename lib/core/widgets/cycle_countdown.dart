@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:material_ui/material_ui.dart';
 import 'package:stryde/core/theme/app_colors.dart';
+import 'package:stryde/core/theme/app_typography.dart';
 
 /// A compact live countdown used by the habit, quest, and daily-goal cycles.
 class CycleCountdown extends StatefulWidget {
@@ -69,17 +70,13 @@ class _CycleCountdownState extends State<CycleCountdown> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Icon(
-          Icons.timer_outlined,
-          size: 13,
-          color: AppColors.textSecondary,
-        ),
+        Icon(Icons.timer_outlined, size: 13, color: AppColors.textSecondary),
         const SizedBox(width: 4),
         Text(
           '${widget.prefix} ${_formatDuration(_remaining)}',
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
             color: AppColors.textSecondary,
-            fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+            fontFeatures: AppTypography.tabularFontFeatures,
           ),
         ),
       ],

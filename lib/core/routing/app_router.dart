@@ -10,6 +10,7 @@ import 'package:stryde/features/medals/presentation/screens/medals_screen.dart';
 import 'package:stryde/features/profile/presentation/screens/profile_screen.dart';
 import 'package:stryde/features/progression/presentation/screens/rank_progression_screen.dart';
 import 'package:stryde/features/routines/data/mock_workout_data.dart';
+import 'package:stryde/features/routines/domain/entities/mastery_routine_definition.dart';
 import 'package:stryde/features/routines/domain/entities/workout_routine.dart';
 import 'package:stryde/features/routines/presentation/screens/custom_routine_builder_screen.dart';
 import 'package:stryde/features/routines/presentation/screens/routine_detail_screen.dart';
@@ -21,14 +22,17 @@ import 'package:stryde/features/stats/presentation/screens/stats_screen.dart';
 import 'package:stryde/features/workout_history/presentation/screens/workout_history_detail_screen.dart';
 import 'package:stryde/features/workout_logging/presentation/screens/active_workout_screen.dart';
 
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+
 /// Notifies the router when the auth session changes so the redirect guard
 /// is re-evaluated (sign in, sign out, session refresh, ...).
 final ValueNotifier<bool> appRouterRefreshListenable = ValueNotifier<bool>(
   false,
 );
 
-GoRouter createAppRouter() {
+GoRouter createAppRouter({GlobalKey<NavigatorState>? navigatorKey}) {
   return GoRouter(
+    navigatorKey: navigatorKey ?? rootNavigatorKey,
     initialLocation: '/home',
     refreshListenable: appRouterRefreshListenable,
     redirect: (BuildContext context, GoRouterState state) {
@@ -101,11 +105,13 @@ GoRouter createAppRouter() {
                     path: 'routine/:routineId',
                     name: 'routine-detail',
                     builder: (context, state) {
+                      final routineId = state.pathParameters['routineId'] ?? '';
                       final routine = state.extra is WorkoutRoutine
                           ? state.extra! as WorkoutRoutine
-                          : MockWorkoutData.routineById(
-                              state.pathParameters['routineId'] ?? '',
-                            );
+                          : (MockWorkoutData.routineById(routineId) ??
+                                MasteryRoutineDefinitions.findDefaultRoutineById(
+                                  routineId,
+                                ));
                       return routine == null
                           ? const _NotFoundScreen(message: 'Routine not found')
                           : RoutineDetailScreen(routine: routine);
@@ -169,7 +175,10 @@ GoRouter createAppRouter() {
               ? state.extra! as WorkoutRoutine
               : routineId == MockWorkoutData.freeTraining.id
               ? MockWorkoutData.freeTraining
-              : MockWorkoutData.routineById(routineId);
+              : (MockWorkoutData.routineById(routineId) ??
+                    MasteryRoutineDefinitions.findDefaultRoutineById(
+                      routineId,
+                    ));
           return routine == null
               ? const _NotFoundScreen(message: 'Workout not found')
               : ActiveWorkoutScreen(routine: routine);
@@ -246,7 +255,10 @@ class _NotFoundScreen extends StatelessWidget {
       appBar: AppBar(backgroundColor: AppColors.background),
       body: SafeArea(
         child: Center(
-          child: Text(message, style: Theme.of(context).textTheme.headlineSmall),
+          child: Text(
+            message,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
         ),
       ),
     );

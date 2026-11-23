@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:stryde/core/routing/app_router.dart';
+import 'package:stryde/core/sync/sync_service.dart';
 import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_theme.dart';
 import 'package:stryde/features/exercises/presentation/providers/exercise_library_provider.dart';
@@ -15,6 +16,7 @@ import 'package:stryde/features/profile/presentation/providers/user_profile_prov
 import 'package:stryde/features/progression/presentation/providers/skill_allocations_provider.dart';
 import 'package:stryde/features/progression/presentation/providers/user_progression_provider.dart';
 import 'package:stryde/features/progression/presentation/providers/xp_transactions_provider.dart';
+import 'package:stryde/features/progression/presentation/widgets/global_notification_banner.dart';
 import 'package:stryde/features/settings/presentation/providers/theme_provider.dart';
 import 'package:stryde/features/workout_history/presentation/providers/workout_history_provider.dart';
 
@@ -78,6 +80,7 @@ class _StrydeAppState extends ConsumerState<StrydeApp> {
     ref.watch(dailyGoalsProvider);
     ref.watch(profileGoalsProvider);
     ref.watch(userProfileProvider);
+    ref.watch(syncServiceProvider);
     final themeState = ref.watch(themeProvider);
 
     return MaterialApp.router(
@@ -93,6 +96,11 @@ class _StrydeAppState extends ConsumerState<StrydeApp> {
       ),
       themeMode: themeState.themeMode,
       routerConfig: _router,
+      builder: (context, child) {
+        return GlobalNotificationOverlay(
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
     );
   }
 }

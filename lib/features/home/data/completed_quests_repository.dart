@@ -48,8 +48,9 @@ class CompletedQuestsRepository {
   }
 }
 
-final completedQuestsRepositoryProvider =
-    Provider<CompletedQuestsRepository?>((ref) {
+final completedQuestsRepositoryProvider = Provider<CompletedQuestsRepository?>((
+  ref,
+) {
   final supabase = ref.watch(supabaseProvider);
   return supabase == null ? null : CompletedQuestsRepository(supabase);
 });

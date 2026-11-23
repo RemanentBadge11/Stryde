@@ -309,6 +309,8 @@ class _ExerciseListTile extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
+        splashColor: AppColors.primary.withValues(alpha: 0.08),
+        highlightColor: AppColors.primary.withValues(alpha: 0.04),
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.space8),
           child: Row(
@@ -344,13 +346,32 @@ class _ExerciseListTile extends StatelessWidget {
               ),
               const SizedBox(width: AppSpacing.space8),
               if (isExcluded)
-                Text('ADDED', style: Theme.of(context).textTheme.labelSmall)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.space8,
+                    vertical: AppSpacing.space4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.surfaceVariant,
+                    borderRadius: BorderRadius.circular(99),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  child: Text(
+                    'ADDED',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      letterSpacing: 0.8,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                )
               else
                 Icon(
                   isSelectionMode
                       ? Icons.add_circle_outline_rounded
                       : Icons.arrow_forward_rounded,
-                  color: AppColors.textPrimary,
+                  color: isSelectionMode
+                      ? AppColors.primary
+                      : AppColors.textPrimary,
                 ),
             ],
           ),
@@ -410,6 +431,17 @@ void _showExerciseDetails(BuildContext context, Exercise exercise) {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
+          Align(
+            child: Container(
+              width: 42,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: AppSpacing.space20),
+              decoration: BoxDecoration(
+                color: AppColors.borderStrong,
+                borderRadius: BorderRadius.circular(99),
+              ),
+            ),
+          ),
           ExerciseImage(
             imageUrl: exercise.imageUrl,
             localImage: exercise.localImage,

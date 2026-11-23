@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
+import 'package:stryde/core/theme/app_typography.dart';
 import 'package:stryde/core/widgets/app_surface_card.dart';
 import 'package:stryde/core/widgets/loading_state_card.dart';
 import 'package:stryde/core/widgets/section_header.dart';
@@ -40,7 +41,10 @@ class ProfileScreen extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text('Profile', style: Theme.of(context).textTheme.displayMedium),
+                Text(
+                  'Profile',
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
                 IconButton(
                   key: const ValueKey<String>('profile-settings-button'),
                   icon: const Icon(Icons.settings_outlined, size: 26),
@@ -101,9 +105,8 @@ class ProfileScreen extends ConsumerWidget {
                         const SizedBox(height: 2),
                         Text(
                           'Milestones & Achievements',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(color: AppColors.textSecondary),
                         ),
                       ],
                     ),
@@ -139,7 +142,10 @@ class ProfileScreen extends ConsumerWidget {
                       ProfileGoalsNotifier.stepIncrement,
                     ),
                     onManualSubmit: (text) {
-                      final clean = text.replaceAll(',', '').replaceAll(' ', '').trim();
+                      final clean = text
+                          .replaceAll(',', '')
+                          .replaceAll(' ', '')
+                          .trim();
                       final parsed = int.tryParse(clean);
                       if (parsed != null && parsed > 0) {
                         notifier.setGoals(steps: parsed);
@@ -161,7 +167,11 @@ class ProfileScreen extends ConsumerWidget {
                       ProfileGoalsNotifier.waterIncrement,
                     ),
                     onManualSubmit: (text) {
-                      final clean = text.replaceAll(',', '.').replaceAll(' ', '').replaceAll(RegExp(r'[Ll]'), '').trim();
+                      final clean = text
+                          .replaceAll(',', '.')
+                          .replaceAll(' ', '')
+                          .replaceAll(RegExp(r'[Ll]'), '')
+                          .trim();
                       final parsed = double.tryParse(clean);
                       if (parsed != null && parsed > 0) {
                         notifier.setGoals(water: parsed);
@@ -183,7 +193,10 @@ class ProfileScreen extends ConsumerWidget {
                       ProfileGoalsNotifier.proteinIncrement,
                     ),
                     onManualSubmit: (text) {
-                      final clean = text.replaceAll(RegExp(r'[Gg]'), '').replaceAll(' ', '').trim();
+                      final clean = text
+                          .replaceAll(RegExp(r'[Gg]'), '')
+                          .replaceAll(' ', '')
+                          .trim();
                       final parsed = int.tryParse(clean);
                       if (parsed != null && parsed > 0) {
                         notifier.setGoals(protein: parsed);
@@ -289,6 +302,10 @@ class _IdentityCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.primary,
               shape: BoxShape.circle,
+              border: Border.all(
+                color: AppColors.borderStrong.withValues(alpha: 0.4),
+                width: 1.5,
+              ),
             ),
             clipBehavior: Clip.antiAlias,
             alignment: Alignment.center,
@@ -431,13 +448,17 @@ class _GoalStepperState extends State<_GoalStepper> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(widget.label, style: Theme.of(context).textTheme.titleSmall),
+                Text(
+                  widget.label,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
                 const SizedBox(height: 2),
                 Text(
                   '${widget.value} ${widget.unit}',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.copyWith(color: AppColors.textPrimary),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontFeatures: AppTypography.tabularFontFeatures,
+                  ),
                 ),
               ],
             ),
@@ -467,8 +488,9 @@ class _GoalStepperState extends State<_GoalStepper> {
               textInputAction: TextInputAction.done,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                fontWeight: FontWeight.w600,
+                fontFeatures: AppTypography.tabularFontFeatures,
+              ),
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 4,

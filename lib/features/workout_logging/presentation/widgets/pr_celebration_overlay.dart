@@ -26,10 +26,10 @@ class PrCelebrationOverlay extends StatefulWidget {
         barrierDismissible: false,
         pageBuilder: (context, animation, secondaryAnimation) =>
             PrCelebrationOverlay(
-          exerciseNames: exerciseNames,
-          onDismiss: () => Navigator.of(context).pop(),
-          accentColor: accentColor,
-        ),
+              exerciseNames: exerciseNames,
+              onDismiss: () => Navigator.of(context).pop(),
+              accentColor: accentColor,
+            ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
         },
@@ -81,7 +81,8 @@ class _PrCelebrationOverlayState extends State<PrCelebrationOverlay>
         ? widget.exerciseNames.first
         : widget.exerciseNames.join(' & ');
 
-    final accent = widget.accentColor ??
+    final accent =
+        widget.accentColor ??
         (Theme.of(context).colorScheme.primary != Colors.transparent
             ? Theme.of(context).colorScheme.primary
             : AppColors.primary);

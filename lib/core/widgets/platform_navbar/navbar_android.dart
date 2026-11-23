@@ -94,7 +94,9 @@ class PlatformNavbar extends StatelessWidget {
               height: _barHeight + bottomInset,
               padding: EdgeInsets.only(bottom: bottomInset),
               decoration: BoxDecoration(
-                color: AppColors.background,
+                color: AppColors.isDark
+                    ? AppColors.background
+                    : const Color(0xFFF4F4F6),
                 border: Border(top: BorderSide(color: AppColors.border)),
               ),
               child: LayoutBuilder(
@@ -153,7 +155,30 @@ class NavSlot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = isSelected ? AppColors.primary : AppColors.textMuted;
+    final isDark = AppColors.isDark;
+    final Color iconColor;
+    final Color textColor;
+    final Color indicatorColor;
+
+    if (isDark) {
+      iconColor = isSelected ? AppColors.primary : AppColors.textMuted;
+      textColor = iconColor;
+      indicatorColor = AppColors.primary;
+    } else {
+      // In light mode: selected icons must remain visible, all navbar icons must be black rather than grey or white
+      iconColor = Colors.black;
+      final isWhiteAccent = AppColors.primary.computeLuminance() > 0.85;
+      indicatorColor = isWhiteAccent ? Colors.black : AppColors.primary;
+      textColor = isSelected ? Colors.black : const Color(0xFF222222);
+    }
+
+    final iconShadows = <Shadow>[
+      Shadow(
+        color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.12),
+        offset: const Offset(0, 1),
+        blurRadius: 2,
+      ),
+    ];
 
     return Semantics(
       key: ValueKey<String>('bottom-nav-${destination.slotKey}'),
@@ -164,22 +189,42 @@ class NavSlot extends StatelessWidget {
       excludeSemantics: true,
       child: InkWell(
         onTap: onTap,
+        splashColor: (isDark ? AppColors.primary : Colors.black).withValues(
+          alpha: 0.08,
+        ),
+        highlightColor: (isDark ? AppColors.primary : Colors.black).withValues(
+          alpha: 0.04,
+        ),
         child: Padding(
           padding: const EdgeInsets.only(top: 30),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(destination.icon, size: 20, color: color),
+              Icon(
+                destination.icon,
+                size: 20,
+                color: iconColor,
+                shadows: iconShadows,
+              ),
               const SizedBox(height: 2),
               Text(
                 destination.label,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: color,
+                  color: textColor,
                   fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                   letterSpacing: 0.2,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black.withValues(
+                        alpha: isDark ? 0.25 : 0.06,
+                      ),
+                      offset: const Offset(0, 0.5),
+                      blurRadius: 1,
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 2),
@@ -188,8 +233,17 @@ class NavSlot extends StatelessWidget {
                 width: isSelected ? 16 : 0,
                 height: 2,
                 decoration: BoxDecoration(
-                  color: AppColors.primary,
+                  color: indicatorColor,
                   borderRadius: BorderRadius.circular(2),
+                  boxShadow: isSelected
+                      ? [
+                          BoxShadow(
+                            color: indicatorColor.withValues(alpha: 0.35),
+                            blurRadius: 4,
+                            offset: const Offset(0, 1),
+                          ),
+                        ]
+                      : null,
                 ),
               ),
             ],
@@ -329,7 +383,8 @@ class ActiveWorkoutPill extends StatelessWidget {
         Expanded(
           child: Semantics(
             button: true,
-            label: 'Resume active workout, ${formatNavbarElapsed(elapsed)} elapsed',
+            label:
+                'Resume active workout, ${formatNavbarElapsed(elapsed)} elapsed',
             onTap: onResume,
             excludeSemantics: true,
             child: Tooltip(

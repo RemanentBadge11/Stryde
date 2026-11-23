@@ -66,7 +66,9 @@ class _CustomizeProfileScreenState
       final fileName =
           '${user.id}/avatar_${DateTime.now().millisecondsSinceEpoch}.$extension';
 
-      await supabase.storage.from('avatars').uploadBinary(
+      await supabase.storage
+          .from('avatars')
+          .uploadBinary(
             fileName,
             bytes,
             fileOptions: FileOptions(
@@ -152,9 +154,9 @@ class _CustomizeProfileScreenState
         ),
         title: Text(
           'Customize Profile',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         ),
         centerTitle: false,
       ),
@@ -195,23 +197,23 @@ class _CustomizeProfileScreenState
                               ),
                             )
                           : hasAvatar
-                              ? Image.network(
-                                  avatarUrl,
-                                  fit: BoxFit.cover,
-                                  width: 104,
-                                  height: 104,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Icon(
+                          ? Image.network(
+                              avatarUrl,
+                              fit: BoxFit.cover,
+                              width: 104,
+                              height: 104,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Icon(
                                     Icons.person_rounded,
                                     size: 52,
                                     color: AppColors.onPrimary,
                                   ),
-                                )
-                              : Icon(
-                                  Icons.person_rounded,
-                                  size: 52,
-                                  color: AppColors.onPrimary,
-                                ),
+                            )
+                          : Icon(
+                              Icons.person_rounded,
+                              size: 52,
+                              color: AppColors.onPrimary,
+                            ),
                     ),
                   ),
                   Positioned(
@@ -224,10 +226,7 @@ class _CustomizeProfileScreenState
                         decoration: BoxDecoration(
                           color: AppColors.surfaceVariant,
                           shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppColors.border,
-                            width: 2,
-                          ),
+                          border: Border.all(color: AppColors.border, width: 2),
                         ),
                         child: Icon(
                           Icons.camera_alt_rounded,
@@ -255,9 +254,9 @@ class _CustomizeProfileScreenState
             Text(
               'PROFILE DETAILS',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    letterSpacing: 1.0,
-                  ),
+                color: AppColors.textSecondary,
+                letterSpacing: 1.0,
+              ),
             ),
             const SizedBox(height: AppSpacing.space12),
             AppSurfaceCard(
@@ -268,19 +267,21 @@ class _CustomizeProfileScreenState
                   Text(
                     'Display Name',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'This name will be displayed on the Home greeting and your Profile.',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.space16),
                   TextField(
-                    key: const ValueKey<String>('customize-profile-display-name-input'),
+                    key: const ValueKey<String>(
+                      'customize-profile-display-name-input',
+                    ),
                     controller: _nameController,
                     focusNode: _focusNode,
                     textInputAction: TextInputAction.done,
@@ -318,7 +319,9 @@ class _CustomizeProfileScreenState
                     width: double.infinity,
                     height: 48,
                     child: FilledButton(
-                      key: const ValueKey<String>('customize-profile-save-button'),
+                      key: const ValueKey<String>(
+                        'customize-profile-save-button',
+                      ),
                       onPressed: _isSavingName ? null : _saveDisplayName,
                       style: FilledButton.styleFrom(
                         backgroundColor: AppColors.primary,

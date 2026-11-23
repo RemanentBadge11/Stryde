@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:stryde/core/database/local_cache_service.dart';
 import 'package:stryde/core/providers/loading_flag_notifier.dart';
+import 'package:stryde/core/sync/sync_service.dart';
 import 'package:stryde/features/auth/presentation/providers/auth_provider.dart';
 import 'package:stryde/features/workout_history/data/workout_history_repository.dart';
 import 'package:stryde/features/workout_history/domain/entities/completed_workout.dart';
@@ -29,7 +31,11 @@ class WorkoutHistoryNotifier extends Notifier<List<CompletedWorkout>> {
     final user = ref.read(currentUserProvider);
     _activeUserId = user?.id;
     if (user != null && _repository != null) {
-      ref.read(workoutHistoryLoadingProvider.notifier).setLoading(true);
+      Future.microtask(() {
+        if (_activeUserId == user.id) {
+          ref.read(workoutHistoryLoadingProvider.notifier).setLoading(true);
+        }
+      });
       unawaited(_fetch(user.id));
     }
     ref.listen(currentUserProvider, (_, user) => _handleUserChanged(user));
@@ -54,10 +60,27 @@ class WorkoutHistoryNotifier extends Notifier<List<CompletedWorkout>> {
     if (_activeUserId != userId || _hydrated || _loadingUserId == userId) {
       return;
     }
-    final repository = _repository;
-    if (repository == null) return;
     _loadingUserId = userId;
+    final localCache = ref.read(localCacheServiceProvider);
 
+    // 1. Read from local cache first
+    try {
+      final cached = await localCache.getCachedWorkouts(userId);
+      if (_activeUserId == userId && cached.isNotEmpty) {
+        final pending = List<CompletedWorkout>.of(_pending);
+        state = _merge(pending, cached);
+      }
+    } catch (_) {}
+
+    final repository = _repository;
+    if (repository == null) {
+      _hydrated = true;
+      _loadingUserId = null;
+      ref.read(workoutHistoryLoadingProvider.notifier).setLoading(false);
+      return;
+    }
+
+    // 2. Fetch from remote in background
     try {
       final remote = await repository.fetch(userId);
       if (_activeUserId != userId) return;
@@ -65,6 +88,8 @@ class WorkoutHistoryNotifier extends Notifier<List<CompletedWorkout>> {
       state = _merge(pending, remote);
       _pending.clear();
       _hydrated = true;
+      await localCache.setCachedWorkouts(userId, state);
+
       for (final workout in pending) {
         unawaited(_insert(userId, workout));
       }
@@ -88,29 +113,35 @@ class WorkoutHistoryNotifier extends Notifier<List<CompletedWorkout>> {
   void addWorkout(CompletedWorkout workout) {
     state = <CompletedWorkout>[workout, ...state];
     final userId = _activeUserId;
-    if (userId == null || _repository == null) return;
-    if (!_hydrated) {
-      _pending.add(workout);
-      return;
-    }
+    if (userId == null) return;
+
     unawaited(_insert(userId, workout));
   }
 
   Future<void> _insert(String userId, CompletedWorkout workout) async {
-    final repository = _repository;
-    if (repository == null) return;
+    final localCache = ref.read(localCacheServiceProvider);
     try {
-      final persistedId = await repository.insert(
-        userId: userId,
-        workout: workout,
+      final repo = _repository;
+      if (repo != null) {
+        try {
+          await repo.insert(userId: userId, workout: workout);
+        } catch (_) {}
+      }
+      // 1. Save to local cache first
+      await localCache.saveCachedWorkout(userId, workout);
+      // 2. Add to sync queue
+      await localCache.enqueue(
+        entityType: 'workout',
+        action: 'insert',
+        payload: <String, dynamic>{
+          'userId': userId,
+          'workout': workout.toJson(),
+        },
       );
-      if (_activeUserId != userId) return;
-      state = <CompletedWorkout>[
-        for (final item in state)
-          if (item.id == workout.id) item.copyWith(id: persistedId) else item,
-      ];
+      // 3. Trigger sync worker
+      unawaited(ref.read(syncServiceProvider.notifier).syncPending());
     } catch (_) {
-      // Keep the optimistic workout while offline.
+      // Keep optimistic workout in memory
     }
   }
 

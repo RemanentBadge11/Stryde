@@ -25,7 +25,8 @@ class CompletedQuest {
       userId: row['user_id']?.toString() ?? '',
       questId: row['quest_id']?.toString() ?? '',
       questType: row['quest_type']?.toString() ?? '',
-      completedAt: DateTime.tryParse(row['completed_at']?.toString() ?? '')?.toLocal() ??
+      completedAt:
+          DateTime.tryParse(row['completed_at']?.toString() ?? '')?.toLocal() ??
           DateTime.now(),
     );
   }

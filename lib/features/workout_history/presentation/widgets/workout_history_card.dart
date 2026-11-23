@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
+import 'package:stryde/core/theme/app_typography.dart';
 import 'package:stryde/core/widgets/app_surface_card.dart';
 import 'package:stryde/features/workout_history/domain/entities/completed_workout.dart';
 import 'package:stryde/features/workout_history/presentation/workout_formatters.dart';
@@ -98,7 +99,12 @@ class _Metric extends StatelessWidget {
       children: <Widget>[
         Icon(icon, size: 15, color: AppColors.textSecondary),
         const SizedBox(width: 4),
-        Text(label, style: Theme.of(context).textTheme.labelMedium),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            fontFeatures: AppTypography.tabularFontFeatures,
+          ),
+        ),
       ],
     );
   }

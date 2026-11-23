@@ -67,7 +67,9 @@ class ExerciseImage extends StatelessWidget {
   Widget _buildImage() {
     final assetPath = (localImage != null && localImage!.isNotEmpty)
         ? localImage!
-        : (imageUrl.startsWith('asset:') ? imageUrl.substring('asset:'.length) : null);
+        : (imageUrl.startsWith('asset:')
+              ? imageUrl.substring('asset:'.length)
+              : null);
 
     if (assetPath != null) {
       return Image.asset(

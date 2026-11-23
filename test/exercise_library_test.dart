@@ -42,61 +42,73 @@ void main() {
     }
   });
 
-  test('exercise library has exact types and removes forbidden exercises', () async {
-    final exercises = await loadExerciseLibraryAsset();
-    final byName = {for (final e in exercises) e.name.toLowerCase(): e};
+  test(
+    'exercise library has exact types and removes forbidden exercises',
+    () async {
+      final exercises = await loadExerciseLibraryAsset();
+      final byName = {for (final e in exercises) e.name.toLowerCase(): e};
 
-    // Removed exercises
-    expect(byName.containsKey('jump rope calf bounce'), isFalse);
-    expect(byName.containsKey('good morning'), isFalse);
-    expect(byName.containsKey('seated good morning'), isFalse);
-    expect(byName.containsKey('cable good morning'), isFalse);
+      // Removed exercises
+      expect(byName.containsKey('jump rope calf bounce'), isFalse);
+      expect(byName.containsKey('good morning'), isFalse);
+      expect(byName.containsKey('seated good morning'), isFalse);
+      expect(byName.containsKey('cable good morning'), isFalse);
 
-    // Bodyweight
-    expect(byName['push up']?.type, ExerciseType.bodyweight);
-    expect(byName['pull up']?.type, ExerciseType.bodyweight);
-    expect(byName['chin up']?.type, ExerciseType.bodyweight);
-    expect(byName['pike push up']?.type, ExerciseType.bodyweight);
-    expect(byName['jump rope']?.type, ExerciseType.bodyweight);
-    expect(byName['burpee']?.type, ExerciseType.bodyweight);
-    expect(byName['neck flexion']?.type, ExerciseType.bodyweight);
+      // Bodyweight
+      expect(byName['push up']?.type, ExerciseType.bodyweight);
+      expect(byName['pull up']?.type, ExerciseType.bodyweight);
+      expect(byName['chin up']?.type, ExerciseType.bodyweight);
+      expect(byName['pike push up']?.type, ExerciseType.bodyweight);
+      expect(byName['jump rope']?.type, ExerciseType.bodyweight);
+      expect(byName['burpee']?.type, ExerciseType.bodyweight);
+      expect(byName['neck flexion']?.type, ExerciseType.bodyweight);
 
-    // Time
-    expect(byName['dead hang']?.type, ExerciseType.time);
-    expect(byName['plank']?.type, ExerciseType.time);
-    expect(byName['side plank']?.type, ExerciseType.time);
+      // Time
+      expect(byName['dead hang']?.type, ExerciseType.time);
+      expect(byName['plank']?.type, ExerciseType.time);
+      expect(byName['side plank']?.type, ExerciseType.time);
 
-    // Resistance
-    expect(byName['resistance band lateral raise']?.type, ExerciseType.resistance);
-    expect(byName['banded clamshell']?.type, ExerciseType.resistance);
+      // Resistance
+      expect(
+        byName['resistance band lateral raise']?.type,
+        ExerciseType.resistance,
+      );
+      expect(byName['banded clamshell']?.type, ExerciseType.resistance);
 
-    // Cardio
-    expect(byName['treadmill run']?.type, ExerciseType.cardio);
-    expect(byName['treadmill walk']?.type, ExerciseType.cardio);
+      // Cardio
+      expect(byName['treadmill run']?.type, ExerciseType.cardio);
+      expect(byName['treadmill walk']?.type, ExerciseType.cardio);
 
-    // Incline Cardio
-    expect(byName['incline treadmill walk']?.type, ExerciseType.inclineCardio);
+      // Incline Cardio
+      expect(
+        byName['incline treadmill walk']?.type,
+        ExerciseType.inclineCardio,
+      );
 
-    // Time Only Cardio
-    expect(byName['stationary bike']?.type, ExerciseType.timeOnlyCardio);
-    expect(byName['swimming']?.type, ExerciseType.timeOnlyCardio);
+      // Time Only Cardio
+      expect(byName['stationary bike']?.type, ExerciseType.timeOnlyCardio);
+      expect(byName['swimming']?.type, ExerciseType.timeOnlyCardio);
 
-    // Steps Cardio
-    expect(byName['stair climber']?.type, ExerciseType.stepsCardio);
+      // Steps Cardio
+      expect(byName['stair climber']?.type, ExerciseType.stepsCardio);
 
-    // Distance Cardio
-    expect(byName['shuttle run']?.type, ExerciseType.distanceCardio);
+      // Distance Cardio
+      expect(byName['shuttle run']?.type, ExerciseType.distanceCardio);
 
-    // Weighted variants
-    expect(byName['pull up (weighted)']?.type, ExerciseType.weighted);
-    expect(byName['chin up (weighted)']?.type, ExerciseType.weighted);
-    expect(byName['push up (weighted)']?.type, ExerciseType.weighted);
-    expect(byName['chest dip (weighted)']?.type, ExerciseType.weighted);
+      // Weighted variants
+      expect(byName['pull up (weighted)']?.type, ExerciseType.weighted);
+      expect(byName['chin up (weighted)']?.type, ExerciseType.weighted);
+      expect(byName['push up (weighted)']?.type, ExerciseType.weighted);
+      expect(byName['chest dip (weighted)']?.type, ExerciseType.weighted);
 
-    // Bundled Visuals
-    final pushUp = byName['push up'];
-    expect(pushUp?.localImage, 'assets/Visuals/images/push_up.jpg');
-    expect(pushUp?.hasBundledImage, isTrue);
-    expect(exercises.where((e) => e.localImage != null).length, greaterThanOrEqualTo(190));
-  });
+      // Bundled Visuals
+      final pushUp = byName['push up'];
+      expect(pushUp?.localImage, 'assets/Visuals/images/push_up.jpg');
+      expect(pushUp?.hasBundledImage, isTrue);
+      expect(
+        exercises.where((e) => e.localImage != null).length,
+        greaterThanOrEqualTo(190),
+      );
+    },
+  );
 }

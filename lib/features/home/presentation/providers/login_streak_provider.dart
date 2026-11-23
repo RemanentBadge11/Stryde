@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stryde/core/database/local_cache_service.dart';
+import 'package:stryde/core/sync/sync_service.dart';
 import 'package:stryde/features/auth/presentation/providers/auth_provider.dart';
 import 'package:stryde/features/profile/data/profile_repository.dart';
 
@@ -128,18 +130,46 @@ class LoginStreakNotifier extends Notifier<LoginStreakState> {
 
   void _queuePersist() {
     final userId = _activeUserId;
-    final repository = ref.read(profileRepositoryProvider);
-    if (userId == null || repository == null) return;
+    if (userId == null) return;
 
     final streak = state.streak;
     final lastActivityOn = state.lastActivityOn;
+    final localCache = ref.read(localCacheServiceProvider);
+
     _persistenceQueue = _persistenceQueue.then((_) async {
       try {
-        await repository.saveStreak(
-          userId: userId,
+        final repo = ref.read(profileRepositoryProvider);
+        if (repo != null) {
+          try {
+            await repo.saveStreak(
+              userId: userId,
+              streak: streak,
+              lastActivityOn: lastActivityOn,
+            );
+          } catch (_) {}
+        }
+
+        final now = DateTime.now();
+        await localCache.updateCachedProfile(
+          userId,
           streak: streak,
           lastActivityOn: lastActivityOn,
+          lastUpdated: now,
         );
+        await localCache.enqueue(
+          entityType: 'profile',
+          action: 'update',
+          payload: <String, dynamic>{
+            'userId': userId,
+            'values': <String, dynamic>{
+              'streak': streak,
+              if (lastActivityOn != null)
+                'last_activity_on': lastActivityOn.toUtc().toIso8601String(),
+              'updated_at': now.toUtc().toIso8601String(),
+            },
+          },
+        );
+        unawaited(ref.read(syncServiceProvider.notifier).syncPending());
       } catch (_) {
         // Keep the optimistic local streak while offline.
       }

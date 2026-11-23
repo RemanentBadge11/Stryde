@@ -7,29 +7,33 @@ abstract final class AppTheme {
     required bool isDark,
     required Color accentColor,
   }) {
-    final background =
-        isDark ? const Color(0xFF000000) : const Color(0xFFFFFFFF);
-    final surface =
-        isDark ? const Color(0xFF121212) : const Color(0xFFF5F5F5);
-    final surfaceElevated =
-        isDark ? const Color(0xFF181818) : const Color(0xFFEEEEEE);
-    final surfaceVariant =
-        isDark ? const Color(0xFF1F1F1F) : const Color(0xFFE8E8E8);
-    final textPrimary =
-        isDark ? const Color(0xFFFFFFFF) : const Color(0xFF000000);
-    final textSecondary =
-        isDark ? const Color(0xFFA0A0A0) : const Color(0xFF666666);
-    final textMuted =
-        isDark ? const Color(0xFF6B6B6B) : const Color(0xFF888888);
-    final border =
-        isDark ? const Color(0xFF262626) : const Color(0xFFE0E0E0);
-    final progressTrack =
-        isDark ? const Color(0xFF202020) : const Color(0xFFE0E0E0);
+    final background = isDark
+        ? const Color(0xFF000000)
+        : const Color(0xFFFFFFFF);
+    final surface = isDark ? const Color(0xFF121212) : const Color(0xFFF5F5F5);
+    final surfaceElevated = isDark
+        ? const Color(0xFF181818)
+        : const Color(0xFFEEEEEE);
+    final surfaceVariant = isDark
+        ? const Color(0xFF1F1F1F)
+        : const Color(0xFFE8E8E8);
+    final textPrimary = isDark
+        ? const Color(0xFFFFFFFF)
+        : const Color(0xFF000000);
+    final textSecondary = isDark
+        ? const Color(0xFFA0A0A0)
+        : const Color(0xFF666666);
+    final textMuted = isDark
+        ? const Color(0xFF6B6B6B)
+        : const Color(0xFF888888);
+    final border = isDark ? const Color(0xFF262626) : const Color(0xFFE0E0E0);
+    final progressTrack = isDark
+        ? const Color(0xFF202020)
+        : const Color(0xFFE0E0E0);
 
-    final onPrimary =
-        (accentColor.computeLuminance() > 0.45)
-            ? const Color(0xFF000000)
-            : const Color(0xFFFFFFFF);
+    final onPrimary = (accentColor.computeLuminance() > 0.45)
+        ? const Color(0xFF000000)
+        : const Color(0xFFFFFFFF);
 
     final colorScheme = ColorScheme(
       brightness: isDark ? Brightness.dark : Brightness.light,
@@ -67,6 +71,7 @@ abstract final class AppTheme {
 
     return ThemeData(
       useMaterial3: true,
+      fontFamily: AppTypography.fontFamily,
       brightness: isDark ? Brightness.dark : Brightness.light,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: background,
@@ -75,10 +80,51 @@ abstract final class AppTheme {
       textTheme: textTheme,
       primaryTextTheme: textTheme,
       iconTheme: IconThemeData(color: textSecondary),
-      dividerTheme: DividerThemeData(
-        color: border,
-        thickness: 1,
-        space: 1,
+      dividerTheme: DividerThemeData(color: border, thickness: 1, space: 1),
+      appBarTheme: AppBarTheme(
+        backgroundColor: background,
+        foregroundColor: textPrimary,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
+        titleTextStyle: textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      cardTheme: CardThemeData(
+        color: surface,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: border),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: surfaceVariant,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: border),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: border),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide(color: accentColor),
+        ),
+        hintStyle: textTheme.bodyMedium?.copyWith(color: textMuted),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: surfaceVariant,
+        contentTextStyle: textTheme.bodyMedium?.copyWith(color: textPrimary),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        behavior: SnackBarBehavior.floating,
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: accentColor,
@@ -91,9 +137,20 @@ abstract final class AppTheme {
           disabledBackgroundColor: surfaceVariant,
           disabledForegroundColor: textMuted,
           textStyle: textTheme.labelLarge,
+          elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: textPrimary,
+          side: BorderSide(color: border),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          textStyle: textTheme.labelLarge,
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -108,13 +165,9 @@ abstract final class AppTheme {
     );
   }
 
-  static ThemeData get dark => buildTheme(
-        isDark: true,
-        accentColor: AppColors.customPrimary,
-      );
+  static ThemeData get dark =>
+      buildTheme(isDark: true, accentColor: AppColors.customPrimary);
 
-  static ThemeData get light => buildTheme(
-        isDark: false,
-        accentColor: AppColors.customPrimary,
-      );
+  static ThemeData get light =>
+      buildTheme(isDark: false, accentColor: AppColors.customPrimary);
 }

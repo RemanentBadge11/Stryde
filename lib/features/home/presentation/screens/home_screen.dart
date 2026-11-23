@@ -1,8 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:stryde/core/sync/sync_service.dart';
 import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
+import 'package:stryde/core/theme/app_typography.dart';
 import 'package:stryde/core/widgets/app_surface_card.dart';
 import 'package:stryde/core/widgets/cycle_countdown.dart';
 import 'package:stryde/core/widgets/loading_state_card.dart';
@@ -34,6 +36,7 @@ class HomeScreen extends ConsumerWidget {
     final historyLoading = ref.watch(workoutHistoryLoadingProvider);
     final loginStreak = ref.watch(loginStreakProvider).currentStreak;
     final userProfile = ref.watch(userProfileProvider);
+    final syncState = ref.watch(syncServiceProvider);
 
     final habits = habitDefinitionsFor(profileGoals);
     final completedHabits = habits
@@ -44,179 +47,368 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SafeArea(
-        bottom: false,
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(
-            AppSpacing.space24,
-            AppSpacing.space24,
-            AppSpacing.space24,
-            AppSpacing.space32,
-          ),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 680),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  HomeHeader(
-                    streak: loginStreak,
-                    username: userProfile.greetingName,
-                    avatarUrl: userProfile.avatarUrl,
-                  ),
-                  const SizedBox(height: AppSpacing.space24),
-                  if (progressionLoading)
-                    const LoadingStateCard(height: 180)
-                  else
-                    ProgressionCard(
-                      progression: progression,
-                      onRankTap: () => context.push('/ranks'),
-                      onAssignSkills: () => context.go('/stats'),
-                    ),
-                  const SizedBox(height: AppSpacing.space32),
-                  SectionHeader(
-                    title: 'Habits',
-                    subtitle: 'Resets every 12 hours',
-                    trailing: allHabitsComplete
-                        ? CycleCountdown(
-                            endsAt: habitState.endsAt,
-                            onElapsed: () => ref
-                                .read(habitsProvider.notifier)
-                                .refreshIfNeeded(),
-                          )
-                        : Text(
-                            '$completedHabits / ${habits.length}',
-                            style: Theme.of(context).textTheme.labelLarge
-                                ?.copyWith(color: AppColors.textSecondary),
+      body: Stack(
+        children: <Widget>[
+          SafeArea(
+            bottom: false,
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.space24,
+                AppSpacing.space24,
+                AppSpacing.space24,
+                AppSpacing.space32,
+              ),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 680),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      if (!syncState.isOnline) ...<Widget>[
+                        Container(
+                          key: const ValueKey<String>('offline-banner'),
+                          margin: const EdgeInsets.only(
+                            bottom: AppSpacing.space16,
                           ),
-                  ),
-                  const SizedBox(height: AppSpacing.space12),
-                  _ChecklistCard(
-                    children: <Widget>[
-                      for (var i = 0; i < habits.length; i++) ...<Widget>[
-                        _ChecklistItem(
-                          icon: _habitIcon(habits[i].id),
-                          title: habits[i].title,
-                          detail: habits[i].detail,
-                          xp: habits[i].xp,
-                          isCompleted: habitState.isCompleted(habits[i].id),
-                          onTap: () {
-                            final awarded = ref
-                                .read(habitsProvider.notifier)
-                                .complete(
-                                  habits[i].id,
-                                  xp: habits[i].xp,
-                                  title: habits[i].title,
-                                );
-                            if (awarded) {
-                              _showXp(context, habits[i].xp, habits[i].title);
-                            }
-                          },
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.surfaceVariant,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: AppColors.border),
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.wifi_off_rounded,
+                                size: 18,
+                                color: AppColors.textSecondary,
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  'You are offline. Changes will sync when you reconnect.',
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        color: AppColors.textSecondary,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        if (i != habits.length - 1) const Divider(),
                       ],
+                      if (syncState.isSyncing) ...<Widget>[
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            key: const ValueKey<String>('syncing-indicator'),
+                            margin: const EdgeInsets.only(
+                              bottom: AppSpacing.space16,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.surfaceVariant,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: AppColors.borderStrong),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                SizedBox(
+                                  width: 12,
+                                  height: 12,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'Syncing...',
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(
+                                        color: AppColors.textPrimary,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ] else if (syncState.hasPendingSync) ...<Widget>[
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            key: const ValueKey<String>('pending-sync-badge'),
+                            margin: const EdgeInsets.only(
+                              bottom: AppSpacing.space16,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.surfaceVariant,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: AppColors.borderStrong),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.cloud_queue_rounded,
+                                  size: 14,
+                                  color: AppColors.textSecondary,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  'Pending Sync (${syncState.pendingCount})',
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(
+                                        color: AppColors.textSecondary,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                      HomeHeader(
+                        streak: loginStreak,
+                        username: userProfile.greetingName,
+                        avatarUrl: userProfile.avatarUrl,
+                      ),
+                      const SizedBox(height: AppSpacing.space24),
+                      if (progressionLoading)
+                        const LoadingStateCard(height: 180)
+                      else
+                        ProgressionCard(
+                          progression: progression,
+                          onRankTap: () => context.push('/ranks'),
+                          onAssignSkills: () => context.go('/stats'),
+                        ),
+                      const SizedBox(height: AppSpacing.space32),
+                      SectionHeader(
+                        title: 'Habits',
+                        subtitle: 'Resets at midnight',
+                        trailing: allHabitsComplete
+                            ? CycleCountdown(
+                                endsAt: habitState.endsAt,
+                                onElapsed: () => ref
+                                    .read(habitsProvider.notifier)
+                                    .refreshIfNeeded(),
+                              )
+                            : Text(
+                                '$completedHabits / ${habits.length}',
+                                style: Theme.of(context).textTheme.labelLarge
+                                    ?.copyWith(color: AppColors.textSecondary),
+                              ),
+                      ),
+                      const SizedBox(height: AppSpacing.space12),
+                      _ChecklistCard(
+                        children: <Widget>[
+                          for (var i = 0; i < habits.length; i++) ...<Widget>[
+                            _ChecklistItem(
+                              icon: _habitIcon(habits[i].id),
+                              title: habits[i].title,
+                              detail: habits[i].detail,
+                              xp: habits[i].xp,
+                              isCompleted: habitState.isCompleted(habits[i].id),
+                              onTap: () {
+                                final awarded = ref
+                                    .read(habitsProvider.notifier)
+                                    .complete(
+                                      habits[i].id,
+                                      xp: habits[i].xp,
+                                      title: habits[i].title,
+                                    );
+                                if (awarded) {
+                                  _showXp(
+                                    context,
+                                    habits[i].xp,
+                                    habits[i].title,
+                                  );
+                                }
+                              },
+                            ),
+                            if (i != habits.length - 1) const Divider(),
+                          ],
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.space32),
+                      const _NextSessionCard(),
+                      const SizedBox(height: AppSpacing.space32),
+                      SectionHeader(
+                        title: 'Weekly Quests',
+                        subtitle: 'Resets Sunday at midnight',
+                        trailing: CycleCountdown(
+                          endsAt: questState.endsAt,
+                          onElapsed: () => ref
+                              .read(weeklyQuestsProvider.notifier)
+                              .refreshIfNeeded(),
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.space12),
+                      if (questState.isEmptyOffline)
+                        _ChecklistCard(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.space16,
+                                vertical: AppSpacing.space20,
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.wifi_off_rounded,
+                                    size: 20,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                  SizedBox(width: AppSpacing.space12),
+                                  Expanded(
+                                    child: Text(
+                                      'Quests will update when you reconnect',
+                                      style: TextStyle(
+                                        color: AppColors.textSecondary,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      else
+                        _ChecklistCard(
+                          children: <Widget>[
+                            for (
+                              var i = 0;
+                              i < questState.quests.length;
+                              i++
+                            ) ...<Widget>[
+                              _ChecklistItem(
+                                icon: Icons.bolt_rounded,
+                                title: questState.quests[i].title,
+                                detail: questState.quests[i].detail,
+                                xp: questState.quests[i].xp,
+                                isCompleted: questState.quests[i].isCompleted,
+                                onTap: () {
+                                  final quest = questState.quests[i];
+                                  final awarded = ref
+                                      .read(weeklyQuestsProvider.notifier)
+                                      .complete(quest.id);
+                                  if (awarded) {
+                                    _showXp(context, quest.xp, quest.title);
+                                  }
+                                },
+                              ),
+                              if (i != questState.quests.length - 1)
+                                const Divider(),
+                            ],
+                          ],
+                        ),
+                      const SizedBox(height: AppSpacing.space32),
+                      SectionHeader(
+                        title: 'Daily Goals',
+                        subtitle: 'Resets at midnight',
+                        trailing: CycleCountdown(
+                          endsAt: dailyGoalState.endsAt,
+                          onElapsed: () => ref
+                              .read(dailyGoalsProvider.notifier)
+                              .refreshIfNeeded(),
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.space12),
+                      if (dailyGoalState.isEmptyOffline)
+                        _ChecklistCard(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.space16,
+                                vertical: AppSpacing.space20,
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.wifi_off_rounded,
+                                    size: 20,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                  SizedBox(width: AppSpacing.space12),
+                                  Expanded(
+                                    child: Text(
+                                      'Quests will update when you reconnect',
+                                      style: TextStyle(
+                                        color: AppColors.textSecondary,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      else
+                        _ChecklistCard(
+                          children: <Widget>[
+                            for (
+                              var i = 0;
+                              i < dailyGoalState.goals.length;
+                              i++
+                            ) ...<Widget>[
+                              _ChecklistItem(
+                                icon: Icons.track_changes_rounded,
+                                title: dailyGoalState.goals[i].title,
+                                detail: dailyGoalState.goals[i].detail,
+                                xp: dailyGoalState.goals[i].xp,
+                                isCompleted:
+                                    dailyGoalState.goals[i].isCompleted,
+                                onTap: () {
+                                  final goal = dailyGoalState.goals[i];
+                                  final awarded = ref
+                                      .read(dailyGoalsProvider.notifier)
+                                      .complete(goal.id);
+                                  if (awarded) {
+                                    _showXp(context, goal.xp, goal.title);
+                                  }
+                                },
+                              ),
+                              if (i != dailyGoalState.goals.length - 1)
+                                const Divider(),
+                            ],
+                          ],
+                        ),
+                      const SizedBox(height: AppSpacing.space32),
+                      SectionHeader(
+                        title: 'Quick Stats',
+                        trailing: TextButton(
+                          onPressed: () => context.go('/stats'),
+                          child: const Text('View All'),
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.space12),
+                      if (historyLoading)
+                        const LoadingStateCard()
+                      else
+                        _QuickStats(history: history, streak: loginStreak),
                     ],
                   ),
-                  const SizedBox(height: AppSpacing.space32),
-                  SectionHeader(
-                    title: 'Weekly Quests',
-                    subtitle: '4 random quests · Resets Monday',
-                    trailing: CycleCountdown(
-                      endsAt: questState.endsAt,
-                      onElapsed: () => ref
-                          .read(weeklyQuestsProvider.notifier)
-                          .refreshIfNeeded(),
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.space12),
-                  _ChecklistCard(
-                    children: <Widget>[
-                      for (
-                        var i = 0;
-                        i < questState.quests.length;
-                        i++
-                      ) ...<Widget>[
-                        _ChecklistItem(
-                          icon: Icons.bolt_rounded,
-                          title: questState.quests[i].title,
-                          detail: questState.quests[i].detail,
-                          xp: questState.quests[i].xp,
-                          isCompleted: questState.quests[i].isCompleted,
-                          onTap: () {
-                            final quest = questState.quests[i];
-                            final awarded = ref
-                                .read(weeklyQuestsProvider.notifier)
-                                .complete(quest.id);
-                            if (awarded) {
-                              _showXp(context, quest.xp, quest.title);
-                            }
-                          },
-                        ),
-                        if (i != questState.quests.length - 1) const Divider(),
-                      ],
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.space32),
-                  SectionHeader(
-                    title: 'Daily Goals',
-                    subtitle: 'Built from your recent workouts',
-                    trailing: CycleCountdown(
-                      endsAt: dailyGoalState.endsAt,
-                      onElapsed: () => ref
-                          .read(dailyGoalsProvider.notifier)
-                          .refreshIfNeeded(),
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.space12),
-                  _ChecklistCard(
-                    children: <Widget>[
-                      for (
-                        var i = 0;
-                        i < dailyGoalState.goals.length;
-                        i++
-                      ) ...<Widget>[
-                        _ChecklistItem(
-                          icon: Icons.track_changes_rounded,
-                          title: dailyGoalState.goals[i].title,
-                          detail: dailyGoalState.goals[i].detail,
-                          xp: dailyGoalState.goals[i].xp,
-                          isCompleted: dailyGoalState.goals[i].isCompleted,
-                          onTap: () {
-                            final goal = dailyGoalState.goals[i];
-                            final awarded = ref
-                                .read(dailyGoalsProvider.notifier)
-                                .complete(goal.id);
-                            if (awarded) {
-                              _showXp(context, goal.xp, goal.title);
-                            }
-                          },
-                        ),
-                        if (i != dailyGoalState.goals.length - 1)
-                          const Divider(),
-                      ],
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.space32),
-                  const _NextSessionCard(),
-                  const SizedBox(height: AppSpacing.space32),
-                  SectionHeader(
-                    title: 'Quick Stats',
-                    trailing: TextButton(
-                      onPressed: () => context.go('/stats'),
-                      child: const Text('View All'),
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.space12),
-                  if (historyLoading)
-                    const LoadingStateCard()
-                  else
-                    _QuickStats(history: history, streak: loginStreak),
-                ],
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -352,6 +544,8 @@ class _ProfileButton extends StatelessWidget {
             child: InkWell(
               onTap: onTap,
               customBorder: const CircleBorder(),
+              splashColor: AppColors.primary.withValues(alpha: 0.12),
+              highlightColor: AppColors.primary.withValues(alpha: 0.06),
               child: hasAvatar
                   ? Image.network(
                       avatarUrl!,
@@ -469,12 +663,15 @@ class _ChecklistItem extends StatelessWidget {
       child: InkWell(
         onTap: isCompleted ? null : onTap,
         borderRadius: BorderRadius.circular(14),
+        splashColor: AppColors.primary.withValues(alpha: 0.08),
+        highlightColor: AppColors.primary.withValues(alpha: 0.04),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.space12),
           child: Row(
             children: <Widget>[
               AnimatedContainer(
-                duration: const Duration(milliseconds: 220),
+                duration: const Duration(milliseconds: 180),
+                curve: Curves.easeOutCubic,
                 width: 38,
                 height: 38,
                 decoration: BoxDecoration(
@@ -490,7 +687,9 @@ class _ChecklistItem extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
+                  duration: const Duration(milliseconds: 180),
+                  switchInCurve: Curves.easeOutCubic,
+                  switchOutCurve: Curves.easeInCubic,
                   child: isCompleted
                       ? Icon(
                           Icons.check_rounded,
@@ -511,17 +710,22 @@ class _ChecklistItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        decoration: isCompleted
-                            ? TextDecoration.lineThrough
-                            : null,
-                        color: isCompleted
-                            ? AppColors.textSecondary
-                            : AppColors.textPrimary,
-                      ),
+                    AnimatedDefaultTextStyle(
+                      duration: const Duration(milliseconds: 180),
+                      curve: Curves.easeOutCubic,
+                      style:
+                          (Theme.of(context).textTheme.titleSmall ??
+                                  const TextStyle(fontSize: 14))
+                              .copyWith(
+                                fontWeight: FontWeight.w600,
+                                decoration: isCompleted
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none,
+                                color: isCompleted
+                                    ? AppColors.textSecondary
+                                    : AppColors.textPrimary,
+                              ),
+                      child: Text(title),
                     ),
                     const SizedBox(height: 2),
                     Text(detail, style: Theme.of(context).textTheme.bodySmall),
@@ -547,7 +751,9 @@ class _XpPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 180),
+      curve: Curves.easeOutCubic,
+      constraints: const BoxConstraints(minWidth: 56),
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.space8,
         vertical: 5,
@@ -559,11 +765,19 @@ class _XpPill extends StatelessWidget {
           color: isCompleted ? AppColors.primary : AppColors.border,
         ),
       ),
-      child: Text(
-        isCompleted ? 'DONE' : '+$xp XP',
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: isCompleted ? AppColors.onPrimary : AppColors.textSecondary,
-          letterSpacing: 0.3,
+      alignment: Alignment.center,
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 180),
+        switchInCurve: Curves.easeOutCubic,
+        switchOutCurve: Curves.easeInCubic,
+        child: Text(
+          isCompleted ? 'DONE' : '+$xp XP',
+          key: ValueKey<bool>(isCompleted),
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+            color: isCompleted ? AppColors.onPrimary : AppColors.textSecondary,
+            letterSpacing: 0.3,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
     );
@@ -586,7 +800,11 @@ class _NextSessionCard extends StatelessWidget {
               child: Icon(
                 Icons.fitness_center_rounded,
                 size: 178,
-                color: AppColors.primary.withValues(alpha: 0.035),
+                color:
+                    (AppColors.isDark
+                            ? AppColors.primary
+                            : AppColors.textPrimary)
+                        .withValues(alpha: 0.04),
               ),
             ),
           ),
@@ -717,72 +935,110 @@ class _QuickStats extends StatelessWidget {
       ),
     ];
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth < 376) {
-          final cardWidth = (constraints.maxWidth - AppSpacing.space8) / 2;
-          return Wrap(
-            spacing: AppSpacing.space8,
-            runSpacing: AppSpacing.space8,
-            children: <Widget>[
-              for (final stat in stats)
-                SizedBox(
-                  width: cardWidth,
-                  child: _StatCard(data: stat),
+    return AppSurfaceCard(
+      radius: 18,
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.space12,
+        vertical: AppSpacing.space16,
+      ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isCompact = constraints.maxWidth < 340;
+          if (isCompact) {
+            return Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(child: _StatCell(data: stats[0])),
+                    Container(width: 1, height: 48, color: AppColors.border),
+                    Expanded(child: _StatCell(data: stats[1])),
+                  ],
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: AppSpacing.space12,
+                  ),
+                  child: Divider(color: AppColors.border, height: 1),
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(child: _StatCell(data: stats[2])),
+                    Container(width: 1, height: 48, color: AppColors.border),
+                    Expanded(child: _StatCell(data: stats[3])),
+                  ],
+                ),
+              ],
+            );
+          }
+
+          return Row(
+            children: <Widget>[
+              Expanded(child: _StatCell(data: stats[0])),
+              Container(width: 1, height: 48, color: AppColors.border),
+              Expanded(child: _StatCell(data: stats[1])),
+              Container(width: 1, height: 48, color: AppColors.border),
+              Expanded(child: _StatCell(data: stats[2])),
+              Container(width: 1, height: 48, color: AppColors.border),
+              Expanded(child: _StatCell(data: stats[3])),
             ],
           );
-        }
-
-        return Row(
-          children: List<Widget>.generate(stats.length * 2 - 1, (index) {
-            if (index.isOdd) return const SizedBox(width: AppSpacing.space8);
-            return Expanded(child: _StatCard(data: stats[index ~/ 2]));
-          }),
-        );
-      },
+        },
+      ),
     );
   }
 }
 
-class _StatCard extends StatelessWidget {
-  const _StatCard({required this.data});
+class _StatCell extends StatelessWidget {
+  const _StatCell({required this.data});
 
   final _StatData data;
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: AppSurfaceCard(
-        radius: 16,
-        padding: const EdgeInsets.all(AppSpacing.space8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(data.icon, size: 21, color: AppColors.textSecondary),
-            const SizedBox(height: AppSpacing.space8),
-            Text(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: AppColors.surfaceVariant,
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.border),
+            ),
+            alignment: Alignment.center,
+            child: Icon(data.icon, size: 16, color: AppColors.textSecondary),
+          ),
+          const SizedBox(height: AppSpacing.space8),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
               data.value,
               maxLines: 1,
-              style: Theme.of(
-                context,
-              ).textTheme.titleLarge?.copyWith(fontSize: 19),
-            ),
-            const SizedBox(height: 2),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                data.label,
-                maxLines: 1,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  fontSize: 11,
-                ),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w800,
+                fontSize: 18,
+                fontFeatures: AppTypography.tabularFontFeatures,
               ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 2),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              data.label,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: AppColors.textSecondary,
+                fontSize: 11,
+                letterSpacing: 0.2,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

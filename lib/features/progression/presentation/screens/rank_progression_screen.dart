@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
@@ -44,7 +45,7 @@ class RankProgressionScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: AppSpacing.space8),
                   Text(
-                    'Every level costs 500 XP. Rank breakthroughs award 3 bonus skill points.',
+                    'Climb the ranks through progressive XP. Rank promotions award 3 bonus skill points.',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -79,9 +80,9 @@ class RankProgressionScreen extends ConsumerWidget {
                   const SizedBox(height: AppSpacing.space12),
                   const _RuleCard(
                     icon: Icons.workspace_premium_outlined,
-                    title: '+3 bonus points at rank breakthroughs',
+                    title: '+3 bonus points at rank promotions',
                     detail:
-                        'Crossing into Level 6, 11, or 16 triggers the bonus.',
+                        'Crossing into a new rank tier triggers the bonus points.',
                   ),
                 ],
               ),
@@ -111,16 +112,15 @@ class _CurrentRankCard extends StatelessWidget {
             width: 58,
             height: 58,
             decoration: BoxDecoration(
-              color: AppColors.primary,
+              color: AppColors.surfaceVariant,
               borderRadius: BorderRadius.circular(18),
+              border: Border.all(
+                color: AppColors.primary.withValues(alpha: 0.35),
+              ),
             ),
+            padding: const EdgeInsets.all(AppSpacing.space8),
             alignment: Alignment.center,
-            child: Text(
-              '$level',
-              style: Theme.of(
-                context,
-              ).textTheme.headlineMedium?.copyWith(color: AppColors.onPrimary),
-            ),
+            child: SvgPicture.asset(rank.assetPath, fit: BoxFit.contain),
           ),
           const SizedBox(width: AppSpacing.space16),
           Expanded(
@@ -128,7 +128,7 @@ class _CurrentRankCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'CURRENT RANK',
+                  'CURRENT RANK · LEVEL $level',
                   style: Theme.of(
                     context,
                   ).textTheme.labelSmall?.copyWith(letterSpacing: 0.8),
@@ -179,18 +179,52 @@ class _RankCard extends StatelessWidget {
         padding: const EdgeInsets.all(AppSpacing.space24),
         child: Row(
           children: <Widget>[
-            Icon(
-              isCurrent
-                  ? Icons.military_tech_rounded
-                  : isUnlocked
-                  ? Icons.check_circle_outline_rounded
-                  : Icons.lock_outline_rounded,
-              color: isCurrent
-                  ? AppColors.primary
-                  : isUnlocked
-                  ? AppColors.textSecondary
-                  : AppColors.textMuted,
-              size: 26,
+            Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: isCurrent
+                        ? AppColors.primary.withValues(alpha: 0.12)
+                        : AppColors.surfaceVariant,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: isCurrent
+                          ? AppColors.primary.withValues(alpha: 0.4)
+                          : AppColors.border,
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(6),
+                  child: Opacity(
+                    opacity: isCurrent
+                        ? 1.0
+                        : isUnlocked
+                        ? 0.85
+                        : 0.25,
+                    child: SvgPicture.asset(
+                      rank.assetPath,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                if (!isUnlocked)
+                  Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: AppColors.border),
+                    ),
+                    child: Icon(
+                      Icons.lock_rounded,
+                      size: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+              ],
             ),
             const SizedBox(width: AppSpacing.space16),
             Expanded(

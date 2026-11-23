@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stryde/core/database/local_cache_service.dart';
+import 'package:stryde/core/services/location_timezone_service.dart';
 import 'package:stryde/features/auth/presentation/providers/auth_provider.dart';
 import 'package:stryde/features/home/data/completed_quests_repository.dart';
 import 'package:stryde/features/home/domain/entities/habit.dart';
@@ -14,22 +16,26 @@ final habitsProvider = NotifierProvider<HabitsNotifier, HabitState>(
 );
 
 class HabitsNotifier extends Notifier<HabitState> {
-  static const Duration cycle = Duration(hours: 12);
-
   String? _activeUserId;
   final Map<String, DateTime> _completedAt = <String, DateTime>{};
 
   CompletedQuestsRepository? get _repository =>
       ref.read(completedQuestsRepositoryProvider);
+  LocationTimezoneService get _tzService =>
+      ref.read(locationTimezoneServiceProvider);
 
   @override
   HabitState build() {
     _completedAt.clear();
     final user = ref.read(currentUserProvider);
     _activeUserId = user?.id;
+
+    final initialEndsAt = _tzService.nextDailyMidnight().toLocal();
+
     if (user != null && _repository != null) {
       unawaited(_hydrate(user.id));
     }
+
     ref.listen(currentUserProvider, (_, user) {
       final userId = user?.id;
       if (userId == _activeUserId) return;
@@ -37,7 +43,7 @@ class HabitsNotifier extends Notifier<HabitState> {
       _completedAt.clear();
       state = HabitState(
         completedIds: const <String>{},
-        endsAt: DateTime.now().add(cycle),
+        endsAt: _tzService.nextDailyMidnight().toLocal(),
       );
       if (userId != null && _repository != null) {
         unawaited(_hydrate(userId));
@@ -46,7 +52,7 @@ class HabitsNotifier extends Notifier<HabitState> {
 
     return HabitState(
       completedIds: const <String>{},
-      endsAt: DateTime.now().add(cycle),
+      endsAt: initialEndsAt,
     );
   }
 
@@ -70,20 +76,22 @@ class HabitsNotifier extends Notifier<HabitState> {
 
   void _applyActiveCompletions([DateTime? at]) {
     final now = at ?? DateTime.now();
+    final nextMidnight = _tzService.nextDailyMidnight(now: now).toLocal();
+    final startOfToday = nextMidnight.subtract(const Duration(days: 1));
+
     final activeIds = <String>{};
     for (final entry in _completedAt.entries) {
+      final completed = entry.value.toLocal();
       final elapsed = now.difference(entry.value);
-      if (!elapsed.isNegative && elapsed < cycle) {
+      if (!elapsed.isNegative &&
+          elapsed < const Duration(hours: 12) &&
+          completed.isAfter(startOfToday) &&
+          !completed.isAfter(nextMidnight)) {
         activeIds.add(entry.key);
       }
     }
-    if (activeIds.length != state.completedIds.length ||
-        !activeIds.containsAll(state.completedIds)) {
-      state = HabitState(
-        completedIds: activeIds,
-        endsAt: state.endsAt,
-      );
-    }
+
+    state = HabitState(completedIds: activeIds, endsAt: nextMidnight);
   }
 
   bool complete(String id, {required int xp, required String title}) {
@@ -99,13 +107,28 @@ class HabitsNotifier extends Notifier<HabitState> {
 
     final userId = _activeUserId;
     final repo = _repository;
-    if (userId != null && repo != null) {
+    if (userId != null) {
+      if (repo != null) {
+        unawaited(
+          repo.insert(
+            userId: userId,
+            questId: id,
+            questType: 'habit',
+            completedAt: now,
+          ),
+        );
+      }
+      final localCache = ref.read(localCacheServiceProvider);
       unawaited(
-        repo.insert(
-          userId: userId,
-          questId: id,
-          questType: 'habit',
-          completedAt: now,
+        localCache.enqueue(
+          entityType: 'quest_completion',
+          action: 'insert',
+          payload: <String, dynamic>{
+            'userId': userId,
+            'questId': id,
+            'questType': 'habit',
+            'completedAt': now.toUtc().toIso8601String(),
+          },
         ),
       );
     }
@@ -122,8 +145,8 @@ class HabitsNotifier extends Notifier<HabitState> {
     final now = DateTime.now();
     if (!now.isBefore(state.endsAt)) {
       state = HabitState(
-        completedIds: state.completedIds,
-        endsAt: now.add(cycle),
+        completedIds: const <String>{},
+        endsAt: _tzService.nextDailyMidnight(now: now).toLocal(),
       );
     }
     _applyActiveCompletions(now);

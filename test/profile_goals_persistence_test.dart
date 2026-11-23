@@ -17,7 +17,21 @@ class _MockProfileRepository implements ProfileRepository {
   Map<String, dynamic>? savedGoals;
 
   @override
+  Future<ProfileData?> getOrFetchProfile(
+    String userId, {
+    String? defaultUsername,
+  }) async {
+    return fetch(userId);
+  }
+
+  @override
   Future<ProfileData?> fetch(String userId) async => dataToReturn;
+
+  @override
+  Future<void> saveTimezone({
+    required String userId,
+    required String timezone,
+  }) async {}
 
   @override
   Future<void> saveGoals({
@@ -40,6 +54,8 @@ class _MockProfileRepository implements ProfileRepository {
     required int xp,
     required int level,
     required int skillPoints,
+    int? totalXp,
+    int? availableSkillPoints,
   }) async {}
 
   @override
@@ -160,99 +176,105 @@ void main() {
       expect(state.proteinGrams, 150);
     });
 
-    test('immediately saves updated goals to repository on adjustments', () async {
-      final mockRepo = _MockProfileRepository();
-      final user = _createTestUser();
+    test(
+      'immediately saves updated goals to repository on adjustments',
+      () async {
+        final mockRepo = _MockProfileRepository();
+        final user = _createTestUser();
 
-      final container = ProviderContainer(
-        overrides: [
-          currentUserProvider.overrideWithValue(user),
-          profileRepositoryProvider.overrideWithValue(mockRepo),
-        ],
-      );
-      addTearDown(container.dispose);
+        final container = ProviderContainer(
+          overrides: [
+            currentUserProvider.overrideWithValue(user),
+            profileRepositoryProvider.overrideWithValue(mockRepo),
+          ],
+        );
+        addTearDown(container.dispose);
 
-      final notifier = container.read(profileGoalsProvider.notifier);
+        final notifier = container.read(profileGoalsProvider.notifier);
 
-      // Adjust water: 4.0 - 1.0 = 3.0
-      notifier.adjustWater(-1.0);
-      expect(container.read(profileGoalsProvider).waterLiters, 3.0);
-      expect(mockRepo.savedGoals?['water'], 3.0);
-      expect(mockRepo.savedGoals?['userId'], user.id);
+        // Adjust water: 4.0 - 1.0 = 3.0
+        notifier.adjustWater(-1.0);
+        expect(container.read(profileGoalsProvider).waterLiters, 3.0);
+        expect(mockRepo.savedGoals?['water'], 3.0);
+        expect(mockRepo.savedGoals?['userId'], user.id);
 
-      // Adjust steps: 10000 + 1500 = 11500
-      notifier.adjustSteps(1500);
-      expect(container.read(profileGoalsProvider).steps, 11500);
-      expect(mockRepo.savedGoals?['steps'], 11500);
+        // Adjust steps: 10000 + 1500 = 11500
+        notifier.adjustSteps(1500);
+        expect(container.read(profileGoalsProvider).steps, 11500);
+        expect(mockRepo.savedGoals?['steps'], 11500);
 
-      // Adjust protein: 160 + 20 = 180
-      notifier.adjustProtein(20);
-      expect(container.read(profileGoalsProvider).proteinGrams, 180);
-      expect(mockRepo.savedGoals?['protein'], 180);
-    });
+        // Adjust protein: 160 + 20 = 180
+        notifier.adjustProtein(20);
+        expect(container.read(profileGoalsProvider).proteinGrams, 180);
+        expect(mockRepo.savedGoals?['protein'], 180);
+      },
+    );
   });
 
   group('Home Screen Habits reactivity & completion', () {
-    testWidgets('Home screen habits reflect updated goals immediately without manual refresh',
-        (tester) async {
-      tester.view.physicalSize = const Size(1080, 2400);
-      tester.view.devicePixelRatio = 2.0;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
+    testWidgets(
+      'Home screen habits reflect updated goals immediately without manual refresh',
+      (tester) async {
+        tester.view.physicalSize = const Size(1080, 2400);
+        tester.view.devicePixelRatio = 2.0;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
 
-      final mockRepo = _MockProfileRepository();
-      final mockQuestsRepo = _MockCompletedQuestsRepository();
-      final user = _createTestUser();
+        final mockRepo = _MockProfileRepository();
+        final mockQuestsRepo = _MockCompletedQuestsRepository();
+        final user = _createTestUser();
 
-      final container = ProviderContainer(
-        overrides: [
-          currentUserProvider.overrideWithValue(user),
-          profileRepositoryProvider.overrideWithValue(mockRepo),
-          completedQuestsRepositoryProvider.overrideWithValue(mockQuestsRepo),
-        ],
-      );
-      addTearDown(container.dispose);
+        final container = ProviderContainer(
+          overrides: [
+            currentUserProvider.overrideWithValue(user),
+            profileRepositoryProvider.overrideWithValue(mockRepo),
+            completedQuestsRepositoryProvider.overrideWithValue(mockQuestsRepo),
+          ],
+        );
+        addTearDown(container.dispose);
 
-      await tester.pumpWidget(
-        UncontrolledProviderScope(
-          container: container,
-          child: const MaterialApp(
-            home: HomeScreen(),
+        await tester.pumpWidget(
+          UncontrolledProviderScope(
+            container: container,
+            child: const MaterialApp(home: HomeScreen()),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
+        );
+        await tester.pumpAndSettle();
 
-      // Verify default habit titles
-      expect(find.text('Walk 10,000 steps'), findsOneWidget);
-      expect(find.text('Drink 4L water'), findsOneWidget);
-      expect(find.text('Hit 160g protein'), findsOneWidget);
+        // Verify default habit titles
+        expect(find.text('Walk 10,000 steps'), findsOneWidget);
+        expect(find.text('Drink 4L water'), findsOneWidget);
+        expect(find.text('Hit 160g protein'), findsOneWidget);
 
-      // Change goals via provider (simulating changing goals in Profile tab)
-      container.read(profileGoalsProvider.notifier).setGoals(
-            steps: 12000,
-            water: 3.0,
-            protein: 190,
-          );
+        // Change goals via provider (simulating changing goals in Profile tab)
+        container
+            .read(profileGoalsProvider.notifier)
+            .setGoals(steps: 12000, water: 3.0, protein: 190);
 
-      // Pump to trigger reactive rebuild
-      await tester.pumpAndSettle();
+        // Pump to trigger reactive rebuild
+        await tester.pumpAndSettle();
 
-      // Home Screen immediately reflects the new text!
-      expect(find.text('Walk 12,000 steps'), findsOneWidget);
-      expect(find.text('Drink 3L water'), findsOneWidget);
-      expect(find.text('Hit 190g protein'), findsOneWidget);
+        // Home Screen immediately reflects the new text!
+        expect(find.text('Walk 12,000 steps'), findsOneWidget);
+        expect(find.text('Drink 3L water'), findsOneWidget);
+        expect(find.text('Hit 190g protein'), findsOneWidget);
 
-      // Tap to complete the water habit
-      await tester.tap(find.text('Drink 3L water'));
-      await tester.pumpAndSettle();
+        // Tap to complete the water habit
+        await tester.tap(find.text('Drink 3L water'));
+        await tester.pumpAndSettle();
 
-      // Verify XP awarded
-      expect(container.read(userProgressionProvider).currentXp, 25);
-      expect(container.read(habitsProvider).isCompleted('water'), isTrue);
+        // Verify XP awarded
+        expect(container.read(userProgressionProvider).currentXp, 25);
+        expect(container.read(habitsProvider).isCompleted('water'), isTrue);
 
-      // Verify habit completion saved to completed_quests table
-      expect(mockQuestsRepo.database.any((q) => q.questId == 'water' && q.questType == 'habit'), isTrue);
-    });
+        // Verify habit completion saved to completed_quests table
+        expect(
+          mockQuestsRepo.database.any(
+            (q) => q.questId == 'water' && q.questType == 'habit',
+          ),
+          isTrue,
+        );
+      },
+    );
   });
 }

@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stryde/core/database/local_cache_service.dart';
+import 'package:stryde/core/services/location_timezone_service.dart';
 import 'package:stryde/features/auth/presentation/providers/auth_provider.dart';
 import 'package:stryde/features/home/data/completed_quests_repository.dart';
-import 'package:stryde/features/home/data/quest_pool.dart';
+import 'package:stryde/features/home/data/user_quests_repository.dart';
 import 'package:stryde/features/home/domain/entities/quest.dart';
 import 'package:stryde/features/home/presentation/providers/login_streak_provider.dart';
 import 'package:stryde/features/progression/domain/entities/xp_transaction.dart';
@@ -17,97 +18,103 @@ final weeklyQuestsProvider =
     );
 
 class WeeklyQuestsNotifier extends Notifier<WeeklyQuestState> {
-  static const Duration cycle = Duration(days: 7);
-
   String? _activeUserId;
-  final Map<String, DateTime> _completedAt = <String, DateTime>{};
-
-  CompletedQuestsRepository? get _repository =>
-      ref.read(completedQuestsRepositoryProvider);
 
   @override
   WeeklyQuestState build() {
-    _completedAt.clear();
-    final user = ref.read(currentUserProvider);
+    final user = ref.watch(currentUserProvider);
+    final repo = ref.read(userQuestsRepositoryProvider);
+    final tzService = ref.read(locationTimezoneServiceProvider);
     _activeUserId = user?.id;
-    if (user != null && _repository != null) {
-      unawaited(_hydrate(user.id));
-    }
-    ref.listen(currentUserProvider, (_, user) {
-      final userId = user?.id;
-      if (userId == _activeUserId) return;
-      _activeUserId = userId;
-      _completedAt.clear();
-      state = _buildWeek();
-      if (userId != null && _repository != null) {
-        unawaited(_hydrate(userId));
-      }
+
+    final initialQuests = repo.generateWeeklyQuests(
+      userId: user?.id ?? 'local_user',
+      timezone: tzService.getDeviceTimezone(),
+    );
+
+    final initial = WeeklyQuestState(
+      quests: List<Quest>.unmodifiable(
+        initialQuests.map(Quest.fromUserQuest),
+      ),
+      endsAt: initialQuests.first.expiresAt.toLocal(),
+      isEmptyOffline: false,
+    );
+
+    ref.listen(currentUserProvider, (_, nextUser) {
+      final nextId = nextUser?.id;
+      if (nextId == _activeUserId) return;
+      _activeUserId = nextId;
+      unawaited(_hydrate(nextId));
     });
 
-    return _buildWeek();
+    Future.microtask(() => _hydrate(user?.id));
+
+    return initial;
   }
 
-  WeeklyQuestState _buildWeek() {
-    final now = DateTime.now();
-    final endsAt = _nextMonday(now);
-    final weekStart = endsAt.subtract(const Duration(days: 7));
-    final random = Random(weekStart.millisecondsSinceEpoch);
-    final pool = <Quest>[...QuestPool.all]..shuffle(random);
-    final selected = pool.take(4).toList();
+  Future<void> _hydrate(String? userId) async {
+    final repo = ref.read(userQuestsRepositoryProvider);
+    final tzService = ref.read(locationTimezoneServiceProvider);
+    final localCache = ref.read(localCacheServiceProvider);
+    final effectiveUserId = userId ?? 'local_user';
 
-    return WeeklyQuestState(
-      quests: <Quest>[
-        for (final quest in selected)
-          quest.copyWith(
-            isCompleted: _isCompletedWithin(quest.id, now),
-          ),
-      ],
-      endsAt: endsAt,
-    );
-  }
+    final profile = await localCache.getCachedProfile(effectiveUserId);
+    if (!ref.mounted) return;
+    final timezone = profile?.timezone ?? tzService.getDeviceTimezone();
 
-  bool _isCompletedWithin(String id, DateTime now) {
-    final completedAt = _completedAt[id];
-    if (completedAt == null) return false;
-    final elapsed = now.difference(completedAt);
-    return !elapsed.isNegative && elapsed < cycle;
-  }
+    try {
+      final userQuests = await repo.getOrGenerateQuests(
+        userId: effectiveUserId,
+        questType: 'weekly',
+        timezone: timezone,
+        history: const [],
+      );
 
-  Future<void> _hydrate(String userId) async {
-    final repo = _repository;
-    if (repo == null) return;
-    final records = await repo.fetch(userId);
-    if (_activeUserId != userId) return;
+      if (!ref.mounted || _activeUserId != userId) return;
 
-    for (final record in records) {
-      if (record.questType == 'quest') {
-        final existing = _completedAt[record.questId];
-        if (existing == null || record.completedAt.isAfter(existing)) {
-          _completedAt[record.questId] = record.completedAt;
+      if (userQuests.isEmpty) {
+        state = WeeklyQuestState(
+          quests: const <Quest>[],
+          endsAt: tzService.nextWeeklySundayMidnight(timezone: timezone).toLocal(),
+          isEmptyOffline: true,
+        );
+        return;
+      }
+
+      final quests = userQuests.map(Quest.fromUserQuest).toList();
+      final endsAt = userQuests.first.expiresAt.toLocal();
+
+      state = WeeklyQuestState(
+        quests: List<Quest>.unmodifiable(quests),
+        endsAt: endsAt,
+        isEmptyOffline: false,
+      );
+
+      final completedRepo = ref.read(completedQuestsRepositoryProvider);
+      if (completedRepo != null && userId != null) {
+        final records = await completedRepo.fetch(effectiveUserId);
+        if (records.isNotEmpty) {
+          final completedIds = records
+              .where((r) => r.questType == 'quest' || r.questType == 'weekly')
+              .where((r) => r.isWithinWindow(const Duration(days: 7)))
+              .map((r) => r.questId)
+              .toSet();
+          if (completedIds.isNotEmpty && ref.mounted) {
+            state = WeeklyQuestState(
+              quests: List<Quest>.unmodifiable([
+                for (final q in state.quests)
+                  completedIds.contains(q.id)
+                      ? q.copyWith(isCompleted: true)
+                      : q,
+              ]),
+              endsAt: state.endsAt,
+              isEmptyOffline: state.isEmptyOffline,
+            );
+          }
         }
       }
-    }
-
-    _applyActiveCompletions();
-  }
-
-  void _applyActiveCompletions([DateTime? at]) {
-    final now = at ?? DateTime.now();
-    var changed = false;
-    final updated = <Quest>[
-      for (final quest in state.quests) ...[
-        () {
-          final isCompleted = _isCompletedWithin(quest.id, now);
-          if (isCompleted != quest.isCompleted) changed = true;
-          return quest.copyWith(isCompleted: isCompleted);
-        }(),
-      ],
-    ];
-    if (changed) {
-      state = WeeklyQuestState(
-        quests: updated,
-        endsAt: state.endsAt,
-      );
+    } catch (_) {
+      // Degrades gracefully
     }
   }
 
@@ -118,7 +125,7 @@ class WeeklyQuestsNotifier extends Notifier<WeeklyQuestState> {
 
     final quest = state.quests[index];
     final now = DateTime.now();
-    _completedAt[id] = now;
+
     state = WeeklyQuestState(
       quests: <Quest>[
         for (var i = 0; i < state.quests.length; i++)
@@ -128,14 +135,25 @@ class WeeklyQuestsNotifier extends Notifier<WeeklyQuestState> {
             state.quests[i],
       ],
       endsAt: state.endsAt,
+      isEmptyOffline: state.isEmptyOffline,
     );
 
-    final userId = _activeUserId;
-    final repo = _repository;
-    if (userId != null && repo != null) {
+    final userId = _activeUserId ?? 'local_user';
+    final repo = ref.read(userQuestsRepositoryProvider);
+    unawaited(
+      repo.completeQuest(
+        userId: userId,
+        questId: id,
+        questType: 'weekly',
+        completedAt: now,
+      ),
+    );
+
+    final completedRepo = ref.read(completedQuestsRepositoryProvider);
+    if (completedRepo != null && _activeUserId != null) {
       unawaited(
-        repo.insert(
-          userId: userId,
+        completedRepo.insert(
+          userId: _activeUserId!,
           questId: id,
           questType: 'quest',
           completedAt: now,
@@ -158,18 +176,7 @@ class WeeklyQuestsNotifier extends Notifier<WeeklyQuestState> {
   void refreshIfNeeded() {
     final now = DateTime.now();
     if (!now.isBefore(state.endsAt)) {
-      state = _buildWeek();
-    } else {
-      _applyActiveCompletions(now);
+      unawaited(_hydrate(_activeUserId));
     }
   }
-}
-
-DateTime _nextMonday(DateTime now) {
-  final daysUntilMonday = (DateTime.monday - now.weekday + 7) % 7;
-  var end = DateTime(now.year, now.month, now.day + daysUntilMonday);
-  if (!end.isAfter(now)) {
-    end = end.add(const Duration(days: 7));
-  }
-  return end;
 }

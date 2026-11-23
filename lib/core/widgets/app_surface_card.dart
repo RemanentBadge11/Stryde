@@ -21,6 +21,8 @@ class AppSurfaceCard extends StatelessWidget {
         ? child
         : Padding(padding: padding!, child: child);
 
+    final isDark = AppColors.isDark;
+
     return DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -32,9 +34,11 @@ class AppSurfaceCard extends StatelessWidget {
         border: Border.all(color: AppColors.border),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.22),
-            blurRadius: 24,
-            offset: const Offset(0, 10),
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.28)
+                : const Color(0x0D000000),
+            blurRadius: isDark ? 20 : 16,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -44,7 +48,13 @@ class AppSurfaceCard extends StatelessWidget {
             ? content
             : Material(
                 color: Colors.transparent,
-                child: InkWell(onTap: onTap, child: content),
+                child: InkWell(
+                  onTap: onTap,
+                  borderRadius: BorderRadius.circular(radius),
+                  splashColor: AppColors.primary.withValues(alpha: 0.08),
+                  highlightColor: AppColors.primary.withValues(alpha: 0.04),
+                  child: content,
+                ),
               ),
       ),
     );

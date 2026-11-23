@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
+import 'package:stryde/core/theme/app_typography.dart';
 import 'package:stryde/features/exercises/presentation/widgets/exercise_image.dart';
 import 'package:stryde/features/routines/domain/entities/exercise.dart';
 import 'package:stryde/features/routines/domain/entities/workout_routine.dart';
@@ -187,10 +188,28 @@ class _CounterRow extends StatelessWidget {
             ),
             SizedBox(
               width: 48,
-              child: Text(
-                '$value',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineSmall,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 180),
+                transitionBuilder: (child, animation) => FadeTransition(
+                  opacity: animation,
+                  child: ScaleTransition(
+                    scale: Tween<double>(begin: 0.85, end: 1.0).animate(
+                      CurvedAnimation(
+                        parent: animation,
+                        curve: Curves.easeOutCubic,
+                      ),
+                    ),
+                    child: child,
+                  ),
+                ),
+                child: Text(
+                  '$value',
+                  key: ValueKey<int>(value),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontFeatures: AppTypography.tabularFontFeatures,
+                  ),
+                ),
               ),
             ),
             IconButton(

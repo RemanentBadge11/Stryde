@@ -49,7 +49,9 @@ void main() {
           .weightKg,
       82.5,
     );
-    expect(container.read(userProgressionProvider).currentXp, 100);
+    expect(container.read(userProgressionProvider).currentLevel, 2);
+    expect(container.read(userProgressionProvider).currentXp, 0);
+    expect(container.read(userProgressionProvider).totalXp, 100);
     expect(container.read(loginStreakProvider).streak, 1);
     expect(container.read(dailyGoalsProvider).goals.first.hasSetTarget, isTrue);
   });
@@ -150,6 +152,8 @@ void main() {
 
     expect(result!.completedDailyGoals, 1);
     expect(container.read(dailyGoalsProvider).goals.first.isCompleted, isTrue);
-    expect(container.read(userProgressionProvider).currentXp, 125);
+    expect(container.read(userProgressionProvider).currentLevel, 2);
+    expect(container.read(userProgressionProvider).currentXp, 25);
+    expect(container.read(userProgressionProvider).totalXp, 125);
   });
 }

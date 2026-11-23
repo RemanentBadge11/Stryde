@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:stryde/core/database/local_cache_service.dart';
+import 'package:stryde/core/sync/sync_service.dart';
 import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_theme.dart';
 import 'package:stryde/features/auth/presentation/providers/auth_provider.dart';
@@ -27,7 +29,11 @@ const List<AccentColorOption> kAccentColors = [
   AccentColorOption(name: 'Yellow', hex: '#EAB308', color: Color(0xFFEAB308)),
   AccentColorOption(name: 'Orange', hex: '#F97316', color: Color(0xFFF97316)),
   AccentColorOption(name: 'Purple', hex: '#A855F7', color: Color(0xFFA855F7)),
-  AccentColorOption(name: 'Terracotta', hex: '#D68F71', color: Color(0xFFD68F71)),
+  AccentColorOption(
+    name: 'Terracotta',
+    hex: '#D68F71',
+    color: Color(0xFFD68F71),
+  ),
 ];
 
 Color parseHexColor(String? hex, {Color fallback = const Color(0xFFFFFFFF)}) {
@@ -56,10 +62,8 @@ class AppThemeState {
 
   bool get isDark => themeMode == ThemeMode.dark;
 
-  ThemeData get themeData => AppTheme.buildTheme(
-        isDark: isDark,
-        accentColor: accentColor,
-      );
+  ThemeData get themeData =>
+      AppTheme.buildTheme(isDark: isDark, accentColor: accentColor);
 
   AppThemeState copyWith({
     ThemeMode? themeMode,
@@ -74,8 +78,9 @@ class AppThemeState {
   }
 }
 
-final themeProvider =
-    NotifierProvider<ThemeNotifier, AppThemeState>(ThemeNotifier.new);
+final themeProvider = NotifierProvider<ThemeNotifier, AppThemeState>(
+  ThemeNotifier.new,
+);
 
 class ThemeNotifier extends Notifier<AppThemeState> {
   String? _activeUserId;
@@ -103,12 +108,13 @@ class ThemeNotifier extends Notifier<AppThemeState> {
     final repo = _repository;
     if (repo == null) return;
     try {
-      final data = await repo.fetch(userId);
+      final data = await repo.getOrFetchProfile(userId);
       if (_activeUserId != userId || data == null) return;
 
       final isLight = data.themeMode?.toLowerCase() == 'light';
       final mode = isLight ? ThemeMode.light : ThemeMode.dark;
-      final hex = (data.accentColor != null && data.accentColor!.trim().isNotEmpty)
+      final hex =
+          (data.accentColor != null && data.accentColor!.trim().isNotEmpty)
           ? data.accentColor!.trim().toUpperCase()
           : '#FFFFFF';
       final accent = parseHexColor(hex);
@@ -137,25 +143,56 @@ class ThemeNotifier extends Notifier<AppThemeState> {
   }
 
   void setAccentColor(Color color, [String? hex]) {
-    final resolvedHex = hex ??
+    final resolvedHex =
+        hex ??
         '#${color.toARGB32().toRadixString(16).substring(2).toUpperCase()}';
     AppColors.update(accent: color);
-    state = state.copyWith(
-      accentColor: color,
-      accentColorHex: resolvedHex,
-    );
+    state = state.copyWith(accentColor: color, accentColorHex: resolvedHex);
     _persist();
   }
 
   void _persist() {
     final userId = _activeUserId;
+    if (userId == null) return;
+
+    final localCache = ref.read(localCacheServiceProvider);
+    final now = DateTime.now();
+    final themeModeStr = state.isDark ? 'dark' : 'light';
+    final accentHex = state.accentColorHex;
+
+    unawaited(() async {
+      try {
+        await localCache.updateCachedProfile(
+          userId,
+          themeMode: themeModeStr,
+          accentColor: accentHex,
+          lastUpdated: now,
+        );
+        await localCache.enqueue(
+          entityType: 'profile',
+          action: 'update',
+          payload: <String, dynamic>{
+            'userId': userId,
+            'values': <String, dynamic>{
+              'theme_mode': themeModeStr,
+              'accent_color': accentHex,
+              'updated_at': now.toUtc().toIso8601String(),
+            },
+          },
+        );
+        unawaited(ref.read(syncServiceProvider.notifier).syncPending());
+      } catch (_) {
+        // Degrades gracefully
+      }
+    }());
+
     final repo = _repository;
-    if (userId != null && repo != null) {
+    if (repo != null) {
       unawaited(
         repo.saveThemeSettings(
           userId: userId,
-          themeMode: state.isDark ? 'dark' : 'light',
-          accentColor: state.accentColorHex,
+          themeMode: themeModeStr,
+          accentColor: accentHex,
         ),
       );
     }

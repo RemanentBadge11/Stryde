@@ -88,21 +88,14 @@ class WorkoutHistoryRepository {
     switch (type) {
       case 'strength':
       case 'weighted':
-        return <String, dynamic>{
-          'weight': set.weightKg,
-          'reps': set.reps,
-        };
+        return <String, dynamic>{'weight': set.weightKg, 'reps': set.reps};
       case 'bodyweight':
       case 'reps_only_cardio':
-        return <String, dynamic>{
-          'reps': set.reps,
-        };
+        return <String, dynamic>{'reps': set.reps};
       case 'time':
       case 'time_only_cardio':
       case 'distance_cardio':
-        return <String, dynamic>{
-          'duration_seconds': set.durationSeconds ?? 0,
-        };
+        return <String, dynamic>{'duration_seconds': set.durationSeconds ?? 0};
       case 'resistance':
         return <String, dynamic>{
           'resistance_level': set.resistanceLevel ?? '',

@@ -15,10 +15,9 @@ abstract final class AppColors {
       isDark ? const Color(0xFF1F1F1F) : const Color(0xFFE8E8E8);
 
   static Color get primary => customPrimary;
-  static Color get onPrimary =>
-      (primary.computeLuminance() > 0.45)
-          ? const Color(0xFF000000)
-          : const Color(0xFFFFFFFF);
+  static Color get onPrimary => (primary.computeLuminance() > 0.45)
+      ? const Color(0xFF000000)
+      : const Color(0xFFFFFFFF);
 
   static Color get textPrimary =>
       isDark ? const Color(0xFFFFFFFF) : const Color(0xFF000000);

@@ -13,12 +13,18 @@ class LoadingStateCard extends StatelessWidget {
       child: SizedBox(
         height: height,
         child: Center(
-          child: SizedBox(
-            width: 24,
-            height: 24,
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-              color: AppColors.textPrimary,
+          child: TweenAnimationBuilder<double>(
+            tween: Tween<double>(begin: 0.0, end: 1.0),
+            duration: const Duration(milliseconds: 250),
+            builder: (context, opacity, child) =>
+                Opacity(opacity: opacity, child: child),
+            child: SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: AppColors.textPrimary,
+              ),
             ),
           ),
         ),

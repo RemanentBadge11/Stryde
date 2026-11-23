@@ -18,9 +18,8 @@ class MedalsRepository {
       for (final row in rows) {
         final id = row['medal_id']?.toString();
         if (id != null) {
-          final timestamp = DateTime.tryParse(
-                row['unlocked_at']?.toString() ?? '',
-              ) ??
+          final timestamp =
+              DateTime.tryParse(row['unlocked_at']?.toString() ?? '') ??
               DateTime.now();
           result[id] = timestamp;
         }
@@ -36,14 +35,11 @@ class MedalsRepository {
     required String medalId,
   }) async {
     try {
-      await _supabase.from('user_medals').upsert(
-        <String, dynamic>{
-          'user_id': userId,
-          'medal_id': medalId,
-          'unlocked_at': DateTime.now().toUtc().toIso8601String(),
-        },
-        onConflict: 'user_id, medal_id',
-      );
+      await _supabase.from('user_medals').upsert(<String, dynamic>{
+        'user_id': userId,
+        'medal_id': medalId,
+        'unlocked_at': DateTime.now().toUtc().toIso8601String(),
+      }, onConflict: 'user_id, medal_id');
     } catch (_) {
       // Degrades gracefully
     }

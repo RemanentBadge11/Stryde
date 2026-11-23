@@ -21,6 +21,14 @@ class _FakeProfileRepository implements ProfileRepository {
   Map<String, dynamic>? lastProfileInfo;
 
   @override
+  Future<ProfileData?> getOrFetchProfile(
+    String userId, {
+    String? defaultUsername,
+  }) async {
+    return fetch(userId);
+  }
+
+  @override
   Future<ProfileData?> fetch(String userId) async {
     return const ProfileData(
       xp: 100,
@@ -36,6 +44,12 @@ class _FakeProfileRepository implements ProfileRepository {
   }
 
   @override
+  Future<void> saveTimezone({
+    required String userId,
+    required String timezone,
+  }) async {}
+
+  @override
   Future<void> saveGoals({
     required String userId,
     required int steps,
@@ -49,6 +63,8 @@ class _FakeProfileRepository implements ProfileRepository {
     required int xp,
     required int level,
     required int skillPoints,
+    int? totalXp,
+    int? availableSkillPoints,
   }) async {}
 
   @override
@@ -149,7 +165,10 @@ void main() {
       final redOption = kAccentColors.firstWhere((c) => c.name == 'Red');
       notifier.setAccentColor(redOption.color, redOption.hex);
 
-      expect(container.read(themeProvider).accentColor, const Color(0xFFEF4444));
+      expect(
+        container.read(themeProvider).accentColor,
+        const Color(0xFFEF4444),
+      );
       expect(AppColors.primary, const Color(0xFFEF4444));
       // Red has luminance < 0.5, so onPrimary should be white
       expect(AppColors.onPrimary, const Color(0xFFFFFFFF));
@@ -157,7 +176,10 @@ void main() {
       // Select Yellow (#EAB308)
       final yellowOption = kAccentColors.firstWhere((c) => c.name == 'Yellow');
       notifier.setAccentColor(yellowOption.color, yellowOption.hex);
-      expect(container.read(themeProvider).accentColor, const Color(0xFFEAB308));
+      expect(
+        container.read(themeProvider).accentColor,
+        const Color(0xFFEAB308),
+      );
       expect(AppColors.primary, const Color(0xFFEAB308));
       // Yellow has high luminance, so onPrimary should be black
       expect(AppColors.onPrimary, const Color(0xFF000000));
@@ -169,19 +191,23 @@ void main() {
   group('Patch 2: Settings & ThemeScreen UI', () {
     testWidgets('renders SettingsScreen with navigation tiles', (tester) async {
       await tester.pumpWidget(
-        const ProviderScope(
-          child: MaterialApp(
-            home: SettingsScreen(),
-          ),
-        ),
+        const ProviderScope(child: MaterialApp(home: SettingsScreen())),
       );
 
       expect(find.text('Settings'), findsOneWidget);
-      expect(find.byKey(const ValueKey<String>('settings-theme-tile')), findsOneWidget);
-      expect(find.byKey(const ValueKey<String>('settings-profile-tile')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey<String>('settings-theme-tile')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey<String>('settings-profile-tile')),
+        findsOneWidget,
+      );
     });
 
-    testWidgets('ThemeScreen toggles mode and selects accent colors', (tester) async {
+    testWidgets('ThemeScreen toggles mode and selects accent colors', (
+      tester,
+    ) async {
       final fakeRepo = _FakeProfileRepository();
       await tester.pumpWidget(
         ProviderScope(
@@ -197,27 +223,28 @@ void main() {
             ),
             profileRepositoryProvider.overrideWithValue(fakeRepo),
           ],
-          child: const MaterialApp(
-            home: ThemeScreen(),
-          ),
+          child: const MaterialApp(home: ThemeScreen()),
         ),
       );
 
       expect(find.text('Themes'), findsOneWidget);
-      expect(find.byKey(const ValueKey<String>('theme-mode-switch')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey<String>('theme-mode-switch')),
+        findsOneWidget,
+      );
 
       // Verify all 7 color circles render
       for (final option in kAccentColors) {
         expect(
-          find.byKey(ValueKey<String>('accent-color-${option.name.toLowerCase()}')),
+          find.byKey(
+            ValueKey<String>('accent-color-${option.name.toLowerCase()}'),
+          ),
           findsOneWidget,
         );
       }
 
       // Tap blue accent
-      await tester.tap(
-        find.byKey(const ValueKey<String>('accent-color-blue')),
-      );
+      await tester.tap(find.byKey(const ValueKey<String>('accent-color-blue')));
       await tester.pumpAndSettle();
 
       expect(AppColors.primary, const Color(0xFF3B82F6));
@@ -250,14 +277,15 @@ void main() {
             ),
             profileRepositoryProvider.overrideWithValue(fakeRepo),
           ],
-          child: const MaterialApp(
-            home: CustomizeProfileScreen(),
-          ),
+          child: const MaterialApp(home: CustomizeProfileScreen()),
         ),
       );
 
       expect(find.text('Customize Profile'), findsOneWidget);
-      expect(find.byKey(const ValueKey<String>('change-avatar-button')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey<String>('change-avatar-button')),
+        findsOneWidget,
+      );
 
       final input = find.byKey(
         const ValueKey<String>('customize-profile-display-name-input'),
@@ -273,7 +301,9 @@ void main() {
       expect(fakeRepo.lastProfileInfo?['displayName'], 'Iron Warrior');
     });
 
-    testWidgets('HomeHeader displays display_name and circular avatar', (tester) async {
+    testWidgets('HomeHeader displays display_name and circular avatar', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -287,7 +317,10 @@ void main() {
       );
 
       expect(find.textContaining('Iron Warrior'), findsOneWidget);
-      expect(find.byKey(const ValueKey<String>('home-profile-button')), findsOneWidget);
+      expect(
+        find.byKey(const ValueKey<String>('home-profile-button')),
+        findsOneWidget,
+      );
       expect(find.byIcon(Icons.person_outline_rounded), findsOneWidget);
     });
   });
@@ -334,51 +367,57 @@ void main() {
       expect(container.read(medalsProvider).isUnlocked('streak_30'), isFalse);
     });
 
-    testWidgets('MedalsScreen renders list of medals with locked/unlocked states', (tester) async {
-      final fakeMedalsRepo = _FakeMedalsRepository()
-        ..database['first_pr'] = DateTime.now()
-        ..database['level_5'] = DateTime.now();
+    testWidgets(
+      'MedalsScreen renders list of medals with locked/unlocked states',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(800, 3200));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            currentUserProvider.overrideWithValue(
-              User(
-                id: 'user-123',
-                appMetadata: const {},
-                userMetadata: const {},
-                aud: 'authenticated',
-                createdAt: DateTime.now().toIso8601String(),
+        final fakeMedalsRepo = _FakeMedalsRepository()
+          ..database['first_pr'] = DateTime.now()
+          ..database['level_5'] = DateTime.now();
+
+        await tester.pumpWidget(
+          ProviderScope(
+            overrides: [
+              currentUserProvider.overrideWithValue(
+                User(
+                  id: 'user-123',
+                  appMetadata: const {},
+                  userMetadata: const {},
+                  aud: 'authenticated',
+                  createdAt: DateTime.now().toIso8601String(),
+                ),
               ),
-            ),
-            medalsRepositoryProvider.overrideWithValue(fakeMedalsRepo),
-          ],
-          child: const MaterialApp(
-            home: MedalsScreen(),
+              medalsRepositoryProvider.overrideWithValue(fakeMedalsRepo),
+            ],
+            child: const MaterialApp(home: MedalsScreen()),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Medals'), findsOneWidget);
-      expect(find.textContaining('Unlocked'), findsOneWidget);
-
-      // Check medal cards exist
-      for (final medal in kStaticMedals) {
-        expect(
-          find.byKey(ValueKey<String>('medal-card-${medal.id}')),
-          findsOneWidget,
         );
-      }
+        await tester.pumpAndSettle();
 
-      // Check UNLOCKED and LOCKED labels exist
-      expect(find.text('UNLOCKED'), findsWidgets);
-      expect(find.text('LOCKED'), findsWidgets);
-    });
+        expect(find.text('Medals'), findsOneWidget);
+        expect(find.textContaining('Unlocked'), findsOneWidget);
+
+        // Check medal cards exist
+        for (final medal in kStaticMedals) {
+          expect(
+            find.byKey(ValueKey<String>('medal-card-${medal.id}')),
+            findsOneWidget,
+          );
+        }
+
+        // Check UNLOCKED and LOCKED labels exist
+        expect(find.text('UNLOCKED'), findsWidgets);
+        expect(find.text('LOCKED'), findsWidgets);
+      },
+    );
   });
 
   group('Patch 2: PR Celebration Overlay Polish', () {
-    testWidgets('uses accent color for glowing hexagon and header text', (tester) async {
+    testWidgets('uses accent color for glowing hexagon and header text', (
+      tester,
+    ) async {
       const customAccent = Color(0xFFEF4444); // Red accent
 
       await tester.pumpWidget(

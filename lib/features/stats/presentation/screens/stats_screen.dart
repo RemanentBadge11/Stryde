@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
+import 'package:stryde/core/theme/app_typography.dart';
 import 'package:stryde/core/widgets/app_surface_card.dart';
 import 'package:stryde/core/widgets/empty_state_card.dart';
 import 'package:stryde/core/widgets/loading_state_card.dart';
@@ -354,7 +355,9 @@ class _AvailablePill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOutCubic,
       decoration: BoxDecoration(
         color: points > 0 ? AppColors.primary : AppColors.surfaceVariant,
         borderRadius: BorderRadius.circular(99),
@@ -367,12 +370,18 @@ class _AvailablePill extends StatelessWidget {
           horizontal: AppSpacing.space12,
           vertical: AppSpacing.space8,
         ),
-        child: Text(
-          '$points available',
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            color: points > 0 ? AppColors.onPrimary : AppColors.textSecondary,
-            fontWeight: FontWeight.w700,
-          ),
+        child: AnimatedDefaultTextStyle(
+          duration: const Duration(milliseconds: 200),
+          style:
+              (Theme.of(context).textTheme.labelMedium ??
+                      const TextStyle(fontSize: 12))
+                  .copyWith(
+                    color: points > 0
+                        ? AppColors.onPrimary
+                        : AppColors.textSecondary,
+                    fontWeight: FontWeight.w700,
+                  ),
+          child: Text('$points available'),
         ),
       ),
     );
@@ -477,10 +486,21 @@ class _MuscleRow extends StatelessWidget {
           Expanded(
             child: Text(muscle, style: Theme.of(context).textTheme.titleSmall),
           ),
-          Text(
-            '$points',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: points > 0 ? AppColors.textPrimary : AppColors.textMuted,
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            transitionBuilder: (child, animation) => ScaleTransition(
+              scale: Tween<double>(begin: 0.8, end: 1.0).animate(
+                CurvedAnimation(parent: animation, curve: Curves.easeOutBack),
+              ),
+              child: child,
+            ),
+            child: Text(
+              '$points',
+              key: ValueKey<int>(points),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: points > 0 ? AppColors.textPrimary : AppColors.textMuted,
+                fontFeatures: AppTypography.tabularFontFeatures,
+              ),
             ),
           ),
           const SizedBox(width: AppSpacing.space12),

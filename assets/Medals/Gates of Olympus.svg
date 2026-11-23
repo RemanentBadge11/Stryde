@@ -1,0 +1,10 @@
+<svg width="144" height="176" viewBox="0 0 144 176" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M72 5.25L141 42.75V132.75L72 170.25L3 132.75V42.75L72 5.25Z" fill="#101216" stroke-width="6" stroke="#AE85F6"/>
+<path d="M72 18.75L129 50.25V125.25L72 156.75L15 125.25V50.25L72 18.75Z" stroke-width="2.7" stroke="#AE85F6" stroke-opacity="0.4"/>
+<path d="M72 3.75V21.75ZM141 42.75L126 51.75ZM141 132.75L126 123.75ZM72 171.75V153.75ZM3 132.75L18 123.75ZM3 42.75L18 51.75Z" fill="black"/>
+<path d="M72 3.75V21.75M141 42.75L126 51.75M141 132.75L126 123.75M72 171.75V153.75M3 132.75L18 123.75M3 42.75L18 51.75" stroke-width="4.5" stroke="#AE85F6"/>
+<path d="M72 0.75L81 15.75L72 30.75L63 15.75L72 0.75Z" fill="#AE85F6" stroke-width="1.5" stroke-linejoin="round" stroke="#AE85F6"/>
+<path d="M72 144.75L81 159.75L72 174.75L63 159.75L72 144.75Z" fill="#AE85F6" stroke-width="1.5" stroke-linejoin="round" stroke="#AE85F6"/>
+<path d="M27 131.25V72.75L72 42.75L117 72.75V131.25M19.5 134.25H124.5M46.5 131.25V87.75H97.5V131.25M72 87.75V131.25" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke="#F4F5F7"/>
+<path d="M18 63.75L72 27.75L126 63.75" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" stroke="#F4F5F7"/>
+</svg>

@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
+import 'package:stryde/core/theme/app_typography.dart';
 import 'package:stryde/core/widgets/app_surface_card.dart';
 import 'package:stryde/core/widgets/empty_state_card.dart';
 import 'package:stryde/core/widgets/loading_state_card.dart';
@@ -135,7 +136,12 @@ class _DetailMetric extends StatelessWidget {
       child: Column(
         children: <Widget>[
           FittedBox(
-            child: Text(value, style: Theme.of(context).textTheme.titleLarge),
+            child: Text(
+              value,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontFeatures: AppTypography.tabularFontFeatures,
+              ),
+            ),
           ),
           const SizedBox(height: AppSpacing.space4),
           FittedBox(
@@ -194,7 +200,9 @@ class _CompletedExerciseCard extends StatelessWidget {
                     child: Text(
                       _formatSetPerformance(set),
                       textAlign: TextAlign.end,
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontFeatures: AppTypography.tabularFontFeatures,
+                      ),
                     ),
                   ),
                 ],

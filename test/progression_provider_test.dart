@@ -15,26 +15,26 @@ void main() {
     expect(progression.currentLevel, 1);
     expect(progression.currentXp, 0);
     expect(progression.skillPoints, 0);
-    expect(progression.rankTitle, 'Fresher');
-    expect(progression.xpToNextLevel, 500);
+    expect(progression.rankTitle, 'Initiate');
+    expect(progression.xpToNextLevel, 100);
   });
 
-  test('every 500 XP crosses one level and grants one skill point', () {
+  test('progressive XP crosses levels and grants skill points', () {
     final container = ProviderContainer();
     addTearDown(container.dispose);
 
     final notifier = container.read(userProgressionProvider.notifier);
-    notifier.addXp(500);
+    notifier.addXp(100);
 
     var progression = container.read(userProgressionProvider);
     expect(progression.currentLevel, 2);
     expect(progression.currentXp, 0);
     expect(progression.skillPoints, 1);
 
-    notifier.addXp(250);
+    notifier.addXp(75);
     progression = container.read(userProgressionProvider);
     expect(progression.currentLevel, 2);
-    expect(progression.currentXp, 250);
+    expect(progression.currentXp, 75);
     expect(progression.progress, 0.5);
   });
 
@@ -42,20 +42,22 @@ void main() {
     final container = ProviderContainer();
     addTearDown(container.dispose);
 
-    container.read(userProgressionProvider.notifier).addXp(500 * 5);
+    // Level 1->2 (100) + 2->3 (150) + 3->4 (200) = 450 XP reaches Level 4 (Fresher)
+    container.read(userProgressionProvider.notifier).addXp(450);
 
     final progression = container.read(userProgressionProvider);
-    expect(progression.currentLevel, 6);
+    expect(progression.currentLevel, 4);
     expect(progression.currentXp, 0);
-    expect(progression.rankTitle, 'Rising Star');
-    expect(progression.skillPoints, 8);
+    expect(progression.rankTitle, 'Fresher');
+    // 3 levels gained + 3 rank promotion bonus = 6 skill points
+    expect(progression.skillPoints, 6);
   });
 
   test('skill points are spent once and allocated to a muscle', () {
     final container = ProviderContainer();
     addTearDown(container.dispose);
 
-    container.read(userProgressionProvider.notifier).addXp(500);
+    container.read(userProgressionProvider.notifier).addXp(100);
     final allocations = container.read(skillAllocationsProvider.notifier);
 
     expect(allocations.spend('Chest'), isTrue);
@@ -85,7 +87,7 @@ void main() {
     addTearDown(container.dispose);
 
     final notifier = container.read(userProgressionProvider.notifier);
-    notifier.addXp(500 * 998);
+    notifier.addXp(1000000000);
     expect(container.read(userProgressionProvider).currentLevel, 999);
 
     notifier.addXp(5000);

@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stryde/core/database/local_cache_service.dart';
+import 'package:stryde/core/services/location_timezone_service.dart';
 import 'package:stryde/features/auth/presentation/providers/auth_provider.dart';
 import 'package:stryde/features/home/data/completed_quests_repository.dart';
+import 'package:stryde/features/home/data/user_quests_repository.dart';
 import 'package:stryde/features/home/domain/entities/daily_goal.dart';
 import 'package:stryde/features/home/domain/services/daily_goal_matcher.dart';
 import 'package:stryde/features/progression/domain/entities/xp_transaction.dart';
@@ -18,135 +21,108 @@ final dailyGoalsProvider = NotifierProvider<DailyGoalsNotifier, DailyGoalState>(
 class DailyGoalsNotifier extends Notifier<DailyGoalState> {
   static const int maxGoals = 3;
   static const int goalXp = 25;
-  static const Duration cycle = Duration(hours: 24);
 
   String? _activeUserId;
-  final Map<String, DateTime> _completedAt = <String, DateTime>{};
-
-  CompletedQuestsRepository? get _repository =>
-      ref.read(completedQuestsRepositoryProvider);
 
   @override
   DailyGoalState build() {
-    _completedAt.clear();
-    final user = ref.read(currentUserProvider);
+    final user = ref.watch(currentUserProvider);
+    final history = ref.read(workoutHistoryProvider);
+    final repo = ref.read(userQuestsRepositoryProvider);
+    final tzService = ref.read(locationTimezoneServiceProvider);
     _activeUserId = user?.id;
-    if (user != null && _repository != null) {
-      unawaited(_hydrate(user.id));
-    }
-    ref.listen(currentUserProvider, (_, user) {
-      final userId = user?.id;
-      if (userId == _activeUserId) return;
-      _activeUserId = userId;
-      _completedAt.clear();
-      state = _build(ref.read(workoutHistoryProvider));
-      if (userId != null && _repository != null) {
-        unawaited(_hydrate(userId));
-      }
+
+    final initialQuests = repo.generateDailyGoals(
+      userId: user?.id ?? 'local_user',
+      timezone: tzService.getDeviceTimezone(),
+      history: history,
+    );
+
+    final initial = DailyGoalState(
+      goals: List<DailyGoal>.unmodifiable(
+        initialQuests.map(DailyGoal.fromUserQuest),
+      ),
+      endsAt: initialQuests.first.expiresAt.toLocal(),
+      isEmptyOffline: false,
+    );
+
+    ref.listen(currentUserProvider, (_, nextUser) {
+      final nextId = nextUser?.id;
+      if (nextId == _activeUserId) return;
+      _activeUserId = nextId;
+      unawaited(_hydrate(nextId));
     });
 
-    final initial = _build(ref.read(workoutHistoryProvider));
-    ref.listen(workoutHistoryLoadingProvider, (wasLoading, isLoading) {
-      if (wasLoading != true || isLoading) return;
-      final history = ref.read(workoutHistoryProvider);
-      if (history.isNotEmpty &&
-          state.goals.every((goal) => !goal.hasSetTarget)) {
-        state = _build(history);
-      }
-    });
+    Future.microtask(() => _hydrate(user?.id));
+
     return initial;
   }
 
-  Future<void> _hydrate(String userId) async {
-    final repo = _repository;
-    if (repo == null) return;
-    final records = await repo.fetch(userId);
-    if (_activeUserId != userId) return;
+  Future<void> _hydrate(String? userId) async {
+    final repo = ref.read(userQuestsRepositoryProvider);
+    final tzService = ref.read(locationTimezoneServiceProvider);
+    final localCache = ref.read(localCacheServiceProvider);
+    final history = ref.read(workoutHistoryProvider);
+    final effectiveUserId = userId ?? 'local_user';
 
-    for (final record in records) {
-      if (record.questType == 'goal') {
-        final existing = _completedAt[record.questId];
-        if (existing == null || record.completedAt.isAfter(existing)) {
-          _completedAt[record.questId] = record.completedAt;
+    final profile = await localCache.getCachedProfile(effectiveUserId);
+    if (!ref.mounted) return;
+    final timezone = profile?.timezone ?? tzService.getDeviceTimezone();
+
+    try {
+      final userQuests = await repo.getOrGenerateQuests(
+        userId: effectiveUserId,
+        questType: 'daily',
+        timezone: timezone,
+        history: history,
+      );
+
+      if (!ref.mounted || _activeUserId != userId) return;
+
+      if (userQuests.isEmpty) {
+        state = DailyGoalState(
+          goals: const <DailyGoal>[],
+          endsAt: tzService.nextDailyMidnight(timezone: timezone).toLocal(),
+          isEmptyOffline: true,
+        );
+        return;
+      }
+
+      final goals = userQuests.map(DailyGoal.fromUserQuest).toList();
+      final endsAt = userQuests.first.expiresAt.toLocal();
+
+      state = DailyGoalState(
+        goals: List<DailyGoal>.unmodifiable(goals),
+        endsAt: endsAt,
+        isEmptyOffline: false,
+      );
+
+      final completedRepo = ref.read(completedQuestsRepositoryProvider);
+      if (completedRepo != null && userId != null) {
+        final records = await completedRepo.fetch(effectiveUserId);
+        if (records.isNotEmpty) {
+          final completedIds = records
+              .where((r) => r.questType == 'goal' || r.questType == 'daily')
+              .where((r) => r.isWithinWindow(const Duration(hours: 24)))
+              .map((r) => r.questId)
+              .toSet();
+          if (completedIds.isNotEmpty && ref.mounted) {
+            state = DailyGoalState(
+              goals: List<DailyGoal>.unmodifiable([
+                for (final g in state.goals)
+                  completedIds.contains(g.id)
+                      ? g.copyWith(isCompleted: true)
+                      : g,
+              ]),
+              endsAt: state.endsAt,
+              isEmptyOffline: state.isEmptyOffline,
+            );
+          }
         }
       }
+    } catch (_) {
+      // Degrades gracefully
     }
-
-    _applyActiveCompletions();
-  }
-
-  void _applyActiveCompletions([DateTime? at]) {
-    final now = at ?? DateTime.now();
-    var changed = false;
-    final updated = <DailyGoal>[
-      for (final goal in state.goals) ...[
-        () {
-          final isCompleted = _isCompletedWithin(goal.id, now);
-          if (isCompleted != goal.isCompleted) changed = true;
-          return goal.copyWith(isCompleted: isCompleted);
-        }(),
-      ],
-    ];
-    if (changed) {
-      state = DailyGoalState(
-        goals: updated,
-        endsAt: state.endsAt,
-      );
-    }
-  }
-
-  bool _isCompletedWithin(String id, DateTime now) {
-    final completedAt = _completedAt[id];
-    if (completedAt == null) return false;
-    final elapsed = now.difference(completedAt);
-    return !elapsed.isNegative && elapsed < cycle;
-  }
-
-  DailyGoalState _build(List<CompletedWorkout> history) {
-    final now = DateTime.now();
-    final goals = <DailyGoal>[];
-    final usedIds = <String>{};
-
-    for (final workout in history) {
-      for (final exercise in workout.exercises) {
-        if (exercise.sets.isEmpty || goals.length == maxGoals) continue;
-        final bestSet = exercise.sets.reduce(
-          (best, set) => set.weightKg >= best.weightKg ? set : best,
-        );
-        final id = 'progress-${exercise.exerciseId}';
-        if (!usedIds.add(id)) continue;
-
-        final targetWeight = bestSet.weightKg + 2.5;
-        final targetReps = (bestSet.reps - 2).clamp(1, 999).toInt();
-        goals.add(
-          DailyGoal(
-            id: id,
-            title: '${_formatWeight(targetWeight)} kg × $targetReps reps',
-            detail: exercise.exerciseName,
-            xp: goalXp,
-            exerciseId: exercise.exerciseId,
-            targetWeight: targetWeight,
-            targetReps: targetReps,
-            isCompleted: _isCompletedWithin(id, now),
-          ),
-        );
-      }
-      if (goals.length == maxGoals) break;
-    }
-
-    for (final fallback in _fallbackGoals) {
-      if (goals.length == maxGoals) break;
-      if (usedIds.add(fallback.id)) {
-        goals.add(
-          fallback.copyWith(isCompleted: _isCompletedWithin(fallback.id, now)),
-        );
-      }
-    }
-
-    return DailyGoalState(
-      goals: List<DailyGoal>.unmodifiable(goals.take(maxGoals)),
-      endsAt: now.add(cycle),
-    );
   }
 
   bool complete(String id) {
@@ -156,7 +132,7 @@ class DailyGoalsNotifier extends Notifier<DailyGoalState> {
 
     final goal = state.goals[index];
     final now = DateTime.now();
-    _completedAt[id] = now;
+
     state = DailyGoalState(
       goals: <DailyGoal>[
         for (var i = 0; i < state.goals.length; i++)
@@ -166,14 +142,25 @@ class DailyGoalsNotifier extends Notifier<DailyGoalState> {
             state.goals[i],
       ],
       endsAt: state.endsAt,
+      isEmptyOffline: state.isEmptyOffline,
     );
 
-    final userId = _activeUserId;
-    final repo = _repository;
-    if (userId != null && repo != null) {
+    final userId = _activeUserId ?? 'local_user';
+    final repo = ref.read(userQuestsRepositoryProvider);
+    unawaited(
+      repo.completeQuest(
+        userId: userId,
+        questId: id,
+        questType: 'daily',
+        completedAt: now,
+      ),
+    );
+
+    final completedRepo = ref.read(completedQuestsRepositoryProvider);
+    if (completedRepo != null && _activeUserId != null) {
       unawaited(
-        repo.insert(
-          userId: userId,
+        completedRepo.insert(
+          userId: _activeUserId!,
           questId: id,
           questType: 'goal',
           completedAt: now,
@@ -192,8 +179,6 @@ class DailyGoalsNotifier extends Notifier<DailyGoalState> {
     return true;
   }
 
-  /// Evaluates every unfinished goal against a completed session and returns
-  /// the number of goals that were completed automatically.
   int evaluateWorkout(CompletedWorkout workout) {
     refreshIfNeeded();
     final matchingIds = <String>[];
@@ -210,51 +195,72 @@ class DailyGoalsNotifier extends Notifier<DailyGoalState> {
     return completedCount;
   }
 
-  /// Rebuilds tomorrow's challenges from the freshest workout history.
   void refreshFromHistory() {
-    state = _build(ref.read(workoutHistoryProvider));
+    unawaited(_hydrate(_activeUserId));
   }
 
-  /// Replaces the initial fallback-only list once workout history exists.
-  /// Existing targeted goals are left untouched for the rest of their cycle.
   void generateFromHistoryIfNeeded() {
     if (state.goals.any((goal) => goal.hasSetTarget)) return;
     final history = ref.read(workoutHistoryProvider);
     if (history.isEmpty) return;
 
+    final repo = ref.read(userQuestsRepositoryProvider);
+    final tzService = ref.read(locationTimezoneServiceProvider);
+    final generated = repo.generateDailyGoals(
+      userId: _activeUserId ?? 'local_user',
+      timezone: tzService.getDeviceTimezone(),
+      history: history,
+    );
+
     final completedIds = state.goals
         .where((goal) => goal.isCompleted)
         .map((goal) => goal.id)
         .toSet();
-    final generated = _build(history);
+
     state = DailyGoalState(
-      goals: <DailyGoal>[
-        for (final goal in generated.goals)
-          completedIds.contains(goal.id)
-              ? goal.copyWith(isCompleted: true)
-              : goal,
-      ],
+      goals: List<DailyGoal>.unmodifiable([
+        for (final q in generated)
+          () {
+            final goal = DailyGoal.fromUserQuest(q);
+            return completedIds.contains(goal.id)
+                ? goal.copyWith(isCompleted: true)
+                : goal;
+          }(),
+      ]),
       endsAt: state.endsAt,
+      isEmptyOffline: false,
     );
+
+    final localCache = ref.read(localCacheServiceProvider);
+    try {
+      unawaited(
+        localCache.saveCachedQuests(
+          _activeUserId ?? 'local_user',
+          generated.map((q) => q.toDrift()).toList(),
+        ),
+      );
+    } catch (_) {}
   }
 
   void refreshIfNeeded() {
     final now = DateTime.now();
     if (!now.isBefore(state.endsAt)) {
-      state = _build(ref.read(workoutHistoryProvider));
-    } else {
-      _applyActiveCompletions(now);
+      unawaited(_hydrate(_activeUserId));
     }
   }
 
   bool _workoutCompletesGoal(CompletedWorkout workout, DailyGoal goal) {
     if (goal.hasSetTarget) {
       for (final exercise in workout.exercises) {
-        if (exercise.exerciseId != goal.exerciseId) continue;
+        if (exercise.exerciseName != goal.detail &&
+            exercise.exerciseId != goal.exerciseId &&
+            exercise.exerciseName != goal.exerciseId) {
+          continue;
+        }
         for (final set in exercise.sets) {
           if (setMeetsDailyGoalTarget(
             targetWeight: goal.targetWeight!,
-            targetReps: goal.targetReps!,
+            targetReps: goal.targetReps ?? 1,
             actualWeight: set.weightKg,
             actualReps: set.reps,
           )) {
@@ -267,29 +273,4 @@ class DailyGoalsNotifier extends Notifier<DailyGoalState> {
 
     return false;
   }
-
-  static const List<DailyGoal> _fallbackGoals = <DailyGoal>[
-    DailyGoal(
-      id: 'fallback-sets',
-      title: 'Complete 3 working sets',
-      detail: 'Any exercise',
-      xp: goalXp,
-    ),
-    DailyGoal(
-      id: 'fallback-reps',
-      title: 'Log 50 total reps',
-      detail: 'Across your session',
-      xp: goalXp,
-    ),
-    DailyGoal(
-      id: 'fallback-session',
-      title: 'Finish a workout',
-      detail: 'Any routine or free training',
-      xp: goalXp,
-    ),
-  ];
 }
-
-String _formatWeight(double value) => value == value.roundToDouble()
-    ? value.toStringAsFixed(0)
-    : value.toStringAsFixed(1);

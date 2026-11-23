@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
+import 'package:stryde/core/theme/app_typography.dart';
 import 'package:stryde/core/widgets/app_surface_card.dart';
 import 'package:stryde/core/widgets/empty_state_card.dart';
 import 'package:stryde/features/exercises/presentation/widgets/exercise_image.dart';
@@ -99,130 +100,131 @@ class _ActiveWorkoutScreenState extends ConsumerState<ActiveWorkoutScreen> {
         body: SafeArea(
           top: false,
           child: Stack(
-          children: <Widget>[
-            ListView(
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.space16,
-                AppSpacing.space16,
-                AppSpacing.space16,
-                164,
-              ),
-              children: <Widget>[
-                _WorkoutElapsedCard(
-                  elapsed: workoutState.elapsed,
-                  isPaused: workoutState.isPaused,
-                  onToggleTimer: () =>
-                      ref.read(activeWorkoutProvider.notifier).toggleTimer(),
+            children: <Widget>[
+              ListView(
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.space16,
+                  AppSpacing.space16,
+                  AppSpacing.space16,
+                  164,
                 ),
-                const SizedBox(height: AppSpacing.space16),
-                _WorkoutHeader(
-                  routine: session.routine,
-                  exerciseCount: exerciseDrafts.length,
-                ),
-                const SizedBox(height: AppSpacing.space16),
-                if (exerciseDrafts.isEmpty) ...<Widget>[
-                  const EmptyStateCard(
-                    icon: Icons.add_circle_outline_rounded,
-                    title: 'Empty workout',
-                    message:
-                        'Add an exercise from the library to begin free training.',
+                children: <Widget>[
+                  _WorkoutElapsedCard(
+                    elapsed: workoutState.elapsed,
+                    isPaused: workoutState.isPaused,
+                    onToggleTimer: () =>
+                        ref.read(activeWorkoutProvider.notifier).toggleTimer(),
                   ),
                   const SizedBox(height: AppSpacing.space16),
-                ],
-                for (var i = 0; i < exerciseDrafts.length; i++) ...<Widget>[
-                  _ExerciseLoggerCard(
-                    draft: exerciseDrafts[i],
-                    exerciseIndex: i,
-                    onAddSet: () =>
-                        ref.read(activeWorkoutProvider.notifier).addSet(i),
-                    onClearSets: () =>
-                        ref.read(activeWorkoutProvider.notifier).clearSets(i),
-                    onRemoveExercise: () => _removeExercise(i),
-                    onDuplicateSet: (setIndex) => ref
-                        .read(activeWorkoutProvider.notifier)
-                        .duplicateSet(i, setIndex),
-                    onDeleteSet: (setIndex) => ref
-                        .read(activeWorkoutProvider.notifier)
-                        .deleteSet(i, setIndex),
-                    onCompleteSet: (setIndex) => _completeSet(i, setIndex),
-                    onWeightChanged: (setIndex, value) {
-                      ref
-                          .read(activeWorkoutProvider.notifier)
-                          .updateWeight(i, setIndex, value);
-                    },
-                    onRepsChanged: (setIndex, value) {
-                      ref
-                          .read(activeWorkoutProvider.notifier)
-                          .updateReps(i, setIndex, value);
-                    },
-                    onTimeChanged: (setIndex, value) {
-                      ref
-                          .read(activeWorkoutProvider.notifier)
-                          .updateTime(i, setIndex, value);
-                    },
-                    onDistanceChanged: (setIndex, value) {
-                      ref
-                          .read(activeWorkoutProvider.notifier)
-                          .updateDistance(i, setIndex, value);
-                    },
-                    onInclineChanged: (setIndex, value) {
-                      ref
-                          .read(activeWorkoutProvider.notifier)
-                          .updateIncline(i, setIndex, value);
-                    },
-                    onResistanceChanged: (setIndex, value) {
-                      ref
-                          .read(activeWorkoutProvider.notifier)
-                          .updateResistance(i, setIndex, value);
-                    },
-                    onStepsChanged: (setIndex, value) {
-                      ref
-                          .read(activeWorkoutProvider.notifier)
-                          .updateSteps(i, setIndex, value);
-                    },
+                  _WorkoutHeader(
+                    routine: session.routine,
+                    exerciseCount: exerciseDrafts.length,
                   ),
-                  if (i != exerciseDrafts.length - 1)
+                  const SizedBox(height: AppSpacing.space16),
+                  if (exerciseDrafts.isEmpty) ...<Widget>[
+                    const EmptyStateCard(
+                      icon: Icons.add_circle_outline_rounded,
+                      title: 'Empty workout',
+                      message:
+                          'Add an exercise from the library to begin free training.',
+                    ),
                     const SizedBox(height: AppSpacing.space16),
-                ],
-                if (exerciseDrafts.isNotEmpty)
-                  const SizedBox(height: AppSpacing.space16),
-                SizedBox(
-                  height: 54,
-                  child: OutlinedButton.icon(
-                    onPressed: _addExercise,
-                    icon: const Icon(Icons.add_rounded),
-                    label: const Text('Add Exercise'),
+                  ],
+                  for (var i = 0; i < exerciseDrafts.length; i++) ...<Widget>[
+                    _ExerciseLoggerCard(
+                      draft: exerciseDrafts[i],
+                      exerciseIndex: i,
+                      onAddSet: () =>
+                          ref.read(activeWorkoutProvider.notifier).addSet(i),
+                      onClearSets: () =>
+                          ref.read(activeWorkoutProvider.notifier).clearSets(i),
+                      onRemoveExercise: () => _removeExercise(i),
+                      onDuplicateSet: (setIndex) => ref
+                          .read(activeWorkoutProvider.notifier)
+                          .duplicateSet(i, setIndex),
+                      onDeleteSet: (setIndex) => ref
+                          .read(activeWorkoutProvider.notifier)
+                          .deleteSet(i, setIndex),
+                      onCompleteSet: (setIndex) => _completeSet(i, setIndex),
+                      onWeightChanged: (setIndex, value) {
+                        ref
+                            .read(activeWorkoutProvider.notifier)
+                            .updateWeight(i, setIndex, value);
+                      },
+                      onRepsChanged: (setIndex, value) {
+                        ref
+                            .read(activeWorkoutProvider.notifier)
+                            .updateReps(i, setIndex, value);
+                      },
+                      onTimeChanged: (setIndex, value) {
+                        ref
+                            .read(activeWorkoutProvider.notifier)
+                            .updateTime(i, setIndex, value);
+                      },
+                      onDistanceChanged: (setIndex, value) {
+                        ref
+                            .read(activeWorkoutProvider.notifier)
+                            .updateDistance(i, setIndex, value);
+                      },
+                      onInclineChanged: (setIndex, value) {
+                        ref
+                            .read(activeWorkoutProvider.notifier)
+                            .updateIncline(i, setIndex, value);
+                      },
+                      onResistanceChanged: (setIndex, value) {
+                        ref
+                            .read(activeWorkoutProvider.notifier)
+                            .updateResistance(i, setIndex, value);
+                      },
+                      onStepsChanged: (setIndex, value) {
+                        ref
+                            .read(activeWorkoutProvider.notifier)
+                            .updateSteps(i, setIndex, value);
+                      },
+                    ),
+                    if (i != exerciseDrafts.length - 1)
+                      const SizedBox(height: AppSpacing.space16),
+                  ],
+                  if (exerciseDrafts.isNotEmpty)
+                    const SizedBox(height: AppSpacing.space16),
+                  SizedBox(
+                    height: 54,
+                    child: OutlinedButton.icon(
+                      onPressed: _addExercise,
+                      icon: const Icon(Icons.add_rounded),
+                      label: const Text('Add Exercise'),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Positioned(
-              left: AppSpacing.space16,
-              right: AppSpacing.space16,
-              bottom: MediaQuery.paddingOf(context).bottom + AppSpacing.space16,
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 240),
-                transitionBuilder: (child, animation) => SlideTransition(
-                  position: Tween<Offset>(
-                    begin: const Offset(0, 0.35),
-                    end: Offset.zero,
-                  ).animate(animation),
-                  child: FadeTransition(opacity: animation, child: child),
-                ),
-                child: restSecondsRemaining == null
-                    ? const SizedBox.shrink(key: ValueKey<String>('no-timer'))
-                    : _RestTimerCard(
-                        key: const ValueKey<String>('rest-timer'),
-                        secondsRemaining: restSecondsRemaining,
-                        onSkip: _skipRest,
-                        onAddTime: _addRestTime,
-                      ),
+                ],
               ),
-            ),
-          ],
+              Positioned(
+                left: AppSpacing.space16,
+                right: AppSpacing.space16,
+                bottom:
+                    MediaQuery.paddingOf(context).bottom + AppSpacing.space16,
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 240),
+                  transitionBuilder: (child, animation) => SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0, 0.35),
+                      end: Offset.zero,
+                    ).animate(animation),
+                    child: FadeTransition(opacity: animation, child: child),
+                  ),
+                  child: restSecondsRemaining == null
+                      ? const SizedBox.shrink(key: ValueKey<String>('no-timer'))
+                      : _RestTimerCard(
+                          key: const ValueKey<String>('rest-timer'),
+                          secondsRemaining: restSecondsRemaining,
+                          onSkip: _skipRest,
+                          onAddTime: _addRestTime,
+                        ),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }
@@ -473,9 +475,7 @@ class _WorkoutElapsedCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w800,
-                    fontFeatures: const <FontFeature>[
-                      FontFeature.tabularFigures(),
-                    ],
+                    fontFeatures: AppTypography.tabularFontFeatures,
                   ),
                 ),
               ],
@@ -915,7 +915,9 @@ class _SetRow extends StatelessWidget {
                 child: Text('Delete set'),
               ),
             ],
-            child: DecoratedBox(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeOutCubic,
               decoration: BoxDecoration(
                 color: set.isCompleted
                     ? AppColors.primary
@@ -926,13 +928,19 @@ class _SetRow extends StatelessWidget {
                 ),
               ),
               child: Center(
-                child: Text(
-                  '$displayNumber',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: set.isCompleted
-                        ? AppColors.onPrimary
-                        : AppColors.textPrimary,
-                  ),
+                child: AnimatedDefaultTextStyle(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeOutCubic,
+                  style:
+                      (Theme.of(context).textTheme.labelLarge ??
+                              const TextStyle())
+                          .copyWith(
+                            color: set.isCompleted
+                                ? AppColors.onPrimary
+                                : AppColors.textPrimary,
+                            fontWeight: FontWeight.w700,
+                          ),
+                  child: Text('$displayNumber'),
                 ),
               ),
             ),
@@ -1155,8 +1163,8 @@ class _SetInput extends StatelessWidget {
         initialValue: initialValue,
         readOnly: readOnly,
         textAlign: TextAlign.center,
-        keyboardType: keyboardType ??
-            TextInputType.numberWithOptions(decimal: decimal),
+        keyboardType:
+            keyboardType ?? TextInputType.numberWithOptions(decimal: decimal),
         style: Theme.of(context).textTheme.titleSmall,
         onChanged: onChanged,
         decoration: InputDecoration(
@@ -1237,9 +1245,7 @@ class _TimeInputState extends State<_TimeInput> {
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
         style: Theme.of(context).textTheme.titleSmall,
-        inputFormatters: <TextInputFormatter>[
-          _TimeMaskTextInputFormatter(),
-        ],
+        inputFormatters: <TextInputFormatter>[_TimeMaskTextInputFormatter()],
         onChanged: widget.onChanged,
         decoration: InputDecoration(
           isDense: true,
@@ -1340,7 +1346,9 @@ class _RestTimerCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   '$minutes:$seconds',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontFeatures: AppTypography.tabularFontFeatures,
+                  ),
                 ),
               ],
             ),
