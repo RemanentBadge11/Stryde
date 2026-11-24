@@ -234,7 +234,9 @@ class _RoutineExerciseCard extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.space4),
                 Text(
-                  '${prescription.targetSets} sets × ${prescription.targetReps} reps',
+                  prescription.targetReps != null
+                      ? '${prescription.targetSets} sets × ${prescription.targetReps} reps'
+                      : '${prescription.targetSets} ${prescription.targetSets == 1 ? 'set' : 'sets'}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],

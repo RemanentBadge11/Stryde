@@ -77,9 +77,7 @@ void main() {
     test('offline with empty cache yields empty state', () async {
       final offlineConn = _FakeOfflineConnectivity();
       final container = ProviderContainer(
-        overrides: [
-          networkConnectivityProvider.overrideWithValue(offlineConn),
-        ],
+        overrides: [networkConnectivityProvider.overrideWithValue(offlineConn)],
       );
       addTearDown(container.dispose);
 
@@ -97,9 +95,7 @@ void main() {
     test('completing quest offline adds to sync_queue', () async {
       final offlineConn = _FakeOfflineConnectivity();
       final container = ProviderContainer(
-        overrides: [
-          networkConnectivityProvider.overrideWithValue(offlineConn),
-        ],
+        overrides: [networkConnectivityProvider.overrideWithValue(offlineConn)],
       );
       addTearDown(container.dispose);
 
@@ -114,9 +110,11 @@ void main() {
 
       final pending = await localCache.getPendingQueue();
       expect(
-        pending.any((e) =>
-            e.entityType == 'quest_completion' &&
-            e.payload.contains('quest-123')),
+        pending.any(
+          (e) =>
+              e.entityType == 'quest_completion' &&
+              e.payload.contains('quest-123'),
+        ),
         isTrue,
       );
     });

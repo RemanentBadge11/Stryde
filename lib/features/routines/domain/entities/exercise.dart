@@ -62,6 +62,10 @@ class Exercise {
   bool get isDistanceCardio => type == ExerciseType.distanceCardio;
   bool get isRepsOnlyCardio => type == ExerciseType.repsOnlyCardio;
 
+  bool get isCardioExercise =>
+      primaryMuscle.trim().toLowerCase() == 'cardio' ||
+      type.toLowerCase().contains('cardio');
+
   factory Exercise.fromJson(Map<String, dynamic> json) {
     return Exercise(
       id: json['id'] as String,

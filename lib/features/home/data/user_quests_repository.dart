@@ -263,19 +263,19 @@ class UserQuestsRepository {
         title: '50 Push-ups',
         desc: 'Chest PR challenge',
         val: 50.0,
-        name: 'Push-up'
+        name: 'Push-up',
       ),
       (
         title: '50 Bodyweight Squats',
         desc: 'Legs PR challenge',
         val: 50.0,
-        name: 'Squat'
+        name: 'Squat',
       ),
       (
         title: '10 Pull-ups',
         desc: 'Back PR challenge',
         val: 10.0,
-        name: 'Pull-up'
+        name: 'Pull-up',
       ),
     ];
 

@@ -10,7 +10,7 @@ Future<RoutineExercise?> showExerciseTargetSheet(
   BuildContext context,
   Exercise exercise, {
   int initialSets = 3,
-  int initialReps = 10,
+  int? initialReps,
 }) {
   return showModalBottomSheet<RoutineExercise>(
     context: context,
@@ -19,7 +19,7 @@ Future<RoutineExercise?> showExerciseTargetSheet(
     builder: (context) => _ExerciseTargetSheet(
       exercise: exercise,
       initialSets: initialSets,
-      initialReps: initialReps,
+      initialReps: initialReps ?? 10,
     ),
   );
 }
@@ -52,6 +52,11 @@ class _ExerciseTargetSheetState extends State<_ExerciseTargetSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final isCardio = widget.exercise.isCardioExercise;
+    final ctaText = isCardio
+        ? (_sets == 1 ? 'Add 1 Set' : 'Add $_sets Sets')
+        : 'Add $_sets × $_reps';
+
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -119,13 +124,17 @@ class _ExerciseTargetSheetState extends State<_ExerciseTargetSheet> {
               onDecrease: _sets > 1 ? () => setState(() => _sets -= 1) : null,
               onIncrease: _sets < 12 ? () => setState(() => _sets += 1) : null,
             ),
-            const SizedBox(height: AppSpacing.space8),
-            _CounterRow(
-              label: 'Reps',
-              value: _reps,
-              onDecrease: _reps > 1 ? () => setState(() => _reps -= 1) : null,
-              onIncrease: _reps < 50 ? () => setState(() => _reps += 1) : null,
-            ),
+            if (!isCardio) ...[
+              const SizedBox(height: AppSpacing.space8),
+              _CounterRow(
+                label: 'Reps',
+                value: _reps,
+                onDecrease: _reps > 1 ? () => setState(() => _reps -= 1) : null,
+                onIncrease: _reps < 50
+                    ? () => setState(() => _reps += 1)
+                    : null,
+              ),
+            ],
             const SizedBox(height: AppSpacing.space24),
             SizedBox(
               height: 54,
@@ -134,10 +143,10 @@ class _ExerciseTargetSheetState extends State<_ExerciseTargetSheet> {
                   RoutineExercise(
                     exercise: widget.exercise,
                     targetSets: _sets,
-                    targetReps: _reps,
+                    targetReps: isCardio ? null : _reps,
                   ),
                 ),
-                child: Text('Add $_sets × $_reps'),
+                child: Text(ctaText),
               ),
             ),
           ],

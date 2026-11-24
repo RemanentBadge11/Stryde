@@ -222,7 +222,11 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
               ActiveWorkoutSet(
                 id: nextSetId++,
                 weightText: '',
-                repsText: prescription.targetReps.toString(),
+                repsText:
+                    (prescription.targetReps != null &&
+                        !prescription.exercise.isCardioExercise)
+                    ? prescription.targetReps.toString()
+                    : '',
               ),
           ],
         ),
@@ -254,7 +258,11 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
           ActiveWorkoutSet(
             id: nextSetId++,
             weightText: '',
-            repsText: prescription.targetReps.toString(),
+            repsText:
+                (prescription.targetReps != null &&
+                    !prescription.exercise.isCardioExercise)
+                ? prescription.targetReps.toString()
+                : '',
           ),
       ],
     );
@@ -574,7 +582,8 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
           switch (type) {
             case 'strength':
             case 'weighted':
-              weight = double.tryParse(set.weightText.replaceAll(',', '.')) ?? 0;
+              weight =
+                  double.tryParse(set.weightText.replaceAll(',', '.')) ?? 0;
               reps = int.tryParse(set.repsText) ?? 0;
             case 'bodyweight':
             case 'reps_only_cardio':
@@ -597,7 +606,8 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
               steps = int.tryParse(set.stepsText);
               durationSeconds = _parseDurationSeconds(set.timeText);
             default:
-              weight = double.tryParse(set.weightText.replaceAll(',', '.')) ?? 0;
+              weight =
+                  double.tryParse(set.weightText.replaceAll(',', '.')) ?? 0;
               reps = int.tryParse(set.repsText) ?? 0;
           }
 

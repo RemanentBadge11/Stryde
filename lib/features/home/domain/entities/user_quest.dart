@@ -31,10 +31,7 @@ class UserQuest {
   final bool isCompleted;
   final DateTime? completedAt;
 
-  UserQuest copyWith({
-    bool? isCompleted,
-    DateTime? completedAt,
-  }) {
+  UserQuest copyWith({bool? isCompleted, DateTime? completedAt}) {
     return UserQuest(
       id: id,
       userId: userId,

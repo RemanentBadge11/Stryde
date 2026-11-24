@@ -50,10 +50,7 @@ class HabitsNotifier extends Notifier<HabitState> {
       }
     });
 
-    return HabitState(
-      completedIds: const <String>{},
-      endsAt: initialEndsAt,
-    );
+    return HabitState(completedIds: const <String>{}, endsAt: initialEndsAt);
   }
 
   Future<void> _hydrate(String userId) async {

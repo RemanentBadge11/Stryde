@@ -4,7 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 
-final locationTimezoneServiceProvider = Provider<LocationTimezoneService>((ref) {
+final locationTimezoneServiceProvider = Provider<LocationTimezoneService>((
+  ref,
+) {
   return LocationTimezoneService();
 });
 
@@ -135,7 +137,9 @@ class LocationTimezoneService {
     if (totalMinutes == -300 || totalMinutes == -240) return 'America/New_York';
     if (totalMinutes == -360 || totalMinutes == -300) return 'America/Chicago';
     if (totalMinutes == -420 || totalMinutes == -360) return 'America/Denver';
-    if (totalMinutes == -480 || totalMinutes == -420) return 'America/Los_Angeles';
+    if (totalMinutes == -480 || totalMinutes == -420) {
+      return 'America/Los_Angeles';
+    }
     if (totalMinutes == 0 || totalMinutes == 60) return 'Europe/London';
     if (totalMinutes == 540) return 'Asia/Tokyo';
     if (totalMinutes == 600 || totalMinutes == 660) return 'Australia/Sydney';

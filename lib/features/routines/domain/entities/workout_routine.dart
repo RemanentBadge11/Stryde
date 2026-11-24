@@ -22,19 +22,23 @@ class RoutineExercise {
   const RoutineExercise({
     required this.exercise,
     required this.targetSets,
-    required this.targetReps,
+    this.targetReps,
   }) : assert(targetSets > 0),
-       assert(targetReps > 0);
+       assert(targetReps == null || targetReps > 0);
 
   final Exercise exercise;
   final int targetSets;
-  final int targetReps;
+  final int? targetReps;
 
-  RoutineExercise copyWith({int? targetSets, int? targetReps}) {
+  RoutineExercise copyWith({
+    int? targetSets,
+    int? targetReps,
+    bool clearTargetReps = false,
+  }) {
     return RoutineExercise(
       exercise: exercise,
       targetSets: targetSets ?? this.targetSets,
-      targetReps: targetReps ?? this.targetReps,
+      targetReps: clearTargetReps ? null : (targetReps ?? this.targetReps),
     );
   }
 }

@@ -33,9 +33,7 @@ class WeeklyQuestsNotifier extends Notifier<WeeklyQuestState> {
     );
 
     final initial = WeeklyQuestState(
-      quests: List<Quest>.unmodifiable(
-        initialQuests.map(Quest.fromUserQuest),
-      ),
+      quests: List<Quest>.unmodifiable(initialQuests.map(Quest.fromUserQuest)),
       endsAt: initialQuests.first.expiresAt.toLocal(),
       isEmptyOffline: false,
     );
@@ -75,7 +73,9 @@ class WeeklyQuestsNotifier extends Notifier<WeeklyQuestState> {
       if (userQuests.isEmpty) {
         state = WeeklyQuestState(
           quests: const <Quest>[],
-          endsAt: tzService.nextWeeklySundayMidnight(timezone: timezone).toLocal(),
+          endsAt: tzService
+              .nextWeeklySundayMidnight(timezone: timezone)
+              .toLocal(),
           isEmptyOffline: true,
         );
         return;

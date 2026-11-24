@@ -296,7 +296,8 @@ class SyncNotifier extends Notifier<SyncState> {
     final userId = payload['userId']?.toString();
     final questId = payload['questId']?.toString();
     final questType = payload['questType']?.toString() ?? 'goal';
-    final completedAt = payload['completedAt']?.toString() ??
+    final completedAt =
+        payload['completedAt']?.toString() ??
         DateTime.now().toUtc().toIso8601String();
     if (userId == null || questId == null) return true;
 

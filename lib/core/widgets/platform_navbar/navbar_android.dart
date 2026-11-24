@@ -64,7 +64,7 @@ class PlatformNavbar extends StatelessWidget {
   ];
 
   static const double _barHeight = 72;
-  static const double _protrusion = 42;
+  static const double _protrusion = 52;
   static const double _expandedControlHeight = 72;
 
   final int currentIndex;

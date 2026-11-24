@@ -113,7 +113,8 @@
     "primaryMuscle": "Chest",
     "equipment": "Machine",
     "imageUrl": "asset:assets/images/bench_press.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Pec Deck.jpg"
   },
   {
     "id": "push-up",
@@ -382,7 +383,8 @@
     "primaryMuscle": "Back",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/pullup.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Renegade Row.jpg"
   },
   {
     "id": "resistance-band-row",
@@ -390,7 +392,8 @@
     "primaryMuscle": "Back",
     "equipment": "Resistance Band",
     "imageUrl": "asset:assets/images/pullup.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Resistance Band Row.jpg"
   },
   {
     "id": "kneeling-lat-pulldown",
@@ -416,7 +419,8 @@
     "primaryMuscle": "Shoulders",
     "equipment": "Barbell",
     "imageUrl": "asset:assets/images/bench_press.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Overhead Press.jpg"
   },
   {
     "id": "seated-barbell-shoulder-press",
@@ -514,7 +518,8 @@
     "primaryMuscle": "Shoulders",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/bench_press.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Rear Delt Fly.jpg"
   },
   {
     "id": "reverse-pec-deck",
@@ -522,7 +527,8 @@
     "primaryMuscle": "Shoulders",
     "equipment": "Machine",
     "imageUrl": "asset:assets/images/bench_press.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Reverse Pec Deck.jpg"
   },
   {
     "id": "face-pull",
@@ -530,7 +536,8 @@
     "primaryMuscle": "Shoulders",
     "equipment": "Cable",
     "imageUrl": "asset:assets/images/pullup.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Face Pull.jpg"
   },
   {
     "id": "upright-row",
@@ -556,7 +563,8 @@
     "primaryMuscle": "Shoulders",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/bench_press.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Pike Push Up.webp"
   },
   {
     "id": "handstand-push-up",
@@ -573,7 +581,8 @@
     "primaryMuscle": "Shoulders",
     "equipment": "Resistance Band",
     "imageUrl": "asset:assets/images/bench_press.png",
-    "type": "resistance"
+    "type": "resistance",
+    "local_image": "assets/Visuals/images/Resistance Band Lateral Raise.jpg"
   },
   {
     "id": "y-raise",
@@ -599,7 +608,8 @@
     "primaryMuscle": "Biceps",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Alternating Dumbbell Curl.jpg"
   },
   {
     "id": "hammer-curl",
@@ -760,7 +770,8 @@
     "primaryMuscle": "Triceps",
     "equipment": "Cable",
     "imageUrl": "asset:assets/images/bench_press.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Overhead Cable Extension.jpg"
   },
   {
     "id": "single-arm-cable-extension",
@@ -786,7 +797,8 @@
     "primaryMuscle": "Triceps",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/bench_press.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Dumbbell Skull Crusher.jpg"
   },
   {
     "id": "dumbbell-overhead-extension",
@@ -794,7 +806,8 @@
     "primaryMuscle": "Triceps",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/bench_press.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Dumbbell Overhead Extension.jpg"
   },
   {
     "id": "close-grip-bench-press",
@@ -865,7 +878,8 @@
     "primaryMuscle": "Triceps",
     "equipment": "Resistance Band",
     "imageUrl": "asset:assets/images/bench_press.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Resistance Band Pushdown.jpg"
   },
   {
     "id": "tate-press",
@@ -909,7 +923,8 @@
     "primaryMuscle": "Forearms",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Dumbbell Wrist Curl.jpg"
   },
   {
     "id": "reverse-dumbbell-wrist-curl",
@@ -953,7 +968,8 @@
     "primaryMuscle": "Forearms",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Wrist Roller.jpg"
   },
   {
     "id": "farmer-carry",
@@ -961,7 +977,8 @@
     "primaryMuscle": "Forearms",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Farmer Carry.jpg"
   },
   {
     "id": "plate-pinch",
@@ -969,7 +986,8 @@
     "primaryMuscle": "Forearms",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Plate Pinch.webp"
   },
   {
     "id": "dead-hang",
@@ -977,7 +995,8 @@
     "primaryMuscle": "Forearms",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "time"
+    "type": "time",
+    "local_image": "assets/Visuals/images/Dead Hang.webp"
   },
   {
     "id": "towel-pull-up",
@@ -1066,7 +1085,8 @@
     "primaryMuscle": "Quadriceps",
     "equipment": "Machine",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Single Leg Press.jpg"
   },
   {
     "id": "leg-extension",
@@ -1163,7 +1183,8 @@
     "primaryMuscle": "Quadriceps",
     "equipment": "Barbell",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Box Squat.jpg"
   },
   {
     "id": "romanian-deadlift",
@@ -1225,7 +1246,8 @@
     "primaryMuscle": "Hamstrings",
     "equipment": "Machine",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Standing Leg Curl.jpg"
   },
   {
     "id": "nordic-hamstring-curl",
@@ -1233,7 +1255,8 @@
     "primaryMuscle": "Hamstrings",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Nordic Hamstring Curl.webp"
   },
   {
     "id": "glute-ham-raise",
@@ -1250,7 +1273,8 @@
     "primaryMuscle": "Hamstrings",
     "equipment": "Cable",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Cable Pull Through.jpg"
   },
   {
     "id": "kettlebell-swing",
@@ -1276,7 +1300,8 @@
     "primaryMuscle": "Hamstrings",
     "equipment": "Resistance Band",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "resistance"
+    "type": "resistance",
+    "local_image": "assets/Visuals/images/Resistance Band Leg Curl.webp"
   },
   {
     "id": "razor-curl",
@@ -1301,7 +1326,8 @@
     "primaryMuscle": "Glutes",
     "equipment": "Barbell",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Barbell Hip Thrust.jpg"
   },
   {
     "id": "dumbbell-hip-thrust",
@@ -1309,7 +1335,8 @@
     "primaryMuscle": "Glutes",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Dumbbell Hip Thrust.webp"
   },
   {
     "id": "smith-machine-hip-thrust",
@@ -1317,7 +1344,8 @@
     "primaryMuscle": "Glutes",
     "equipment": "Smith Machine",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Smith Machine Hip Thrust.webp"
   },
   {
     "id": "glute-bridge",
@@ -1334,7 +1362,8 @@
     "primaryMuscle": "Glutes",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Single Leg Glute Bridge.jpg"
   },
   {
     "id": "cable-glute-kickback",
@@ -1351,7 +1380,8 @@
     "primaryMuscle": "Glutes",
     "equipment": "Machine",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Machine Glute Kickback.jpg"
   },
   {
     "id": "frog-pump",
@@ -1377,7 +1407,8 @@
     "primaryMuscle": "Glutes",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Sumo Squat.jpg"
   },
   {
     "id": "curtsy-lunge",
@@ -1394,7 +1425,8 @@
     "primaryMuscle": "Glutes",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Deficit Reverse Lunge.webp"
   },
   {
     "id": "banded-lateral-walk",
@@ -1402,7 +1434,8 @@
     "primaryMuscle": "Glutes",
     "equipment": "Resistance Band",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Banded Lateral Walk.jpg"
   },
   {
     "id": "banded-clamshell",
@@ -1410,7 +1443,8 @@
     "primaryMuscle": "Glutes",
     "equipment": "Resistance Band",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "resistance"
+    "type": "resistance",
+    "local_image": "assets/Visuals/images/Banded Clamshell.webp"
   },
   {
     "id": "cable-hip-abduction",
@@ -1418,7 +1452,8 @@
     "primaryMuscle": "Glutes",
     "equipment": "Cable",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Cable Hip Abduction.webp"
   },
   {
     "id": "reverse-hyperextension",
@@ -1435,7 +1470,8 @@
     "primaryMuscle": "Glutes",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Step Down.webp"
   },
   {
     "id": "kneeling-squat",
@@ -1487,7 +1523,8 @@
     "primaryMuscle": "Calves",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Single Leg Calf Raise.jpg"
   },
   {
     "id": "dumbbell-calf-raise",
@@ -1504,7 +1541,8 @@
     "primaryMuscle": "Calves",
     "equipment": "Smith Machine",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Smith Machine Calf Raise.jpg"
   },
   {
     "id": "barbell-calf-raise",
@@ -1574,7 +1612,8 @@
     "primaryMuscle": "Abs",
     "equipment": "Cable",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Cable Crunch.jpg"
   },
   {
     "id": "machine-crunch",
@@ -1591,7 +1630,8 @@
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Hanging Knee Raise.jpg"
   },
   {
     "id": "hanging-leg-raise",
@@ -1608,7 +1648,8 @@
     "primaryMuscle": "Abs",
     "equipment": "Machine",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Captain Chair Knee Raise.jpg"
   },
   {
     "id": "reverse-crunch",
@@ -1625,7 +1666,8 @@
     "primaryMuscle": "Abs",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Ab Wheel Rollout.jpg"
   },
   {
     "id": "plank",
@@ -1660,7 +1702,8 @@
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "time"
+    "type": "time",
+    "local_image": "assets/Visuals/images/Hollow Body Hold.webp"
   },
   {
     "id": "v-up",
@@ -1668,7 +1711,8 @@
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/V Up.jpg"
   },
   {
     "id": "toe-touch",
@@ -1676,7 +1720,8 @@
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Toe Touch.jpg"
   },
   {
     "id": "jackknife-sit-up",
@@ -1693,7 +1738,8 @@
     "primaryMuscle": "Abs",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Swiss Ball Crunch.jpg"
   },
   {
     "id": "resistance-band-crunch",
@@ -1710,7 +1756,8 @@
     "primaryMuscle": "Abs",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Dragon Flag.webp"
   },
   {
     "id": "russian-twist",
@@ -1754,7 +1801,8 @@
     "primaryMuscle": "Obliques",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "time"
+    "type": "time",
+    "local_image": "assets/Visuals/images/Side Plank.jpg"
   },
   {
     "id": "side-plank-hip-dip",
@@ -1771,7 +1819,8 @@
     "primaryMuscle": "Obliques",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Bicycle Crunch.jpg"
   },
   {
     "id": "heel-touch",
@@ -1797,7 +1846,8 @@
     "primaryMuscle": "Obliques",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Suitcase Carry.webp"
   },
   {
     "id": "pallof-press",
@@ -1814,7 +1864,8 @@
     "primaryMuscle": "Obliques",
     "equipment": "Barbell",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Landmine Rotation.jpg"
   },
   {
     "id": "hanging-windshield-wiper",
@@ -1875,7 +1926,8 @@
     "primaryMuscle": "Traps",
     "equipment": "Trap Bar",
     "imageUrl": "asset:assets/images/pullup.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Trap Bar Shrug.webp"
   },
   {
     "id": "incline-dumbbell-shrug",
@@ -1892,7 +1944,8 @@
     "primaryMuscle": "Traps",
     "equipment": "Barbell",
     "imageUrl": "asset:assets/images/pullup.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Behind Back Barbell Shrug.jpg"
   },
   {
     "id": "farmer-walk",
@@ -1900,7 +1953,8 @@
     "primaryMuscle": "Traps",
     "equipment": "Trap Bar",
     "imageUrl": "asset:assets/images/pullup.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Farmer Walk.jpg"
   },
   {
     "id": "overhead-carry",
@@ -1908,7 +1962,8 @@
     "primaryMuscle": "Traps",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/pullup.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Overhead Carry.jpg"
   },
   {
     "id": "scapular-pull-up",
@@ -1952,7 +2007,8 @@
     "primaryMuscle": "Lower Back",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "weighted"
+    "type": "weighted",
+    "local_image": "assets/Visuals/images/Weighted Back Extension.jpg"
   },
   {
     "id": "superman",
@@ -2014,7 +2070,8 @@
     "primaryMuscle": "Full Body",
     "equipment": "Barbell",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Clean and Jerk.webp"
   },
   {
     "id": "barbell-snatch",
@@ -2022,7 +2079,8 @@
     "primaryMuscle": "Full Body",
     "equipment": "Barbell",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Barbell Snatch.jpg"
   },
   {
     "id": "dumbbell-thruster",
@@ -2030,7 +2088,8 @@
     "primaryMuscle": "Full Body",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Dumbbell Thruster.webp"
   },
   {
     "id": "barbell-thruster",
@@ -2047,7 +2106,8 @@
     "primaryMuscle": "Full Body",
     "equipment": "Kettlebell",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Kettlebell Clean and Press.webp"
   },
   {
     "id": "turkish-get-up",
@@ -2090,7 +2150,8 @@
     "primaryMuscle": "Full Body",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Sled Push.webp"
   },
   {
     "id": "sled-pull",
@@ -2098,7 +2159,8 @@
     "primaryMuscle": "Full Body",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/pullup.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Sled Pull.webp"
   },
   {
     "id": "battle-rope-slam",
@@ -2106,7 +2168,8 @@
     "primaryMuscle": "Full Body",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Battle Rope Slam.webp"
   },
   {
     "id": "sandbag-clean",
@@ -2114,7 +2177,8 @@
     "primaryMuscle": "Full Body",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Sandbag Clean.webp"
   },
   {
     "id": "devil-press",
@@ -2122,7 +2186,8 @@
     "primaryMuscle": "Full Body",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Devil Press.webp"
   },
   {
     "id": "treadmill-run",
@@ -2139,7 +2204,8 @@
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "cardio"
+    "type": "cardio",
+    "local_image": "assets/Visuals/images/Treadmill Walk.jpg"
   },
   {
     "id": "incline-treadmill-walk",
@@ -2147,7 +2213,8 @@
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "incline_cardio"
+    "type": "incline_cardio",
+    "local_image": "assets/Visuals/images/Incline Treadmill Walk.jpg"
   },
   {
     "id": "stationary-bike",
@@ -2155,7 +2222,8 @@
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "time_only_cardio"
+    "type": "time_only_cardio",
+    "local_image": "assets/Visuals/images/Stationary Bike.jpg"
   },
   {
     "id": "air-bike",
@@ -2181,7 +2249,8 @@
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Elliptical.jpg"
   },
   {
     "id": "stair-climber",
@@ -2189,7 +2258,8 @@
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "steps_cardio"
+    "type": "steps_cardio",
+    "local_image": "assets/Visuals/images/Stair Climber.jpg"
   },
   {
     "id": "ski-erg",
@@ -2197,7 +2267,8 @@
     "primaryMuscle": "Cardio",
     "equipment": "Cardio Machine",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "time_only_cardio"
+    "type": "time_only_cardio",
+    "local_image": "assets/Visuals/images/Ski Erg.jpg"
   },
   {
     "id": "jump-rope",
@@ -2214,7 +2285,8 @@
     "primaryMuscle": "Cardio",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Jumping Jack.jpg"
   },
   {
     "id": "mountain-climber",
@@ -2240,7 +2312,8 @@
     "primaryMuscle": "Cardio",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Box Jump.jpg"
   },
   {
     "id": "shuttle-run",
@@ -2284,7 +2357,8 @@
     "primaryMuscle": "Adductors",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Side Lying Hip Adduction.jpg"
   },
   {
     "id": "copenhagen-plank",
@@ -2292,7 +2366,8 @@
     "primaryMuscle": "Adductors",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Copenhagen Plank.webp"
   },
   {
     "id": "sumo-goblet-squat",
@@ -2300,7 +2375,8 @@
     "primaryMuscle": "Adductors",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Sumo Goblet Squat.jpg"
   },
   {
     "id": "lateral-lunge",
@@ -2308,7 +2384,8 @@
     "primaryMuscle": "Adductors",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Lateral Lunge.jpg"
   },
   {
     "id": "resistance-band-hip-adduction",
@@ -2316,7 +2393,8 @@
     "primaryMuscle": "Adductors",
     "equipment": "Resistance Band",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Resistance Band Hip Adduction.webp"
   },
   {
     "id": "sliding-cossack-squat",
@@ -2324,7 +2402,8 @@
     "primaryMuscle": "Adductors",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Sliding Cossack Squat.jpg"
   },
   {
     "id": "hip-abduction-machine",
@@ -2341,7 +2420,8 @@
     "primaryMuscle": "Abductors",
     "equipment": "Cable",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Standing Cable Hip Abduction.webp"
   },
   {
     "id": "side-lying-leg-raise",
@@ -2349,7 +2429,8 @@
     "primaryMuscle": "Abductors",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Side Lying Leg Raise.jpg"
   },
   {
     "id": "fire-hydrant",
@@ -2357,7 +2438,8 @@
     "primaryMuscle": "Abductors",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Fire Hydrant.webp"
   },
   {
     "id": "monster-walk",
@@ -2374,7 +2456,8 @@
     "primaryMuscle": "Abductors",
     "equipment": "Resistance Band",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Lateral Band Walk.jpg"
   },
   {
     "id": "standing-band-abduction",
@@ -2382,7 +2465,8 @@
     "primaryMuscle": "Abductors",
     "equipment": "Resistance Band",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Standing Band Abduction.webp"
   },
   {
     "id": "seated-band-abduction",
@@ -2390,7 +2474,8 @@
     "primaryMuscle": "Abductors",
     "equipment": "Resistance Band",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Seated Band Abduction.jpg"
   },
   {
     "id": "neck-flexion",
@@ -2398,7 +2483,8 @@
     "primaryMuscle": "Neck",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Neck Flexion.webp"
   },
   {
     "id": "neck-extension",
@@ -2406,7 +2492,8 @@
     "primaryMuscle": "Neck",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Neck Extension.webp"
   },
   {
     "id": "lateral-neck-flexion",
@@ -2414,7 +2501,8 @@
     "primaryMuscle": "Neck",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Lateral Neck Flexion.webp"
   },
   {
     "id": "neck-rotation",
@@ -2422,7 +2510,8 @@
     "primaryMuscle": "Neck",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Neck Rotation.webp"
   },
   {
     "id": "harness-neck-extension",
@@ -2430,7 +2519,8 @@
     "primaryMuscle": "Neck",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Harness Neck Extension.webp"
   },
   {
     "id": "plate-neck-flexion",
@@ -2438,7 +2528,8 @@
     "primaryMuscle": "Neck",
     "equipment": "Other",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Plate Neck Flexion.webp"
   },
   {
     "id": "isometric-neck-hold",
@@ -2446,7 +2537,8 @@
     "primaryMuscle": "Neck",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Isometric Neck Hold.webp"
   },
   {
     "id": "neck-bridge",
@@ -2454,7 +2546,8 @@
     "primaryMuscle": "Neck",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Neck Bridge.webp"
   },
   {
     "id": "push-up-weighted",

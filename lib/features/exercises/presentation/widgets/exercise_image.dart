@@ -23,29 +23,6 @@ class ExerciseImage extends StatelessWidget {
   final double? height;
   final double borderRadius;
 
-  static const ColorFilter _grayscaleFilter = ColorFilter.matrix(<double>[
-    0.2126,
-    0.7152,
-    0.0722,
-    0,
-    0,
-    0.2126,
-    0.7152,
-    0.0722,
-    0,
-    0,
-    0.2126,
-    0.7152,
-    0.0722,
-    0,
-    0,
-    0,
-    0,
-    0,
-    1,
-    0,
-  ]);
-
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -55,10 +32,7 @@ class ExerciseImage extends StatelessWidget {
         height: height,
         child: ColoredBox(
           color: AppColors.surfaceVariant,
-          child: ColorFiltered(
-            colorFilter: _grayscaleFilter,
-            child: _buildImage(),
-          ),
+          child: _buildImage(),
         ),
       ),
     );

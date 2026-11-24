@@ -434,8 +434,9 @@ class LocalCacheService {
     DateTime completedAt,
   ) async {
     try {
-      await (_db.update(_db.cachedQuests)..where((t) => t.id.equals(questId)))
-          .write(
+      await (_db.update(
+        _db.cachedQuests,
+      )..where((t) => t.id.equals(questId))).write(
         CachedQuestsCompanion(
           isCompleted: const Value(true),
           completedAt: Value(completedAt),
@@ -446,9 +447,9 @@ class LocalCacheService {
 
   Future<void> clearExpiredCachedQuests(DateTime now) async {
     try {
-      await (_db.delete(_db.cachedQuests)
-            ..where((t) => t.expiresAt.isSmallerOrEqualValue(now)))
-          .go();
+      await (_db.delete(
+        _db.cachedQuests,
+      )..where((t) => t.expiresAt.isSmallerOrEqualValue(now))).go();
     } catch (_) {}
   }
 }

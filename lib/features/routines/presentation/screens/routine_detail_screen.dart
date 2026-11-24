@@ -117,7 +117,9 @@ class _ExercisePreview extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.space4),
                 Text(
-                  '${prescription.exercise.primaryMuscle} · ${prescription.targetSets} × ${prescription.targetReps}',
+                  prescription.targetReps != null
+                      ? '${prescription.exercise.primaryMuscle} · ${prescription.targetSets} × ${prescription.targetReps}'
+                      : '${prescription.exercise.primaryMuscle} · ${prescription.targetSets} ${prescription.targetSets == 1 ? 'set' : 'sets'}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],

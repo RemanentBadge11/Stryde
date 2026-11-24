@@ -81,6 +81,64 @@ void main() {
       }
     });
 
+    testWidgets(
+      'Train tab is cleanly tappable and Start Workout button has upward clearance',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(430, 932));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        debugDefaultTargetPlatformOverride = TargetPlatform.android;
+        try {
+          var selectedBranch = -1;
+          var startWorkoutTapped = false;
+
+          await tester.pumpWidget(
+            MaterialApp(
+              theme: AppTheme.dark,
+              home: Scaffold(
+                bottomNavigationBar: PlatformNavbar(
+                  currentIndex: 0,
+                  onDestinationSelected: (index) => selectedBranch = index,
+                  onStartWorkout: () => startWorkoutTapped = true,
+                  isWorkoutOngoing: false,
+                  isPaused: false,
+                  elapsed: Duration.zero,
+                  onResumeWorkout: () {},
+                  onCompleteWorkout: () {},
+                  onToggleTimer: () {},
+                  onDiscardWorkout: () {},
+                ),
+              ),
+            ),
+          );
+
+          // Verify Train navigation slot is directly tappable without obstruction
+          final trainTab = find.byKey(
+            const ValueKey<String>('bottom-nav-train'),
+          );
+          expect(trainTab, findsOneWidget);
+          await tester.tap(trainTab);
+          await tester.pump();
+          expect(selectedBranch, 2);
+
+          // Verify Start Workout button is tappable
+          final startBtn = find.byKey(
+            const ValueKey<String>('start-workout-button'),
+          );
+          expect(startBtn, findsOneWidget);
+          await tester.tap(startBtn);
+          await tester.pump();
+          expect(startWorkoutTapped, true);
+
+          // Verify physical vertical clearance between button bottom and train tab content
+          final startBtnRect = tester.getRect(startBtn);
+          final trainTabRect = tester.getRect(trainTab);
+          expect(startBtnRect.bottom, lessThan(trainTabRect.bottom));
+        } finally {
+          debugDefaultTargetPlatformOverride = null;
+        }
+      },
+    );
+
     testWidgets('Renders Material bottom bar stably on iOS platform target', (
       tester,
     ) async {
