@@ -88,13 +88,19 @@ class _StrydeAppState extends ConsumerState<StrydeApp> {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.buildTheme(
         isDark: false,
-        accentColor: themeState.accentColor,
+        accentColor: themeState.preset != null
+            ? themeState.preset!.accent
+            : themeState.accentColor,
+        preset: themeState.preset,
       ),
       darkTheme: AppTheme.buildTheme(
         isDark: true,
-        accentColor: themeState.accentColor,
+        accentColor: themeState.preset != null
+            ? themeState.preset!.accent
+            : themeState.accentColor,
+        preset: themeState.preset,
       ),
-      themeMode: themeState.themeMode,
+      themeMode: themeState.effectiveThemeMode,
       routerConfig: _router,
       builder: (context, child) {
         return GlobalNotificationOverlay(

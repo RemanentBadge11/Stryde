@@ -5,6 +5,7 @@ import 'package:stryde/core/theme/app_colors.dart';
 import 'package:stryde/core/theme/app_spacing.dart';
 import 'package:stryde/core/widgets/app_surface_card.dart';
 import 'package:stryde/features/settings/presentation/providers/theme_provider.dart';
+import 'package:stryde/features/settings/presentation/widgets/theme_preset_selector.dart';
 
 class ThemeScreen extends ConsumerWidget {
   const ThemeScreen({super.key});
@@ -51,63 +52,97 @@ class ThemeScreen extends ConsumerWidget {
             const SizedBox(height: AppSpacing.space12),
             AppSurfaceCard(
               padding: const EdgeInsets.all(AppSpacing.space16),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    width: 42,
-                    height: 42,
-                    decoration: BoxDecoration(
-                      color: AppColors.surfaceVariant,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      isDark
-                          ? Icons.dark_mode_outlined
-                          : Icons.light_mode_outlined,
-                      size: 22,
-                      color: AppColors.textPrimary,
-                    ),
+                  Row(
+                    children: <Widget>[
+                      _AppearanceSegment(
+                        title: 'System',
+                        icon: Icons.brightness_auto_outlined,
+                        isSelected:
+                            themeState.preset == null &&
+                            themeState.themeMode == ThemeMode.system,
+                        onTap: () =>
+                            themeNotifier.setThemeMode(ThemeMode.system),
+                      ),
+                      const SizedBox(width: 8),
+                      _AppearanceSegment(
+                        title: 'Light',
+                        icon: Icons.light_mode_outlined,
+                        isSelected:
+                            themeState.preset == null &&
+                            themeState.themeMode == ThemeMode.light,
+                        onTap: () =>
+                            themeNotifier.setThemeMode(ThemeMode.light),
+                      ),
+                      const SizedBox(width: 8),
+                      _AppearanceSegment(
+                        title: 'Dark',
+                        icon: Icons.dark_mode_outlined,
+                        isSelected:
+                            themeState.preset == null &&
+                            themeState.themeMode == ThemeMode.dark,
+                        onTap: () => themeNotifier.setThemeMode(ThemeMode.dark),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: AppSpacing.space16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          isDark ? 'Dark Mode' : 'Light Mode',
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w600),
+                  const SizedBox(height: AppSpacing.space16),
+                  Divider(color: AppColors.border, height: 1),
+                  const SizedBox(height: AppSpacing.space12),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              isDark ? 'Dark Mode' : 'Light Mode',
+                              style: Theme.of(context).textTheme.titleSmall
+                                  ?.copyWith(fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              isDark
+                                  ? 'Monochrome true-black'
+                                  : 'Clean high-contrast light',
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(color: AppColors.textSecondary),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 2),
-                        Text(
-                          isDark
-                              ? 'Monochrome true-black'
-                              : 'Clean high-contrast light',
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(color: AppColors.textSecondary),
+                      ),
+                      Switch(
+                        key: const ValueKey<String>('theme-mode-switch'),
+                        value: isDark,
+                        activeThumbColor: themeState.accentColor,
+                        activeTrackColor: themeState.accentColor.withValues(
+                          alpha: 0.35,
                         ),
-                      ],
-                    ),
-                  ),
-                  Switch(
-                    key: const ValueKey<String>('theme-mode-switch'),
-                    value: isDark,
-                    activeThumbColor: themeState.accentColor,
-                    activeTrackColor: themeState.accentColor.withValues(
-                      alpha: 0.35,
-                    ),
-                    inactiveThumbColor: AppColors.textSecondary,
-                    inactiveTrackColor: AppColors.surfaceVariant,
-                    onChanged: (val) {
-                      themeNotifier.setThemeMode(
-                        val ? ThemeMode.dark : ThemeMode.light,
-                      );
-                    },
+                        inactiveThumbColor: AppColors.textSecondary,
+                        inactiveTrackColor: AppColors.surfaceVariant,
+                        onChanged: (val) {
+                          themeNotifier.setThemeMode(
+                            val ? ThemeMode.dark : ThemeMode.light,
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.space32),
+            const SizedBox(height: AppSpacing.space20),
+            Text(
+              'THEME PRESETS',
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: AppColors.textSecondary,
+                letterSpacing: 1.0,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.space12),
+            const ThemePresetSelector(),
+            const SizedBox(height: AppSpacing.space20),
             Text(
               'ACCENT COLOR',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -300,6 +335,70 @@ class _ColorCircle extends StatelessWidget {
                       color: checkColor,
                     )
                   : const SizedBox.shrink(),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AppearanceSegment extends StatelessWidget {
+  const _AppearanceSegment({
+    required this.title,
+    required this.icon,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final String title;
+  final IconData icon;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Semantics(
+        button: true,
+        selected: isSelected,
+        label: '$title appearance mode',
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? AppColors.primary.withValues(alpha: 0.12)
+                  : AppColors.surfaceVariant,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: isSelected ? AppColors.primary : AppColors.border,
+                width: 1.5,
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Icon(
+                  icon,
+                  size: 20,
+                  color: isSelected
+                      ? AppColors.primary
+                      : AppColors.textSecondary,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                    color: isSelected
+                        ? AppColors.primary
+                        : AppColors.textPrimary,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

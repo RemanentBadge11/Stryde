@@ -23,4 +23,8 @@ class CustomRoutinesNotifier extends Notifier<List<WorkoutRoutine>> {
   void addRoutine(WorkoutRoutine routine) {
     state = <WorkoutRoutine>[...state, routine];
   }
+
+  void removeRoutine(String routineId) {
+    state = state.where((r) => r.id != routineId).toList();
+  }
 }

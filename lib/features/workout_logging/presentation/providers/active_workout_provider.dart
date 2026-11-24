@@ -1,10 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stryde/core/database/local_cache_service.dart';
 import 'package:stryde/core/services/audio_service.dart';
+import 'package:stryde/core/sync/sync_service.dart';
+import 'package:stryde/features/auth/presentation/providers/auth_provider.dart';
 import 'package:stryde/features/home/presentation/providers/daily_goals_provider.dart';
 import 'package:stryde/features/home/presentation/providers/login_streak_provider.dart';
 import 'package:stryde/features/medals/presentation/providers/medals_provider.dart';
+import 'package:stryde/features/progression/domain/entities/rank.dart';
 import 'package:stryde/features/progression/domain/entities/xp_transaction.dart';
 import 'package:stryde/features/progression/presentation/providers/user_progression_provider.dart';
 import 'package:stryde/features/progression/presentation/providers/xp_transactions_provider.dart';
@@ -221,12 +225,30 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
             for (var i = 0; i < prescription.targetSets; i++)
               ActiveWorkoutSet(
                 id: nextSetId++,
-                weightText: '',
-                repsText:
-                    (prescription.targetReps != null &&
-                        !prescription.exercise.isCardioExercise)
-                    ? prescription.targetReps.toString()
+                weightText:
+                    (prescription.targetSetDetails != null &&
+                        i < prescription.targetSetDetails!.length &&
+                        prescription.targetSetDetails![i].weightKg != null &&
+                        prescription.targetSetDetails![i].weightKg! > 0)
+                    ? (prescription.targetSetDetails![i].weightKg! ==
+                              prescription.targetSetDetails![i].weightKg!
+                                  .roundToDouble()
+                          ? prescription.targetSetDetails![i].weightKg!
+                                .toInt()
+                                .toString()
+                          : prescription.targetSetDetails![i].weightKg!
+                                .toString())
                     : '',
+                repsText:
+                    (prescription.targetSetDetails != null &&
+                        i < prescription.targetSetDetails!.length &&
+                        prescription.targetSetDetails![i].reps != null &&
+                        prescription.targetSetDetails![i].reps! > 0)
+                    ? prescription.targetSetDetails![i].reps!.toString()
+                    : ((prescription.targetReps != null &&
+                              !prescription.exercise.isCardioExercise)
+                          ? prescription.targetReps.toString()
+                          : ''),
               ),
           ],
         ),
@@ -257,12 +279,29 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
         for (var i = 0; i < prescription.targetSets; i++)
           ActiveWorkoutSet(
             id: nextSetId++,
-            weightText: '',
-            repsText:
-                (prescription.targetReps != null &&
-                    !prescription.exercise.isCardioExercise)
-                ? prescription.targetReps.toString()
+            weightText:
+                (prescription.targetSetDetails != null &&
+                    i < prescription.targetSetDetails!.length &&
+                    prescription.targetSetDetails![i].weightKg != null &&
+                    prescription.targetSetDetails![i].weightKg! > 0)
+                ? (prescription.targetSetDetails![i].weightKg! ==
+                          prescription.targetSetDetails![i].weightKg!
+                              .roundToDouble()
+                      ? prescription.targetSetDetails![i].weightKg!
+                            .toInt()
+                            .toString()
+                      : prescription.targetSetDetails![i].weightKg!.toString())
                 : '',
+            repsText:
+                (prescription.targetSetDetails != null &&
+                    i < prescription.targetSetDetails!.length &&
+                    prescription.targetSetDetails![i].reps != null &&
+                    prescription.targetSetDetails![i].reps! > 0)
+                ? prescription.targetSetDetails![i].reps!.toString()
+                : ((prescription.targetReps != null &&
+                          !prescription.exercise.isCardioExercise)
+                      ? prescription.targetReps.toString()
+                      : ''),
           ),
       ],
     );
@@ -675,7 +714,9 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
       // deep-link still evaluates goals generated from genuinely prior history.
       ref.read(dailyGoalsProvider);
       final previousLevel = ref.read(userProgressionProvider).currentLevel;
-      ref.read(workoutHistoryProvider.notifier).addWorkout(workout);
+      ref
+          .read(workoutHistoryProvider.notifier)
+          .addWorkout(workout, prExercises: prExercises);
       final dailyGoals = ref.read(dailyGoalsProvider.notifier);
       final completedDailyGoals = dailyGoals.evaluateWorkout(workout);
       dailyGoals.generateFromHistoryIfNeeded();
@@ -705,6 +746,29 @@ class ActiveWorkoutNotifier extends Notifier<ActiveWorkoutState> {
             totalWorkouts: allWorkouts.length,
             hasNewPr: prExercises.isNotEmpty,
           );
+
+      // Check for rank promotion and automatically queue social post
+      final previousRank = Ranks.forLevel(previousLevel);
+      final newRank = Ranks.forLevel(newLevel);
+      if (previousRank.name != newRank.name) {
+        final userId = ref.read(currentUserProvider)?.id;
+        if (userId != null) {
+          unawaited(
+            ref
+                .read(localCacheServiceProvider)
+                .enqueue(
+                  entityType: 'rank_up',
+                  action: 'insert',
+                  payload: <String, dynamic>{
+                    'userId': userId,
+                    'rankName': newRank.name,
+                    'level': newLevel,
+                  },
+                ),
+          );
+          unawaited(ref.read(syncServiceProvider.notifier).syncPending());
+        }
+      }
 
       _ticker?.cancel();
       _ticker = null;

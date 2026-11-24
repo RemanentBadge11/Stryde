@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:stryde/core/theme/app_colors.dart';
@@ -5,6 +6,7 @@ import 'package:stryde/core/theme/app_spacing.dart';
 import 'package:stryde/core/widgets/app_surface_card.dart';
 import 'package:stryde/features/exercises/presentation/widgets/exercise_image.dart';
 import 'package:stryde/features/routines/domain/entities/workout_routine.dart';
+import 'package:stryde/features/routines/presentation/providers/custom_routines_provider.dart';
 
 class RoutineDetailScreen extends StatelessWidget {
   const RoutineDetailScreen({required this.routine, super.key});
@@ -19,6 +21,49 @@ class RoutineDetailScreen extends StatelessWidget {
         backgroundColor: AppColors.background,
         surfaceTintColor: Colors.transparent,
         title: const Text('Routine'),
+        actions: routine.isCustom
+            ? <Widget>[
+                Consumer(
+                  builder: (context, ref, _) {
+                    return IconButton(
+                      icon: const Icon(Icons.delete_outline_rounded),
+                      tooltip: 'Delete routine',
+                      onPressed: () async {
+                        final confirmed = await showDialog<bool>(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            backgroundColor: AppColors.surface,
+                            title: const Text('Delete Routine?'),
+                            content: Text(
+                              'Are you sure you want to delete "${routine.name}"?',
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.of(ctx).pop(false),
+                                child: const Text('Cancel'),
+                              ),
+                              FilledButton(
+                                style: FilledButton.styleFrom(
+                                  backgroundColor: AppColors.error,
+                                ),
+                                onPressed: () => Navigator.of(ctx).pop(true),
+                                child: const Text('Delete'),
+                              ),
+                            ],
+                          ),
+                        );
+                        if (confirmed == true && context.mounted) {
+                          ref
+                              .read(customRoutinesProvider.notifier)
+                              .removeRoutine(routine.id);
+                          context.pop();
+                        }
+                      },
+                    );
+                  },
+                ),
+              ]
+            : null,
       ),
       body: SafeArea(
         top: false,
@@ -53,6 +98,12 @@ class RoutineDetailScreen extends StatelessWidget {
                   icon: Icons.schedule_rounded,
                   label: '${routine.estimatedMinutes} min',
                 ),
+                if (routine.savedFromUsername != null &&
+                    routine.savedFromUsername!.isNotEmpty)
+                  _MetaPill(
+                    icon: Icons.person_outline_rounded,
+                    label: 'Saved from @${routine.savedFromUsername}',
+                  ),
               ],
             ),
             const SizedBox(height: AppSpacing.space32),

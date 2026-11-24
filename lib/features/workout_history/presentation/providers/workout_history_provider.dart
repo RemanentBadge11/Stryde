@@ -6,6 +6,7 @@ import 'package:stryde/core/database/local_cache_service.dart';
 import 'package:stryde/core/providers/loading_flag_notifier.dart';
 import 'package:stryde/core/sync/sync_service.dart';
 import 'package:stryde/features/auth/presentation/providers/auth_provider.dart';
+import 'package:stryde/features/social/data/social_repository.dart';
 import 'package:stryde/features/workout_history/data/workout_history_repository.dart';
 import 'package:stryde/features/workout_history/domain/entities/completed_workout.dart';
 
@@ -110,15 +111,22 @@ class WorkoutHistoryNotifier extends Notifier<List<CompletedWorkout>> {
     }
   }
 
-  void addWorkout(CompletedWorkout workout) {
+  void addWorkout(
+    CompletedWorkout workout, {
+    List<String> prExercises = const <String>[],
+  }) {
     state = <CompletedWorkout>[workout, ...state];
     final userId = _activeUserId;
     if (userId == null) return;
 
-    unawaited(_insert(userId, workout));
+    unawaited(_insert(userId, workout, prExercises: prExercises));
   }
 
-  Future<void> _insert(String userId, CompletedWorkout workout) async {
+  Future<void> _insert(
+    String userId,
+    CompletedWorkout workout, {
+    List<String> prExercises = const <String>[],
+  }) async {
     final localCache = ref.read(localCacheServiceProvider);
     try {
       final repo = _repository;
@@ -127,6 +135,14 @@ class WorkoutHistoryNotifier extends Notifier<List<CompletedWorkout>> {
           await repo.insert(userId: userId, workout: workout);
         } catch (_) {}
       }
+      try {
+        final socialRepo = ref.read(socialRepositoryProvider);
+        await socialRepo.publishWorkoutPost(
+          userId: userId,
+          workout: workout,
+          prExercises: prExercises,
+        );
+      } catch (_) {}
       // 1. Save to local cache first
       await localCache.saveCachedWorkout(userId, workout);
       // 2. Add to sync queue
@@ -136,6 +152,7 @@ class WorkoutHistoryNotifier extends Notifier<List<CompletedWorkout>> {
         payload: <String, dynamic>{
           'userId': userId,
           'workout': workout.toJson(),
+          'prExercises': prExercises,
         },
       );
       // 3. Trigger sync worker

@@ -22,25 +22,31 @@ class AppSurfaceCard extends StatelessWidget {
         : Padding(padding: padding!, child: child);
 
     final isDark = AppColors.isDark;
+    final isPreset = AppColors.currentPreset != null;
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: <Color>[AppColors.surfaceElevated, AppColors.surface],
-        ),
+        color: isPreset ? AppColors.surface : null,
+        gradient: isPreset
+            ? null
+            : LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[AppColors.surfaceElevated, AppColors.surface],
+              ),
         borderRadius: BorderRadius.circular(radius),
         border: Border.all(color: AppColors.border),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: isDark
-                ? Colors.black.withValues(alpha: 0.28)
-                : const Color(0x0D000000),
-            blurRadius: isDark ? 20 : 16,
-            offset: const Offset(0, 8),
-          ),
-        ],
+        boxShadow: isPreset
+            ? const <BoxShadow>[]
+            : <BoxShadow>[
+                BoxShadow(
+                  color: isDark
+                      ? Colors.black.withValues(alpha: 0.28)
+                      : const Color(0x0D000000),
+                  blurRadius: isDark ? 20 : 16,
+                  offset: const Offset(0, 8),
+                ),
+              ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(radius),

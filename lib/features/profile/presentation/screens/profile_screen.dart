@@ -11,6 +11,8 @@ import 'package:stryde/features/auth/presentation/providers/auth_provider.dart';
 import 'package:stryde/features/profile/presentation/providers/profile_goals_provider.dart';
 import 'package:stryde/features/profile/presentation/providers/user_profile_provider.dart';
 import 'package:stryde/features/progression/presentation/providers/user_progression_provider.dart';
+import 'package:stryde/features/social/presentation/providers/social_providers.dart';
+import 'package:stryde/features/social/presentation/widgets/rank_badge.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -23,6 +25,7 @@ class ProfileScreen extends ConsumerWidget {
     final notifier = ref.read(profileGoalsProvider.notifier);
     final userProfile = ref.watch(userProfileProvider);
     final displayName = userProfile.effectiveName;
+    final socialStats = ref.watch(mySocialStatsProvider).value;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -67,10 +70,13 @@ class ProfileScreen extends ConsumerWidget {
             else
               _IdentityCard(
                 name: displayName,
+                username: userProfile.username,
                 level: progression.currentLevel,
                 rank: progression.rankTitle,
                 skillPoints: progression.skillPoints,
                 avatarUrl: userProfile.avatarUrl,
+                followersCount: socialStats?.followersCount ?? 0,
+                followingCount: socialStats?.followingCount ?? 0,
               ),
             const SizedBox(height: AppSpacing.space16),
             AppSurfaceCard(
@@ -274,91 +280,204 @@ class ProfileScreen extends ConsumerWidget {
   }
 }
 
-class _IdentityCard extends StatelessWidget {
+class _IdentityCard extends ConsumerWidget {
   const _IdentityCard({
     required this.name,
+    this.username,
     required this.level,
     required this.rank,
     required this.skillPoints,
     this.avatarUrl,
+    this.followersCount = 0,
+    this.followingCount = 0,
   });
 
   final String name;
+  final String? username;
   final int level;
   final String rank;
   final int skillPoints;
   final String? avatarUrl;
+  final int followersCount;
+  final int followingCount;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final hasAvatar = avatarUrl != null && avatarUrl!.trim().isNotEmpty;
+    final currentUserId = ref.read(currentUserProvider)?.id ?? '';
+
     return AppSurfaceCard(
-      padding: const EdgeInsets.all(AppSpacing.space24),
-      child: Row(
+      padding: const EdgeInsets.all(AppSpacing.space20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            width: 64,
-            height: 64,
-            decoration: BoxDecoration(
-              color: AppColors.primary,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppColors.borderStrong.withValues(alpha: 0.4),
-                width: 1.5,
-              ),
-            ),
-            clipBehavior: Clip.antiAlias,
-            alignment: Alignment.center,
-            child: hasAvatar
-                ? Image.network(
-                    avatarUrl!,
-                    fit: BoxFit.cover,
-                    width: 64,
-                    height: 64,
-                    errorBuilder: (context, error, stackTrace) => Icon(
-                      Icons.person_rounded,
-                      size: 34,
-                      color: AppColors.onPrimary,
-                    ),
-                  )
-                : Icon(
-                    Icons.person_rounded,
-                    size: 34,
-                    color: AppColors.onPrimary,
+          Row(
+            children: <Widget>[
+              Container(
+                width: 64,
+                height: 64,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppColors.borderStrong.withValues(alpha: 0.4),
+                    width: 1.5,
                   ),
-          ),
-          const SizedBox(width: AppSpacing.space16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(name, style: Theme.of(context).textTheme.headlineSmall),
-                const SizedBox(height: AppSpacing.space4),
-                Text(
-                  'Level $level · $rank',
-                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                const SizedBox(height: AppSpacing.space8),
-                Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.bolt_rounded,
-                      size: 15,
-                      color: AppColors.textPrimary,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      skillPoints == 1
-                          ? '1 skill point'
-                          : '$skillPoints skill points',
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: AppColors.textPrimary,
+                clipBehavior: Clip.antiAlias,
+                alignment: Alignment.center,
+                child: hasAvatar
+                    ? Image.network(
+                        avatarUrl!,
+                        fit: BoxFit.cover,
+                        width: 64,
+                        height: 64,
+                        errorBuilder: (context, error, stackTrace) => Icon(
+                          Icons.person_rounded,
+                          size: 34,
+                          color: AppColors.onPrimary,
+                        ),
+                      )
+                    : Icon(
+                        Icons.person_rounded,
+                        size: 34,
+                        color: AppColors.onPrimary,
                       ),
+              ),
+              const SizedBox(width: AppSpacing.space16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      name,
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.w700),
+                    ),
+                    if (username != null &&
+                        username!.trim().isNotEmpty) ...<Widget>[
+                      const SizedBox(height: 2),
+                      Text(
+                        '@${username!.trim()}',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 6),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          'Level $level',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          '·',
+                          style: TextStyle(color: AppColors.textSecondary),
+                        ),
+                        const SizedBox(width: 6),
+                        RankBadge(rankName: rank, size: 16, showLabel: true),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.space8),
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.bolt_rounded,
+                          size: 15,
+                          color: AppColors.textPrimary,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          skillPoints == 1
+                              ? '1 skill point'
+                              : '$skillPoints skill points',
+                          style: Theme.of(context).textTheme.labelMedium
+                              ?.copyWith(color: AppColors.textPrimary),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.space16),
+          const Divider(),
+          const SizedBox(height: AppSpacing.space8),
+
+          // Clickable Followers & Following Counts
+          Wrap(
+            spacing: AppSpacing.space16,
+            runSpacing: AppSpacing.space8,
+            children: <Widget>[
+              InkWell(
+                key: const ValueKey<String>('profile-followers-button'),
+                onTap: () {
+                  if (currentUserId.isNotEmpty) {
+                    context.push('/profile/followers', extra: currentUserId);
+                  }
+                },
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 4,
+                  ),
+                  child: RichText(
+                    text: TextSpan(
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textPrimary,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '$followersCount ',
+                          style: const TextStyle(fontWeight: FontWeight.w800),
+                        ),
+                        TextSpan(
+                          text: 'Followers',
+                          style: TextStyle(color: AppColors.textSecondary),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              InkWell(
+                key: const ValueKey<String>('profile-following-button'),
+                onTap: () {
+                  if (currentUserId.isNotEmpty) {
+                    context.push('/profile/following', extra: currentUserId);
+                  }
+                },
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 4,
+                  ),
+                  child: RichText(
+                    text: TextSpan(
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textPrimary,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '$followingCount ',
+                          style: const TextStyle(fontWeight: FontWeight.w800),
+                        ),
+                        TextSpan(
+                          text: 'Following',
+                          style: TextStyle(color: AppColors.textSecondary),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

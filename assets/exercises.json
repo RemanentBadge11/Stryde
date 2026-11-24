@@ -1166,7 +1166,8 @@
     "primaryMuscle": "Quadriceps",
     "equipment": "Resistance Band",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Spanish Squat.webp"
   },
   {
     "id": "cyclist-squat",
@@ -1309,7 +1310,8 @@
     "primaryMuscle": "Hamstrings",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Razor Curl.webp"
   },
   {
     "id": "snatch-grip-romanian-deadlift",
@@ -1479,7 +1481,8 @@
     "primaryMuscle": "Glutes",
     "equipment": "Barbell",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Kneeling Squat.jpg"
   },
   {
     "id": "standing-calf-raise",
@@ -1577,7 +1580,8 @@
     "primaryMuscle": "Calves",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/squat.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Farmer Walk on Toes.webp"
   },
   {
     "id": "crunch",
@@ -1873,7 +1877,8 @@
     "primaryMuscle": "Obliques",
     "equipment": "Bodyweight",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "bodyweight"
+    "type": "bodyweight",
+    "local_image": "assets/Visuals/images/Hanging Windshield Wiper.webp"
   },
   {
     "id": "oblique-crunch",
@@ -2133,7 +2138,8 @@
     "primaryMuscle": "Full Body",
     "equipment": "Dumbbell",
     "imageUrl": "asset:assets/images/generic.png",
-    "type": "strength"
+    "type": "strength",
+    "local_image": "assets/Visuals/images/Man Maker.webp"
   },
   {
     "id": "bear-crawl",

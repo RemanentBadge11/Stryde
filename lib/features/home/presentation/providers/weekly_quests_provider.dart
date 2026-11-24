@@ -173,9 +173,13 @@ class WeeklyQuestsNotifier extends Notifier<WeeklyQuestState> {
     return true;
   }
 
-  void refreshIfNeeded() {
+  void refresh() {
+    unawaited(_hydrate(_activeUserId));
+  }
+
+  void refreshIfNeeded({bool force = false}) {
     final now = DateTime.now();
-    if (!now.isBefore(state.endsAt)) {
+    if (force || !now.isBefore(state.endsAt)) {
       unawaited(_hydrate(_activeUserId));
     }
   }

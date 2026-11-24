@@ -30,6 +30,12 @@ class _CycleCountdownState extends State<CycleCountdown> {
   void initState() {
     super.initState();
     _remaining = _calculateRemaining();
+    if (_remaining <= Duration.zero) {
+      _notified = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) widget.onElapsed?.call();
+      });
+    }
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
   }
 
@@ -39,6 +45,12 @@ class _CycleCountdownState extends State<CycleCountdown> {
     if (oldWidget.endsAt != widget.endsAt) {
       _notified = false;
       _remaining = _calculateRemaining();
+      if (_remaining <= Duration.zero) {
+        _notified = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) widget.onElapsed?.call();
+        });
+      }
     }
   }
 

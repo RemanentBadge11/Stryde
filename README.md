@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="concepts\icon.png" alt="Stryde Logo" width="160" />
+  <img src="concepts/icon.png" alt="Stryde Logo" width="160" />
 </p>
 
 <h1 align="center">STRYDE</h1>
@@ -34,11 +34,12 @@
 
 ## ⚡ What is Stryde?
 
-Most fitness apps are either cluttered with social feeds, paywalled behind subscriptions, or feel like cold spreadsheets.
+Most fitness apps are either cluttered with engagement-driven social feeds, paywalled behind subscriptions, or feel like cold spreadsheets.
 
 **Stryde** takes a different approach:
-- **Distraction-Free Logging**: Clean, high-contrast dark theme designed to be tapped with sweaty gym hands in seconds.
+- **Distraction-Free Logging**: Clean, high-contrast interface designed to be tapped with sweaty gym hands in seconds.
 - **Subtle RPG Progression**: Every set, workout, and habit awards XP. Level up your rank from *Fresher* to elite tiers, earn attribute points, and allocate them across your muscle groups.
+- **Training-Focused Social Features**: Follow other lifters, share workout activity, and discover routines without likes, comments, or DMs.
 - **Zero Gimmicks**: No subscriptions. No ads. No spam notifications. Completely free.
 
 ---
@@ -61,8 +62,8 @@ Most fitness apps are either cluttered with social feeds, paywalled behind subsc
 - **Login & Workout Streaks**: Real-time streak tracking to keep you disciplined.
 
 ### 📜 Quests, Habits & Daily Goals
-- **Daily Targets**: Track daily steps, hydration (water intake in liters), and protein targets with live progress rings.
-- **Weekly Quest Pool**: Dynamic weekly challenges that reward bonus XP upon completion.
+- **Daily Targets**: Three daily goals to track steps, hydration (water intake in liters), and protein targets with live progress rings.
+- **Weekly Quest Pool**: Four dynamic weekly challenges that reward bonus XP upon completion.
 - **Daily Habits**: Gamified daily checkboxes to maintain recovery habits outside the gym.
 
 ### 🏅 Medals & Achievements
@@ -70,12 +71,19 @@ Most fitness apps are either cluttered with social feeds, paywalled behind subsc
 - Showcase your earned medals directly on your profile.
 
 ### 📚 Exercise Library
-- Built-in library of **100+ exercises** with visual demonstrations.
+- Built-in library of **292 exercises** with bundled offline visual demonstrations.
 - Filter by targeted muscle group (Chest, Back, Shoulders, Biceps, Triceps, Quads, Hamstrings, Glutes, Calves, Core).
 - Exercise search and detailed movement guides.
 
+### 👥 Social Fitness
+- Follow other athletes, discover users by username, and browse public profiles.
+- Activity feed featuring completed workouts and rank promotions.
+- View shared workout details, including sets, reps, weights, and personal records.
+- Save shared workouts as custom routines with attribution to the original athlete.
+- No likes, comments, or direct messages.
+
 ### 🎨 Themes & Customization
-- Ultra-clean minimalist dark mode with customizable accent colors.
+- System, light, and dark appearance modes, plus eight free app-wide theme presets: Shadow Monarch, Blood Moon, Glacier, Olympus, Toxic, Abyss, Ember, and Sakura.
 - Platform-adaptive navigation bar (optimized for both Android and iOS gesture navigation).
 - Profile avatars and customized user handles synced to the cloud.
 
@@ -91,6 +99,7 @@ Stryde is built with clean architecture and reactive state management:
 | **State Management** | [Flutter Riverpod](https://riverpod.dev) (`^3.5.0`) |
 | **Navigation & Routing** | [GoRouter](https://pub.dev/packages/go_router) (`^18.1.4`) with deep-link & auth guards |
 | **Backend & Database** | [Supabase](https://supabase.com) (PostgreSQL, Auth, Row Level Security, Storage) |
+| **Local Database & Sync** | Drift with offline caching and Supabase synchronization |
 | **Audio** | [AudioPlayers](https://pub.dev/packages/audioplayers) for workout cues |
 | **Icons & Design** | Material UI, Cupertino Icons, and custom typography |
 
@@ -100,9 +109,10 @@ Stryde is built with clean architecture and reactive state management:
 lib/
 ├── core/                       # Shared foundational layer
 │   ├── providers/              # Global state notifiers
-│   ├── routing/                # GoRouter setup & platform navigation shells
+│   ├── router/                # GoRouter setup & platform navigation shells
 │   ├── services/               # Audio & native services
 │   ├── supabase/               # Supabase client wrapper
+│   ├── sync/                   # Offline synchronization queue
 │   ├── theme/                  # Colors, spacing, typography, dynamic themes
 │   └── widgets/                # Common cards, headers, loaders, platform bars
 ├── features/                   # Feature-based modular structure
@@ -113,7 +123,8 @@ lib/
 │   ├── profile/                # User profile, goal metrics, avatar management
 │   ├── progression/            # XP transactions, ranks, skill allocations
 │   ├── routines/               # Custom routine builder and routine details
-│   ├── settings/               # Accent color picker, theme mode, app preferences
+│   ├── settings/               # Theme presets, appearance mode, app preferences
+│   ├── social/                 # Activity feed, public profiles, follows, routine sharing
 │   ├── stats/                  # Workout history analytics and trends
 │   ├── workout_history/        # Completed workouts and detailed breakdown
 │   └── workout_logging/        # Active session tracker, set inputs, PR overlay

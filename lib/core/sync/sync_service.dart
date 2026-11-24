@@ -5,13 +5,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:stryde/core/database/app_database.dart';
 import 'package:stryde/core/database/local_cache_service.dart';
+import 'package:stryde/core/services/location_timezone_service.dart';
 import 'package:stryde/core/sync/network_connectivity.dart';
 import 'package:stryde/features/auth/presentation/providers/auth_provider.dart';
+import 'package:stryde/features/home/data/user_quests_repository.dart';
+import 'package:stryde/features/home/presentation/providers/daily_goals_provider.dart';
+import 'package:stryde/features/home/presentation/providers/weekly_quests_provider.dart';
 import 'package:stryde/features/medals/data/medals_repository.dart';
 import 'package:stryde/features/profile/data/profile_repository.dart';
 import 'package:stryde/features/progression/data/skills_repository.dart';
+import 'package:stryde/features/social/data/social_repository.dart';
 import 'package:stryde/features/workout_history/data/workout_history_repository.dart';
 import 'package:stryde/features/workout_history/domain/entities/completed_workout.dart';
+import 'package:stryde/features/workout_history/presentation/providers/workout_history_provider.dart';
 
 class SyncState {
   const SyncState({
@@ -56,6 +62,8 @@ class SyncNotifier extends Notifier<SyncState> {
   MedalsRepository? _medalsRepo;
   SkillsRepository? _skillsRepo;
   ProfileRepository? _profileRepo;
+  SocialRepository? _socialRepo;
+  UserQuestsRepository? _userQuestsRepo;
 
   @override
   SyncState build() {
@@ -67,6 +75,8 @@ class SyncNotifier extends Notifier<SyncState> {
     _medalsRepo = ref.read(medalsRepositoryProvider);
     _skillsRepo = ref.read(skillsRepositoryProvider);
     _profileRepo = ref.read(profileRepositoryProvider);
+    _socialRepo = ref.read(socialRepositoryProvider);
+    _userQuestsRepo = ref.read(userQuestsRepositoryProvider);
 
     ref.onDispose(() {
       _mounted = false;
@@ -108,6 +118,7 @@ class SyncNotifier extends Notifier<SyncState> {
 
   Future<void> syncPending() async {
     if (_isProcessing || !_mounted) return;
+    if (_supabase == null) return;
     final online = await _connectivity.isOnline;
     if (!_mounted) return;
     if (!online) {
@@ -131,13 +142,28 @@ class SyncNotifier extends Notifier<SyncState> {
           break;
         }
 
-        final success = await _processQueueEntry(entry);
-        if (!_mounted) break;
-        if (success) {
-          await _localCache.deleteQueueEntry(entry.id);
-        } else {
-          // Network error or push failure: stop sync and retry later
-          break;
+        try {
+          final success = await _processQueueEntry(entry);
+          if (!_mounted) break;
+          if (success) {
+            await _localCache.deleteQueueEntry(entry.id);
+          } else {
+            // Failed processing: log error and delete from queue so it doesn't block the rest
+            // ignore: avoid_print
+            print(
+              'Sync queue item ${entry.id} (${entry.entityType}/${entry.action}) failed processing. Deleting from queue.',
+            );
+            await _localCache.deleteQueueEntry(entry.id);
+          }
+        } catch (e, st) {
+          // Processing threw: log error and delete from queue so it doesn't block the rest
+          // ignore: avoid_print
+          print(
+            'Sync queue item ${entry.id} (${entry.entityType}/${entry.action}) error: $e\n$st. Deleting from queue.',
+          );
+          try {
+            await _localCache.deleteQueueEntry(entry.id);
+          } catch (_) {}
         }
       }
     } catch (_) {
@@ -171,6 +197,9 @@ class SyncNotifier extends Notifier<SyncState> {
         case 'workout':
           return await _syncWorkoutEntry(entry.action, payload);
 
+        case 'rank_up':
+          return await _syncRankUpEntry(payload);
+
         case 'medal':
           return await _syncMedalEntry(entry.action, payload);
 
@@ -179,6 +208,10 @@ class SyncNotifier extends Notifier<SyncState> {
 
         case 'quest_completion':
           return await _syncQuestCompletionEntry(entry.action, payload, client);
+
+        case 'quests':
+        case 'quest':
+          return await _syncQuestsEntry(entry.action, payload, client);
 
         default:
           return true; // Unknown entry type, dismiss to prevent blocking queue
@@ -243,6 +276,43 @@ class SyncNotifier extends Notifier<SyncState> {
       if (workoutMap == null) return true;
       final workout = CompletedWorkout.fromJson(workoutMap);
       await repo.insert(userId: userId, workout: workout);
+
+      // Auto-publish social workout post (idempotent)
+      final prExercises =
+          (payload['prExercises'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const <String>[];
+      final socialRepo = _socialRepo;
+      if (socialRepo != null) {
+        try {
+          await socialRepo.publishWorkoutPost(
+            userId: userId,
+            workout: workout,
+            prExercises: prExercises,
+          );
+        } catch (_) {}
+      }
+
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> _syncRankUpEntry(Map<String, dynamic> payload) async {
+    final userId = payload['userId']?.toString();
+    final rankName = payload['rankName']?.toString();
+    final level = payload['level'] as int? ?? 1;
+    final socialRepo = _socialRepo;
+    if (userId == null || rankName == null || socialRepo == null) return false;
+
+    try {
+      await socialRepo.publishRankUpPost(
+        userId: userId,
+        rankName: rankName,
+        level: level,
+      );
       return true;
     } catch (_) {
       return false;
@@ -308,6 +378,53 @@ class SyncNotifier extends Notifier<SyncState> {
         'quest_type': questType,
         'completed_at': completedAt,
       });
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<bool> _syncQuestsEntry(
+    String action,
+    Map<String, dynamic> payload,
+    SupabaseClient client,
+  ) async {
+    if (action != 'cleanup_quests') return true;
+
+    final userId = payload['userId']?.toString();
+    if (userId == null) return true;
+
+    final userQuestsRepo = _userQuestsRepo;
+    if (userQuestsRepo == null) return false;
+
+    try {
+      // 1. Delete all expired quests in Supabase for that user
+      await userQuestsRepo.deleteExpiredQuests(userId);
+
+      // 2. Re-trigger quest generation
+      final profile = await _localCache.getCachedProfile(userId);
+      final tzService = ref.read(locationTimezoneServiceProvider);
+      final timezone = profile?.timezone ?? tzService.getDeviceTimezone();
+      final history = ref.read(workoutHistoryProvider);
+
+      await userQuestsRepo.getOrGenerateQuests(
+        userId: userId,
+        questType: 'daily',
+        timezone: timezone,
+        history: history,
+      );
+
+      await userQuestsRepo.getOrGenerateQuests(
+        userId: userId,
+        questType: 'weekly',
+        timezone: timezone,
+        history: history,
+      );
+
+      // 3. Refresh providers so UI immediately updates
+      ref.read(dailyGoalsProvider.notifier).refresh();
+      ref.read(weeklyQuestsProvider.notifier).refresh();
+
       return true;
     } catch (_) {
       return false;

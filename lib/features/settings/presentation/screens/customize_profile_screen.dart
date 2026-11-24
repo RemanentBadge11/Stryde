@@ -20,7 +20,9 @@ class CustomizeProfileScreen extends ConsumerStatefulWidget {
 class _CustomizeProfileScreenState
     extends ConsumerState<CustomizeProfileScreen> {
   late final TextEditingController _nameController;
+  late final TextEditingController _usernameController;
   final _focusNode = FocusNode();
+  final _usernameFocusNode = FocusNode();
   bool _isUploadingImage = false;
   bool _isSavingName = false;
 
@@ -28,15 +30,16 @@ class _CustomizeProfileScreenState
   void initState() {
     super.initState();
     final profile = ref.read(userProfileProvider);
-    _nameController = TextEditingController(
-      text: profile.displayName ?? profile.username ?? '',
-    );
+    _nameController = TextEditingController(text: profile.displayName ?? '');
+    _usernameController = TextEditingController(text: profile.username ?? '');
   }
 
   @override
   void dispose() {
     _nameController.dispose();
+    _usernameController.dispose();
     _focusNode.dispose();
+    _usernameFocusNode.dispose();
     super.dispose();
   }
 
@@ -62,7 +65,19 @@ class _CustomizeProfileScreenState
 
     try {
       final bytes = await pickedFile.readAsBytes();
-      final extension = pickedFile.name.split('.').last;
+      final rawExt = pickedFile.name.contains('.')
+          ? pickedFile.name.split('.').last.toLowerCase().trim()
+          : 'jpg';
+      final extension =
+          (rawExt == 'jpg' ||
+              rawExt == 'jpeg' ||
+              rawExt == 'png' ||
+              rawExt == 'webp')
+          ? rawExt
+          : 'jpg';
+      final contentType = extension == 'png'
+          ? 'image/png'
+          : (extension == 'webp' ? 'image/webp' : 'image/jpeg');
       final fileName =
           '${user.id}/avatar_${DateTime.now().millisecondsSinceEpoch}.$extension';
 
@@ -71,10 +86,7 @@ class _CustomizeProfileScreenState
           .uploadBinary(
             fileName,
             bytes,
-            fileOptions: FileOptions(
-              contentType: 'image/$extension',
-              upsert: true,
-            ),
+            fileOptions: FileOptions(contentType: contentType, upsert: true),
           );
 
       final publicUrl = supabase.storage.from('avatars').getPublicUrl(fileName);
@@ -110,20 +122,49 @@ class _CustomizeProfileScreenState
     }
   }
 
-  Future<void> _saveDisplayName() async {
+  Future<void> _saveDisplayName() => _saveProfileInfo();
+
+  Future<void> _saveProfileInfo() async {
     final name = _nameController.text.trim();
-    if (name.isEmpty) return;
+    final username = _usernameController.text.trim();
+    final profile = ref.read(userProfileProvider);
 
     setState(() => _isSavingName = true);
     try {
-      await ref.read(userProfileProvider.notifier).setDisplayName(name);
+      if (username.isNotEmpty &&
+          username.toLowerCase() != profile.username?.toLowerCase()) {
+        final success = await ref
+            .read(userProfileProvider.notifier)
+            .updateUsername(username);
+        if (!success) {
+          if (mounted) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: const Text(
+                    'Username is unavailable or invalid (minimum 3 characters).',
+                  ),
+                  backgroundColor: AppColors.error,
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+          }
+          return;
+        }
+      }
+
+      if (name.isNotEmpty && name != profile.displayName) {
+        await ref.read(userProfileProvider.notifier).setDisplayName(name);
+      }
+
       if (mounted) {
         FocusScope.of(context).unfocus();
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
           ..showSnackBar(
             SnackBar(
-              content: const Text('Display name saved'),
+              content: const Text('Profile details saved'),
               backgroundColor: AppColors.surfaceVariant,
               behavior: SnackBarBehavior.floating,
             ),
@@ -175,8 +216,8 @@ class _CustomizeProfileScreenState
                   GestureDetector(
                     onTap: _isUploadingImage ? null : _pickAndUploadAvatar,
                     child: Container(
-                      width: 104,
-                      height: 104,
+                      width: 88,
+                      height: 88,
                       decoration: BoxDecoration(
                         color: AppColors.primary,
                         shape: BoxShape.circle,
@@ -189,10 +230,10 @@ class _CustomizeProfileScreenState
                       alignment: Alignment.center,
                       child: _isUploadingImage
                           ? SizedBox(
-                              width: 32,
-                              height: 32,
+                              width: 28,
+                              height: 28,
                               child: CircularProgressIndicator(
-                                strokeWidth: 3,
+                                strokeWidth: 2.5,
                                 color: AppColors.onPrimary,
                               ),
                             )
@@ -200,18 +241,18 @@ class _CustomizeProfileScreenState
                           ? Image.network(
                               avatarUrl,
                               fit: BoxFit.cover,
-                              width: 104,
-                              height: 104,
+                              width: 88,
+                              height: 88,
                               errorBuilder: (context, error, stackTrace) =>
                                   Icon(
                                     Icons.person_rounded,
-                                    size: 52,
+                                    size: 44,
                                     color: AppColors.onPrimary,
                                   ),
                             )
                           : Icon(
                               Icons.person_rounded,
-                              size: 52,
+                              size: 44,
                               color: AppColors.onPrimary,
                             ),
                     ),
@@ -222,7 +263,7 @@ class _CustomizeProfileScreenState
                     child: GestureDetector(
                       onTap: _isUploadingImage ? null : _pickAndUploadAvatar,
                       child: Container(
-                        padding: const EdgeInsets.all(AppSpacing.space8),
+                        padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
                           color: AppColors.surfaceVariant,
                           shape: BoxShape.circle,
@@ -230,7 +271,7 @@ class _CustomizeProfileScreenState
                         ),
                         child: Icon(
                           Icons.camera_alt_rounded,
-                          size: 18,
+                          size: 16,
                           color: AppColors.textPrimary,
                         ),
                       ),
@@ -239,18 +280,18 @@ class _CustomizeProfileScreenState
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.space12),
+            const SizedBox(height: AppSpacing.space8),
             Center(
               child: TextButton.icon(
                 key: const ValueKey<String>('change-avatar-button'),
                 onPressed: _isUploadingImage ? null : _pickAndUploadAvatar,
-                icon: const Icon(Icons.photo_library_outlined, size: 18),
+                icon: const Icon(Icons.photo_library_outlined, size: 16),
                 label: Text(
                   _isUploadingImage ? 'Uploading...' : 'Choose from Gallery',
                 ),
               ),
             ),
-            const SizedBox(height: AppSpacing.space32),
+            const SizedBox(height: AppSpacing.space16),
             Text(
               'PROFILE DETAILS',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -258,9 +299,9 @@ class _CustomizeProfileScreenState
                 letterSpacing: 1.0,
               ),
             ),
-            const SizedBox(height: AppSpacing.space12),
+            const SizedBox(height: AppSpacing.space8),
             AppSurfaceCard(
-              padding: const EdgeInsets.all(AppSpacing.space20),
+              padding: const EdgeInsets.all(AppSpacing.space16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -270,25 +311,24 @@ class _CustomizeProfileScreenState
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   Text(
                     'This name will be displayed on the Home greeting and your Profile.',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.space16),
+                  const SizedBox(height: AppSpacing.space12),
                   TextField(
                     key: const ValueKey<String>(
                       'customize-profile-display-name-input',
                     ),
                     controller: _nameController,
                     focusNode: _focusNode,
-                    textInputAction: TextInputAction.done,
-                    onSubmitted: (_) => _saveDisplayName(),
+                    textInputAction: TextInputAction.next,
                     style: TextStyle(
                       color: AppColors.textPrimary,
-                      fontSize: 16,
+                      fontSize: 15,
                       fontWeight: FontWeight.w600,
                     ),
                     decoration: InputDecoration(
@@ -298,7 +338,7 @@ class _CustomizeProfileScreenState
                       fillColor: AppColors.surfaceVariant,
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: AppSpacing.space16,
-                        vertical: AppSpacing.space16,
+                        vertical: 12,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
@@ -314,7 +354,63 @@ class _CustomizeProfileScreenState
                       ),
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.space20),
+                  const SizedBox(height: AppSpacing.space16),
+                  Text(
+                    'Unique Username',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    'Your unique handle across the Stryde social fitness network.',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.space12),
+                  TextField(
+                    key: const ValueKey<String>(
+                      'customize-profile-username-input',
+                    ),
+                    controller: _usernameController,
+                    focusNode: _usernameFocusNode,
+                    textInputAction: TextInputAction.done,
+                    onSubmitted: (_) => _saveDisplayName(),
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'Enter unique username',
+                      prefixText: '@',
+                      prefixStyle: TextStyle(
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      hintStyle: TextStyle(color: AppColors.textMuted),
+                      filled: true,
+                      fillColor: AppColors.surfaceVariant,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.space16,
+                        vertical: 12,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide(color: AppColors.border),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide(color: AppColors.border),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide(color: AppColors.primary),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.space16),
                   SizedBox(
                     width: double.infinity,
                     height: 48,

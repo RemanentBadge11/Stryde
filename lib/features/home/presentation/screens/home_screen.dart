@@ -254,7 +254,7 @@ class HomeScreen extends ConsumerWidget {
                           endsAt: questState.endsAt,
                           onElapsed: () => ref
                               .read(weeklyQuestsProvider.notifier)
-                              .refreshIfNeeded(),
+                              .refreshIfNeeded(force: true),
                         ),
                       ),
                       const SizedBox(height: AppSpacing.space12),
@@ -325,7 +325,7 @@ class HomeScreen extends ConsumerWidget {
                           endsAt: dailyGoalState.endsAt,
                           onElapsed: () => ref
                               .read(dailyGoalsProvider.notifier)
-                              .refreshIfNeeded(),
+                              .refreshIfNeeded(force: true),
                         ),
                       ),
                       const SizedBox(height: AppSpacing.space12),

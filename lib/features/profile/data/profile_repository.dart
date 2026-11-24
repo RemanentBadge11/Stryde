@@ -304,15 +304,11 @@ class ProfileRepository {
     String? displayName,
     String? avatarUrl,
   }) async {
-    try {
-      final values = <String, dynamic>{};
-      if (displayName != null) values['display_name'] = displayName;
-      if (avatarUrl != null) values['avatar_url'] = avatarUrl;
-      if (values.isNotEmpty) {
-        await _supabase.from('profiles').update(values).eq('id', userId);
-      }
-    } catch (_) {
-      // Degrades gracefully
+    final values = <String, dynamic>{};
+    if (displayName != null) values['display_name'] = displayName;
+    if (avatarUrl != null) values['avatar_url'] = avatarUrl;
+    if (values.isNotEmpty) {
+      await _supabase.from('profiles').update(values).eq('id', userId);
     }
   }
 }

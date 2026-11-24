@@ -18,6 +18,13 @@ import 'package:stryde/features/routines/presentation/screens/train_screen.dart'
 import 'package:stryde/features/settings/presentation/screens/customize_profile_screen.dart';
 import 'package:stryde/features/settings/presentation/screens/settings_screen.dart';
 import 'package:stryde/features/settings/presentation/screens/theme_screen.dart';
+import 'package:stryde/features/social/domain/entities/social_post.dart';
+import 'package:stryde/features/social/domain/entities/social_profile.dart';
+import 'package:stryde/features/social/presentation/screens/followers_screen.dart';
+import 'package:stryde/features/social/presentation/screens/historical_workout_detail_screen.dart';
+import 'package:stryde/features/social/presentation/screens/other_user_profile_screen.dart';
+import 'package:stryde/features/social/presentation/screens/social_feed_screen.dart';
+import 'package:stryde/features/social/presentation/screens/user_search_screen.dart';
 import 'package:stryde/features/stats/presentation/screens/stats_screen.dart';
 import 'package:stryde/features/workout_history/presentation/screens/workout_history_detail_screen.dart';
 import 'package:stryde/features/workout_logging/presentation/screens/active_workout_screen.dart';
@@ -126,8 +133,56 @@ GoRouter createAppRouter({GlobalKey<NavigatorState>? navigatorKey}) {
               GoRoute(
                 path: '/social',
                 name: 'social',
-                builder: (context, state) =>
-                    const _PlaceholderScreen(label: 'Social Screen'),
+                builder: (context, state) => const SocialFeedScreen(),
+                routes: <RouteBase>[
+                  GoRoute(
+                    path: 'search',
+                    name: 'social-search',
+                    builder: (context, state) => const UserSearchScreen(),
+                  ),
+                  GoRoute(
+                    path: 'user/:userId',
+                    name: 'social-user-profile',
+                    builder: (context, state) => OtherUserProfileScreen(
+                      userId: state.pathParameters['userId'] ?? '',
+                      initialProfile: state.extra is SocialProfile
+                          ? state.extra! as SocialProfile
+                          : null,
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'followers/:userId',
+                    name: 'social-followers',
+                    builder: (context, state) => FollowersScreen(
+                      userId: state.pathParameters['userId'] ?? '',
+                      isFollowers: true,
+                      initialProfile: state.extra is SocialProfile
+                          ? state.extra! as SocialProfile
+                          : null,
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'following/:userId',
+                    name: 'social-following',
+                    builder: (context, state) => FollowersScreen(
+                      userId: state.pathParameters['userId'] ?? '',
+                      isFollowers: false,
+                      initialProfile: state.extra is SocialProfile
+                          ? state.extra! as SocialProfile
+                          : null,
+                    ),
+                  ),
+                  GoRoute(
+                    path: 'workout/:postId',
+                    name: 'social-workout-detail',
+                    builder: (context, state) => HistoricalWorkoutDetailScreen(
+                      postId: state.pathParameters['postId'] ?? '',
+                      initialPost: state.extra is SocialPost
+                          ? state.extra! as SocialPost
+                          : null,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -137,6 +192,33 @@ GoRouter createAppRouter({GlobalKey<NavigatorState>? navigatorKey}) {
                 path: '/profile',
                 name: 'profile',
                 builder: (context, state) => const ProfileScreen(),
+                routes: <RouteBase>[
+                  GoRoute(
+                    path: 'followers',
+                    name: 'my-followers',
+                    builder: (context, state) {
+                      final userId =
+                          (state.extra as String?) ??
+                          supabaseClientOrNull?.auth.currentUser?.id ??
+                          '';
+                      return FollowersScreen(userId: userId, isFollowers: true);
+                    },
+                  ),
+                  GoRoute(
+                    path: 'following',
+                    name: 'my-following',
+                    builder: (context, state) {
+                      final userId =
+                          (state.extra as String?) ??
+                          supabaseClientOrNull?.auth.currentUser?.id ??
+                          '';
+                      return FollowersScreen(
+                        userId: userId,
+                        isFollowers: false,
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),
@@ -223,24 +305,6 @@ GoRouter createAppRouter({GlobalKey<NavigatorState>? navigatorKey}) {
       ),
     ],
   );
-}
-
-class _PlaceholderScreen extends StatelessWidget {
-  const _PlaceholderScreen({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Center(
-          child: Text(label, style: Theme.of(context).textTheme.headlineSmall),
-        ),
-      ),
-    );
-  }
 }
 
 class _NotFoundScreen extends StatelessWidget {

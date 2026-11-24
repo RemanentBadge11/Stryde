@@ -94,9 +94,11 @@ class PlatformNavbar extends StatelessWidget {
               height: _barHeight + bottomInset,
               padding: EdgeInsets.only(bottom: bottomInset),
               decoration: BoxDecoration(
-                color: AppColors.isDark
-                    ? AppColors.background
-                    : const Color(0xFFF4F4F6),
+                color: AppColors.currentPreset != null
+                    ? AppColors.surface
+                    : (AppColors.isDark
+                          ? AppColors.background
+                          : const Color(0xFFF4F4F6)),
                 border: Border(top: BorderSide(color: AppColors.border)),
               ),
               child: LayoutBuilder(
@@ -155,12 +157,17 @@ class NavSlot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isPreset = AppColors.currentPreset != null;
     final isDark = AppColors.isDark;
     final Color iconColor;
     final Color textColor;
     final Color indicatorColor;
 
-    if (isDark) {
+    if (isPreset) {
+      iconColor = isSelected ? AppColors.primary : AppColors.textSecondary;
+      textColor = isSelected ? AppColors.primary : AppColors.textPrimary;
+      indicatorColor = AppColors.primary;
+    } else if (isDark) {
       iconColor = isSelected ? AppColors.primary : AppColors.textMuted;
       textColor = iconColor;
       indicatorColor = AppColors.primary;
@@ -172,13 +179,15 @@ class NavSlot extends StatelessWidget {
       textColor = isSelected ? Colors.black : const Color(0xFF222222);
     }
 
-    final iconShadows = <Shadow>[
-      Shadow(
-        color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.12),
-        offset: const Offset(0, 1),
-        blurRadius: 2,
-      ),
-    ];
+    final iconShadows = isPreset
+        ? const <Shadow>[]
+        : <Shadow>[
+            Shadow(
+              color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.12),
+              offset: const Offset(0, 1),
+              blurRadius: 2,
+            ),
+          ];
 
     return Semantics(
       key: ValueKey<String>('bottom-nav-${destination.slotKey}'),
@@ -189,12 +198,16 @@ class NavSlot extends StatelessWidget {
       excludeSemantics: true,
       child: InkWell(
         onTap: onTap,
-        splashColor: (isDark ? AppColors.primary : Colors.black).withValues(
-          alpha: 0.08,
-        ),
-        highlightColor: (isDark ? AppColors.primary : Colors.black).withValues(
-          alpha: 0.04,
-        ),
+        splashColor:
+            (isPreset
+                    ? AppColors.primary
+                    : (isDark ? AppColors.primary : Colors.black))
+                .withValues(alpha: 0.08),
+        highlightColor:
+            (isPreset
+                    ? AppColors.primary
+                    : (isDark ? AppColors.primary : Colors.black))
+                .withValues(alpha: 0.04),
         child: Padding(
           padding: const EdgeInsets.only(top: 30),
           child: Column(

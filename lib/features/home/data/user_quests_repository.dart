@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,31 +34,61 @@ class UserQuestsRepository {
     DateTime? now,
   }) async {
     final current = (now ?? DateTime.now()).toUtc();
-
-    // 1. Check local cache first
-    final cached = await localCache.getCachedQuests(
-      userId,
-      questType: questType,
-      activeOnly: true,
-      now: current,
-    );
-
     final expectedCount = questType == 'daily' ? 3 : 4;
-    if (cached.length >= expectedCount) {
-      return cached.map(UserQuest.fromDrift).toList();
-    }
 
-    // 2. Check if offline
+    // 1. Check if offline
     final isOnline = await connectivity.isOnline;
     if (!isOnline) {
+      final cached = await localCache.getCachedQuests(
+        userId,
+        questType: questType,
+        activeOnly: true,
+        now: current,
+      );
+
       if (cached.isNotEmpty) {
         return cached.map(UserQuest.fromDrift).toList();
       }
-      // Offline and cache is empty
+
+      // Offline and cache is empty or expired:
+      // Do not try to delete them locally; queue a cleanup_quests action in the sync_queue.
+      await enqueueCleanupQuests(userId);
       return const <UserQuest>[];
     }
 
-    // 3. Online: Fetch active quests from Supabase
+    final client = supabase;
+    if (client == null) {
+      // Offline / guest mode without Supabase client
+      final cached = await localCache.getCachedQuests(
+        userId,
+        questType: questType,
+        activeOnly: true,
+        now: current,
+      );
+      if (cached.length >= expectedCount) {
+        return cached.map(UserQuest.fromDrift).toList();
+      }
+      final generated = questType == 'daily'
+          ? generateDailyGoals(
+              userId: userId,
+              timezone: timezone,
+              history: history,
+              now: current,
+            )
+          : generateWeeklyQuests(
+              userId: userId,
+              timezone: timezone,
+              now: current,
+            );
+      await localCache.clearExpiredCachedQuests(current);
+      await localCache.saveCachedQuests(
+        userId,
+        generated.map((q) => q.toDrift()).toList(),
+      );
+      return generated;
+    }
+
+    // 2. Online: Query user_quests for active quests (expires_at > now())
     try {
       final remote = await fetchActiveQuests(
         userId,
@@ -66,6 +97,7 @@ class UserQuestsRepository {
       );
 
       if (remote.length >= expectedCount) {
+        await localCache.clearExpiredCachedQuests(current);
         await localCache.saveCachedQuests(
           userId,
           remote.map((q) => q.toDrift()).toList(),
@@ -73,13 +105,29 @@ class UserQuestsRepository {
         return remote;
       }
     } catch (_) {
-      // Remote fetch failed, fall back to cached if any
+      // Remote fetch failed, fall back to cached if active
+      final cached = await localCache.getCachedQuests(
+        userId,
+        questType: questType,
+        activeOnly: true,
+        now: current,
+      );
       if (cached.isNotEmpty) {
         return cached.map(UserQuest.fromDrift).toList();
       }
+      await enqueueCleanupQuests(userId);
+      return const <UserQuest>[];
     }
 
-    // 4. No active quests in remote or cache: generate lazily!
+    // 3. If there are NO active quests (all expired or none exist):
+    // Step 1: Delete all expired quests for this user from user_quests.
+    try {
+      await deleteExpiredQuests(userId, now: current);
+    } catch (_) {
+      // Degrades gracefully if remote delete fails
+    }
+
+    // Step 2: Generate the new quests (3 Daily Goals, 4 Weekly Quests) using the existing logic.
     final generated = questType == 'daily'
         ? generateDailyGoals(
             userId: userId,
@@ -93,18 +141,69 @@ class UserQuestsRepository {
             now: current,
           );
 
+    // Step 3: Insert the new quests into user_quests with the correct expires_at.
     try {
       await insertQuests(generated);
     } catch (_) {
       // If remote insert fails, still keep local
     }
 
+    // Step 4: Update the local Drift cached_quests table.
+    await localCache.clearExpiredCachedQuests(current);
     await localCache.saveCachedQuests(
       userId,
       generated.map((q) => q.toDrift()).toList(),
     );
 
     return generated;
+  }
+
+  Future<void> deleteExpiredQuests(
+    String userId, {
+    String? questType,
+    DateTime? now,
+  }) async {
+    final client = supabase;
+    if (client == null) return;
+
+    final current = (now ?? DateTime.now()).toUtc();
+    var query = client
+        .from('user_quests')
+        .delete()
+        .eq('user_id', userId)
+        .lte('expires_at', current.toIso8601String());
+
+    if (questType != null) {
+      query = query.eq('quest_type', questType);
+    }
+
+    await query;
+  }
+
+  Future<void> enqueueCleanupQuests(String userId) async {
+    try {
+      final pending = await localCache.getPendingQueue();
+      final alreadyQueued = pending.any((e) {
+        if (e.entityType != 'quests' || e.action != 'cleanup_quests') {
+          return false;
+        }
+        try {
+          final payload = jsonDecode(e.payload) as Map<String, dynamic>;
+          return payload['userId'] == userId;
+        } catch (_) {
+          return true;
+        }
+      });
+      if (!alreadyQueued) {
+        await localCache.enqueue(
+          entityType: 'quests',
+          action: 'cleanup_quests',
+          payload: <String, dynamic>{'userId': userId},
+        );
+      }
+    } catch (_) {
+      // Degrades gracefully
+    }
   }
 
   Future<List<UserQuest>> fetchActiveQuests(
@@ -162,7 +261,7 @@ class UserQuestsRepository {
     if (client == null || quests.isEmpty) return;
 
     final maps = quests.map((q) => q.toSupabaseMap()).toList();
-    await client.from('user_quests').insert(maps);
+    await client.from('user_quests').upsert(maps);
   }
 
   Future<void> completeQuest({

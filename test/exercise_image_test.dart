@@ -138,8 +138,8 @@ void main() {
         }
       }
 
-      // 250 previously existing + 36 newly acquired = 286 total local illustrations
-      expect(localCount, 286);
+      // 286 previously existing + 6 newly finalized = 292 total local illustrations (100% coverage)
+      expect(localCount, 292);
     });
   });
 }
